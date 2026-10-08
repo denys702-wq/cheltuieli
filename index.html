@@ -169,8 +169,8 @@ const KEY='cheltuieli_v1',KEY2='cheltuieli_set';
 const T={
 ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic planificat. Când adaugi o tranzacție, alege „De plătit”.',paid:'Plătit?',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare'},
 en:{app:'Expenses',bal:'Balance',inc:'Income',exp:'Expenses',list:'Transactions',stat:'Statistics',none:'No transactions this month.<br>Tap + to add the first one.',noexp:'No expenses this month.',tot:'Total expenses',last:'Last month',nolast:'No data for last month.',e1:'Expense',i1:'Income',amt:'Amount',cat:'Category',date:'Date',note:'Note (optional)',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Tap again',eamt:'Enter an amount above 0, for example 25.50.',edate:'Pick a date.',set:'Settings',lang:'Language',cur:'Currency',curh:'Changing the currency only changes how amounts are shown. It does not convert them.',bk:'Backup and import',bkh:'Copy the text and keep it somewhere safe (for example in Notes). To restore, paste it here and tap Import.',copy:'Copy',copied:'Copied.',manual:'Select the text and copy it manually.',imp:'Import from text',impsure:'Sure? This replaces your data',impok:'Imported: {n} transactions.',impbad:'Invalid text. Paste the whole backup exactly as it was copied.',close:'Close',nostore:'Storage is not available in this browser. Data is lost when you close it; use Settings → Backup.',add:'Add transaction',back:'Back',done:'Done',txt:'Transaction',nm:'Your name',nmp:'What should I call you?',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',hom:'Overview',his:'History',spent:'of income',ofexp:'of expenses',over:'Expenses exceed income by',left:'Left from income',noinc:'No income this month, so percentages are based on expenses.',top:'Biggest expense',p1:'To pay',due:'Due date',pl:'Upcoming',plnone:'Nothing planned. When adding a transaction, choose “To pay”.',paid:'Paid?',late:'overdue',prev:'Previous month',next:'Next month'}};
-const CN={'Mâncare':'Food','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
-const CATS={exp:['Mâncare','Transport','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
+const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
+const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
 let S={lang:'ro',cur:'RON',name:''},tx=[],pl=[],pa=0,edPlan=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
@@ -209,8 +209,7 @@ function saveSet(){U=Date.now();try{localStorage.setItem(KEY2,JSON.stringify(S))
 function applyStatic(){
  document.documentElement.lang=S.lang;
  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
- $('.fab').setAttribute('aria-label',t('add'));
- $('#l-amt').textContent=t('amt')+' ('+S.cur+')';
+ $('.fab').setAttribute('aria-label',t('add'));$('#l-amt').textContent=t('amt')+' ('+S.cur+')';
  $('#f-amt').placeholder=S.lang==='en'?'0.00':'0,00';
  $('#imp').textContent=t('imp');$('#imp').classList.remove('dng');
  $('#del').textContent=t('del');$('#del').classList.remove('dng');
@@ -314,10 +313,10 @@ function list(m){
  return h;
 }
 
-const EM={'Mâncare':'🍽️','Transport':'🚌','Facturi':'🧾','Casă':'🏠','Sănătate':'💊','Distracție':'🎮','Cumpărături':'🛍️','Altele':'✨','Salariu':'💼','Bonus':'🎁'};
+const EM={'Mâncare':'🍽️','Subscripții':'🔄','Combustibil':'⛽','Facturi':'🧾','Casă':'🏠','Sănătate':'💊','Distracție':'🎮','Cumpărături':'🛍️','Altele':'✨','Salariu':'💼','Bonus':'🎁'};
 const ic=x=>{const c=x.type==='inc'?'#16a34a':cc(x.cat);return `<i class="ic" style="background:${c}2e">${EM[x.cat]||'✨'}</i>`};
-const COL=['#0f766e','#2563eb','#d97706','#7c3aed','#db2777','#65a30d','#dc2626','#64748b'];
-const cc=c=>{const i=CATS.exp.indexOf(c);return COL[i<0?7:i]};
+const COL=['#0f766e','#0284c7','#ea580c','#d97706','#7c3aed','#db2777','#65a30d','#dc2626','#64748b'];
+const cc=c=>{const i=CATS.exp.indexOf(c);return COL[i<0?8:i]};
 const pc=n=>n.toLocaleString(loc(),{maximumFractionDigits:1})+'%';
 function charts(m,inc,exp){
  const by={};
