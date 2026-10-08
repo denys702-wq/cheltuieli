@@ -123,6 +123,13 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 .go .dock{animation:dockin .6s cubic-bezier(.22,.8,.3,1) .85s both}
 .go .fab{animation:fabin .5s cubic-bezier(.3,1.5,.5,1) 1s both}
 .go .donut circle:not(:first-child){animation-delay:.9s}.go .tr i{animation-delay:.95s}
+.plan{padding:10px 12px}.plan h3{margin:0 2px 2px}.plan .row{min-height:52px;padding:8px 12px}
+.plm{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .32s cubic-bezier(.22,.8,.3,1),visibility 0s .32s}
+.plan.open .plm{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .32s cubic-bezier(.22,.8,.3,1),visibility 0s}
+.pli{overflow:hidden;min-height:0}
+.plt{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:6px;min-height:40px;border:0;background:transparent;color:var(--accent);font-weight:650;border-radius:12px}
+.chev{font-style:normal;display:inline-block;transition:transform .28s}.plan.open .chev{transform:rotate(180deg)}
+.pr .row{width:auto;min-width:0;flex:1 1 0}.pay{flex:none;width:48px;min-width:48px;padding:0}.pr .row small{overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -167,8 +174,8 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 <script>
 const KEY='cheltuieli_v1',KEY2='cheltuieli_set';
 const T={
-ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic planificat. Când adaugi o tranzacție, alege „De plătit”.',paid:'Plătit?',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare',more:'mai multe',avail:'disponibil'},
-en:{app:'Expenses',bal:'Balance',inc:'Income',exp:'Expenses',list:'Transactions',stat:'Statistics',none:'No transactions this month.<br>Tap + to add the first one.',noexp:'No expenses this month.',tot:'Total expenses',last:'Last month',nolast:'No data for last month.',e1:'Expense',i1:'Income',amt:'Amount',cat:'Category',date:'Date',note:'Note (optional)',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Tap again',eamt:'Enter an amount above 0, for example 25.50.',edate:'Pick a date.',set:'Settings',lang:'Language',cur:'Currency',curh:'Changing the currency only changes how amounts are shown. It does not convert them.',bk:'Backup and import',bkh:'Copy the text and keep it somewhere safe (for example in Notes). To restore, paste it here and tap Import.',copy:'Copy',copied:'Copied.',manual:'Select the text and copy it manually.',imp:'Import from text',impsure:'Sure? This replaces your data',impok:'Imported: {n} transactions.',impbad:'Invalid text. Paste the whole backup exactly as it was copied.',close:'Close',nostore:'Storage is not available in this browser. Data is lost when you close it; use Settings → Backup.',add:'Add transaction',back:'Back',done:'Done',txt:'Transaction',nm:'Your name',nmp:'What should I call you?',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',hom:'Overview',his:'History',spent:'of income',ofexp:'of expenses',over:'Expenses exceed income by',left:'Left from income',noinc:'No income this month, so percentages are based on expenses.',top:'Biggest expense',p1:'To pay',due:'Due date',pl:'Upcoming',plnone:'Nothing planned. When adding a transaction, choose “To pay”.',paid:'Paid?',late:'overdue',prev:'Previous month',next:'Next month',more:'more',avail:'available'}};
+ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic planificat. Când adaugi o tranzacție, alege „De plătit”.',paid:'Plătit?',all:'Arată toate',less:'Restrânge',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare',more:'mai multe',avail:'disponibil'},
+en:{app:'Expenses',bal:'Balance',inc:'Income',exp:'Expenses',list:'Transactions',stat:'Statistics',none:'No transactions this month.<br>Tap + to add the first one.',noexp:'No expenses this month.',tot:'Total expenses',last:'Last month',nolast:'No data for last month.',e1:'Expense',i1:'Income',amt:'Amount',cat:'Category',date:'Date',note:'Note (optional)',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Tap again',eamt:'Enter an amount above 0, for example 25.50.',edate:'Pick a date.',set:'Settings',lang:'Language',cur:'Currency',curh:'Changing the currency only changes how amounts are shown. It does not convert them.',bk:'Backup and import',bkh:'Copy the text and keep it somewhere safe (for example in Notes). To restore, paste it here and tap Import.',copy:'Copy',copied:'Copied.',manual:'Select the text and copy it manually.',imp:'Import from text',impsure:'Sure? This replaces your data',impok:'Imported: {n} transactions.',impbad:'Invalid text. Paste the whole backup exactly as it was copied.',close:'Close',nostore:'Storage is not available in this browser. Data is lost when you close it; use Settings → Backup.',add:'Add transaction',back:'Back',done:'Done',txt:'Transaction',nm:'Your name',nmp:'What should I call you?',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',hom:'Overview',his:'History',spent:'of income',ofexp:'of expenses',over:'Expenses exceed income by',left:'Left from income',noinc:'No income this month, so percentages are based on expenses.',top:'Biggest expense',p1:'To pay',due:'Due date',pl:'Upcoming',plnone:'Nothing planned. When adding a transaction, choose “To pay”.',paid:'Paid?',all:'Show all',less:'Collapse',late:'overdue',prev:'Previous month',next:'Next month',more:'more',avail:'available'}};
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
 let S={lang:'ro',cur:'RON',name:''},tx=[],pl=[],pa=0,edPlan=false,plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
@@ -287,15 +294,20 @@ document.addEventListener('touchend',endTouch);
 document.addEventListener('touchcancel',endTouch);
 
 function planCard(){
- const q=[...pl].sort((a,b)=>a.date.localeCompare(b.date)),td=today();
- let sumPl=q.length?q.reduce((a,x)=>a+x.amt,0):0;
- let h=`<div class="plan"><h3 ${q.length>1?'data-act="togglePlan" style="cursor:pointer"':''}><span>🗓️ ${t('pl')}</span><span style="display:flex;align-items:center;gap:8px">${q.length?fmt(sumPl):''}${q.length>1?`<i style="font-style:normal;font-size:14px;transition:transform .2s;transform:${plExp?'rotate(180deg)':'none'}">▼</i>`:''}</span></h3>`;
- if(!q.length)return h+`<p class="hint">${t('plnone')}</p></div>`;
- const toShow=plExp?q:[q[0]];
- toShow.forEach(x=>{const late=x.date<td;
-  h+=`<div class="pr"><button class="row" data-act="edit" data-plan="1" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}</b><small class="${late?'late':''}">${fd(x.date)}${late?' · '+t('late'):''}${x.note?' · '+esc(x.note):''}</small></span><em class="r">${fmt(x.amt)}</em></button><button class="pay${pa===x.id?' pri':''}" data-act="pay" data-id="${x.id}" aria-label="${t('paid')}">${pa===x.id?t('paid'):'✓'}</button></div>`});
- if(!plExp&&q.length>1)h+=`<div class="hint" style="text-align:center;margin-top:10px;cursor:pointer;font-weight:600;color:var(--accent)" data-act="togglePlan">+ ${q.length-1} ${t('more')}</div>`;
+ const q=[...pl].sort((a,b)=>a.date.localeCompare(b.date)),td=today(),n=q.length;
+ const row=x=>{const late=x.date<td;return `<div class="pr"><button class="row" data-act="edit" data-plan="1" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}</b><small class="${late?'late':''}">${fd(x.date)}${late?' · '+t('late'):''}${x.note?' · '+esc(x.note):''}</small></span><em class="r">${fmt(x.amt)}</em></button><button class="pay${pa===x.id?' pri':''}" data-act="pay" data-id="${x.id}" aria-label="${t('paid')}">${pa===x.id?t('paid'):'✓'}</button></div>`};
+ let h=`<div class="plan${plExp&&n>1?' open':''}"><h3><span>🗓️ ${t('pl')}</span><span>${n?fmt(q.reduce((a,x)=>a+x.amt,0)):''}</span></h3>`;
+ if(!n)return h+`<p class="hint">${t('plnone')}</p></div>`;
+ h+=row(q[0]);
+ if(n>1)h+=`<div class="plm"><div class="pli">${q.slice(1).map(row).join('')}</div></div><button class="plt" data-act="togglePlan" aria-expanded="${plExp}"><span class="pll">${plExp?t('less'):t('all')+' ('+n+')'}</span><i class="chev">▾</i></button>`;
  return h+'</div>';
+}
+function togglePlan(){
+ plExp=!plExp;
+ const c=document.querySelector('.plan');if(!c)return;
+ c.classList.toggle('open',plExp);
+ const b=c.querySelector('.plt');
+ if(b){b.setAttribute('aria-expanded',plExp);b.querySelector('.pll').textContent=plExp?t('less'):t('all')+' ('+pl.length+')'}
 }
 
 function payPlan(id){
@@ -441,7 +453,7 @@ document.addEventListener('click',e=>{
  else if(a==='closebk')closeBk();
  else if(a==='copy')copy();
  else if(a==='imp')imp();
- else if(a==='togglePlan'){plExp=!plExp;render()}
+ else if(a==='togglePlan')togglePlan();
 });
 function setDone(){S.name=$('#s-name').value.trim().slice(0,24);S.lang=$('#s-lang').value;S.cur=$('#s-cur').value;saveSet();applyStatic();render();closeSet()}
 
