@@ -83,8 +83,8 @@ button:active{transform:scale(.97)}
 #ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
+#ov,#st,#bkp,#acc{align-items:center;padding:16px}
+#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
 @keyframes pop{from{opacity:0;transform:scale(.94)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
@@ -130,6 +130,15 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 .plt{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin-top:6px;min-height:40px;border:0;background:transparent;color:var(--accent);font-weight:650;border-radius:12px}
 .chev{font-style:normal;display:inline-block;transition:transform .28s}.plan.open .chev{transform:rotate(180deg)}
 .pr .row{width:auto;min-width:0;flex:1 1 0}.pay{flex:none;width:48px;min-width:48px;padding:0}.pr .row small{overflow-wrap:anywhere}
+.scope{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0 0 10px}
+.scope button{min-height:38px;padding:0 6px;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:19px}
+.scope button.on{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.seg3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 2px}
+.seg3 button{min-height:44px;padding:0 6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg3 button.on{background:var(--accent);color:var(--on);border-color:var(--accent);font-weight:600}.seg3 button:disabled{opacity:.4}
+.setl{margin-bottom:12px}.setl h3{margin:0 0 6px;font-size:16px}.setx{margin:6px 0 0;font-weight:700}
+.code{font-size:26px;letter-spacing:4px;font-weight:800;text-align:center;margin:8px 0;user-select:all}
+#acc .sheet label{margin-top:8px}
 </style>
 </head>
 <body>
@@ -144,6 +153,8 @@ input[type=date]::-webkit-datetime-edit{padding:0}
   <div id="err" class="err"></div>
   <div class="seg"><button data-type="exp" data-i="e1"></button><button data-type="inc" data-i="i1"></button><button data-type="plan" data-i="p1"></button><button data-type="sub" data-i="sub1"></button></div>
   <p id="subh" class="hint" data-i="subh" hidden></p>
+  <div id="ownw" hidden><div class="hint" data-i="forWho"></div><div class="seg3"><button data-own="me"></button><button data-own="partner"></button><button data-own="shared"></button></div>
+   <label id="paidw" hidden><span data-i="paidBy"></span><select id="f-by"></select></label></div>
   <label><span id="l-amt"></span><input id="f-amt" inputmode="decimal" autocomplete="off"></label>
   <label><span data-i="cat"></span><select id="f-cat"></select></label>
   <label><span id="l-date"></span><input id="f-date" type="date"></label>
@@ -158,6 +169,7 @@ input[type=date]::-webkit-datetime-edit{padding:0}
   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
   <p class="hint" data-i="curh"></p>
+  <button class="menu" data-act="accopen"><span data-i="acc"></span><span>›</span></button>
   <button class="menu" data-act="bkopen"><span data-i="bk"></span><span>›</span></button>
   
  </div>
@@ -172,14 +184,22 @@ input[type=date]::-webkit-datetime-edit{padding:0}
   
  </div>
 </div>
+<div id="acc" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="acc"></h2><div class="mr"><button class="nb" data-act="closeacc" aria-label="Back">‹</button></div></div>
+  <div id="acc-body"></div>
+  <div id="acc-msg" class="msg"></div>
+ </div>
+</div>
 <script>
-const KEY='cheltuieli_v1',KEY2='cheltuieli_set';
+const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud';
 const T={
 ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic de plătit în această lună. Adaugă cu + și alege „De plătit” sau „Abonament”.',paid:'Plătit?',all:'Arată toate',sub1:'Abonament',due1:'Prima scadență',subh:'Se repetă lunar, începând cu luna datei alese. Modificările se aplică tuturor lunilor.',less:'Restrânge',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare',more:'mai multe',avail:'disponibil'},
 en:{app:'Expenses',bal:'Balance',inc:'Income',exp:'Expenses',list:'Transactions',stat:'Statistics',none:'No transactions this month.<br>Tap + to add the first one.',noexp:'No expenses this month.',tot:'Total expenses',last:'Last month',nolast:'No data for last month.',e1:'Expense',i1:'Income',amt:'Amount',cat:'Category',date:'Date',note:'Note (optional)',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Tap again',eamt:'Enter an amount above 0, for example 25.50.',edate:'Pick a date.',set:'Settings',lang:'Language',cur:'Currency',curh:'Changing the currency only changes how amounts are shown. It does not convert them.',bk:'Backup and import',bkh:'Copy the text and keep it somewhere safe (for example in Notes). To restore, paste it here and tap Import.',copy:'Copy',copied:'Copied.',manual:'Select the text and copy it manually.',imp:'Import from text',impsure:'Sure? This replaces your data',impok:'Imported: {n} transactions.',impbad:'Invalid text. Paste the whole backup exactly as it was copied.',close:'Close',nostore:'Storage is not available in this browser. Data is lost when you close it; use Settings → Backup.',add:'Add transaction',back:'Back',done:'Done',txt:'Transaction',nm:'Your name',nmp:'What should I call you?',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',hom:'Overview',his:'History',spent:'of income',ofexp:'of expenses',over:'Expenses exceed income by',left:'Left from income',noinc:'No income this month, so percentages are based on expenses.',top:'Biggest expense',p1:'To pay',due:'Due date',pl:'Upcoming',plnone:'Nothing to pay this month. Tap + and choose “To pay” or “Subscription”.',paid:'Paid?',all:'Show all',sub1:'Subscription',due1:'First due date',subh:'Repeats every month, starting with the chosen date. Changes apply to all months.',less:'Collapse',late:'overdue',prev:'Previous month',next:'Next month',more:'more',avail:'available'}};
+Object.assign(T.ro,{acc:'Cont și partener',accIn:'Autentificare',accUp:'Creează cont',email:'Email',pass:'Parolă',accOut:'Deconectare',hCreate:'Creează cămin comun',hJoin:'Intră cu cod',hCode:'Cod de invitație',hMine:'Codul tău de invitație',hWait:'Partenerul nu s-a alăturat încă. Trimite-i codul.',hSync:'Sincronizat în timp real',members:'Membri',signedAs:'Conectat ca {e}',a_intro:'Creează un cont (sau autentifică-te) ca să sincronizezi cu partenerul. Fiecare persoană are contul ei.',a_off:'Sincronizarea nu e disponibilă acum. Verifică internetul și redeschide aplicația.',a_load:'Se încarcă…',wait:'Un moment…',e_fill:'Completează emailul și parola.',e_cred:'Email sau parolă greșite.',e_used:'Există deja un cont cu acest email.',e_weak:'Parola e prea scurtă (minim 6 caractere).',e_mail:'Email invalid.',e_net:'Fără conexiune la internet.',e_code:'Cod invalid.',e_full:'Căminul are deja doi membri sau codul nu mai e valabil.',e_gen:'Eroare',sAll:'Toate',sMe:'Eu',sPartner:'Partener',sShared:'Comun',forWho:'Pentru',paidBy:'Plătit de',setT:'Decontare cheltuieli comune',sharedTot:'Total comun',even:'Cheltuielile comune sunt echilibrate.',oweMe:'{n} îți datorează {a}.',iOwe:'Îi datorezi {a} lui {n}.',syncErr:'Sincronizarea a întâmpinat o problemă. Ultima modificare poate să nu fi ajuns la partener.',copyCode:'Copiază codul'});Object.assign(T.en,{acc:'Account & partner',accIn:'Sign in',accUp:'Create account',email:'Email',pass:'Password',accOut:'Sign out',hCreate:'Create shared home',hJoin:'Join with code',hCode:'Invite code',hMine:'Your invite code',hWait:'Your partner has not joined yet. Send them the code.',hSync:'Synced in real time',members:'Members',signedAs:'Signed in as {e}',a_intro:'Create an account (or sign in) to sync with your partner. Each person has their own account.',a_off:'Sync is not available right now. Check your connection and reopen the app.',a_load:'Loading…',wait:'One moment…',e_fill:'Enter your email and password.',e_cred:'Wrong email or password.',e_used:'An account with this email already exists.',e_weak:'Password is too short (min 6 characters).',e_mail:'Invalid email.',e_net:'No internet connection.',e_code:'Invalid code.',e_full:'This home already has two members, or the code is no longer valid.',e_gen:'Error',sAll:'All',sMe:'Me',sPartner:'Partner',sShared:'Shared',forWho:'For',paidBy:'Paid by',setT:'Shared expenses settlement',sharedTot:'Shared total',even:'Shared expenses are balanced.',oweMe:'{n} owes you {a}.',iOwe:'You owe {n} {a}.',syncErr:'Sync ran into a problem. Your last change may not have reached your partner.',copyCode:'Copy code'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:''},tx=[],pl=[],pa='',edKind='tx',subs=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all'},tx=[],pl=[],pa='',edKind='tx',subs=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -203,6 +223,7 @@ function load(){
   if(T[q.lang])S.lang=q.lang;
   if(['RON','EUR','USD','GBP','MDL'].includes(q.cur))S.cur=q.cur;
   if(typeof q.name==='string')S.name=q.name.slice(0,24);
+  if(['all','me','partner','shared'].includes(q.scope))S.scope=q.scope;
  }catch(e){ok=false}
 }
 let U=0,DB=null,pushT=0;
@@ -211,7 +232,7 @@ function push(){
  if(!DB)return;clearTimeout(pushT);
  pushT=setTimeout(()=>{try{DB.set({tx,planned:pl,subs,set:{lang:S.lang,cur:S.cur,name:S.name},u:U}).catch(e=>console.error('db',e))}catch(e){console.error('db',e)}},500);
 }
-function save(){U=Date.now();wr();push()}
+function save(){U=Date.now();wr();push();cloudPush()}
 function saveSet(){U=Date.now();try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(e){}wr();push()}
 
 function applyStatic(){
@@ -226,14 +247,16 @@ function applyStatic(){
 
 function render(){
  armed='';
- const m=tx.filter(x=>x.date.startsWith(mk(view)));
+ const m=tx.filter(x=>x.date.startsWith(mk(view))&&vis(x));
  const inc=sum(m,'inc'),exp=sum(m,'exp'),bal=inc-exp,hr=new Date().getHours();
  let h=(ok||DB)?'':`<div class="warn">${t('nostore')}</div>`;
+ if(C.syncErr)h+=`<div class="warn">${t('syncErr')}</div>`;
  h+=`<div class="hd"><div><small>${t('app')}</small><h2>${t(hr<12?'gm':hr<18?'ga':'ge')}${S.name?', '+esc(S.name):''} 👋</h2></div><button class="gear" data-act="set" aria-label="${t('set')}">⚙️</button></div>`;
+ h+=scopeBar();
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big">${fmt(bal)}</div><div class="two"><div><span>↑ ${t('inc')}</span><b>${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b>${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${planCard()+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${planCard()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);
@@ -298,8 +321,8 @@ const dim=ym=>new Date(+ym.slice(0,4),+ym.slice(5,7),0).getDate();
 const dueOf=(sb,ym)=>ym+'-'+p2(Math.min(sb.day,dim(ym)));
 const paidSub=(sb,ym)=>tx.some(r=>r.sid===sb.id&&r.sm===ym);
 function monthPlan(ym){
- const a=pl.filter(x=>x.date.startsWith(ym)).map(x=>({key:'p'+x.id,id:x.id,kind:'plan',amt:x.amt,cat:x.cat,date:x.date,note:x.note}));
- const b=subs.filter(sb=>sb.from<=ym&&!paidSub(sb,ym)).map(sb=>({key:'s'+sb.id,id:sb.id,kind:'sub',amt:sb.amt,cat:sb.cat,date:dueOf(sb,ym),note:sb.note}));
+ const a=pl.filter(x=>x.date.startsWith(ym)&&vis(x)).map(x=>({key:'p'+x.id,id:x.id,kind:'plan',amt:x.amt,cat:x.cat,date:x.date,note:x.note}));
+ const b=subs.filter(sb=>sb.from<=ym&&vis(sb)&&!paidSub(sb,ym)).map(sb=>({key:'s'+sb.id,id:sb.id,kind:'sub',amt:sb.amt,cat:sb.cat,date:dueOf(sb,ym),note:sb.note}));
  return [...a,...b].sort((x,y)=>x.date.localeCompare(y.date));
 }
 function planCard(){
@@ -324,10 +347,10 @@ function payPlan(key){
  const id=+key.slice(1),ym=mk(view),cur=ym<=mk(new Date());
  if(key[0]==='p'){
   const x=pl.find(r=>r.id===id);
-  if(x){pl=pl.filter(r=>r.id!==id);tx.push({id:x.id,type:'exp',amt:x.amt,cat:x.cat,date:today(),note:x.note});save()}
+  if(x){pl=pl.filter(r=>r.id!==id);tx.push({id:x.id,type:'exp',amt:x.amt,cat:x.cat,date:today(),note:x.note,...(x.own?{own:x.own}:{}),...(x.own==='shared'?{by:C.uid}:{})});save()}
  }else{
   const sb=subs.find(r=>r.id===id);
-  if(sb&&!paidSub(sb,ym)){tx.push({id:Date.now(),type:'exp',amt:sb.amt,cat:sb.cat,date:ym<mk(new Date())?dueOf(sb,ym):today(),note:sb.note,sid:sb.id,sm:ym});save()}
+  if(sb&&!paidSub(sb,ym)){tx.push({id:Date.now(),type:'exp',amt:sb.amt,cat:sb.cat,date:ym<mk(new Date())?dueOf(sb,ym):today(),note:sb.note,sid:sb.id,sm:ym,...(sb.own?{own:sb.own}:{}),...(sb.own==='shared'?{by:C.uid}:{})});save()}
  }
  render();
 }
@@ -373,7 +396,7 @@ function charts(m,inc,exp){
  h+=`<p class="note">${t('top')}: <b>${esc(cn(e[0][0]))}</b> (${pc(e[0][1]/den*100)})</p>`;
  e.forEach(([c,v])=>{const p=v/den*100;h+=`<div class="bar"><div class="bl"><span class="lg"><i class="dot" style="background:${cc(c)}"></i>${EM[c]||'✨'} ${esc(cn(c))}</span><span>${fmt(v)} · ${pc(p)}</span></div><div class="tr"><i style="width:${Math.min(p,100)}%;background:${cc(c)}"></i></div></div>`});
  const pv=new Date(view);pv.setMonth(pv.getMonth()-1);
- const pt=sum(tx.filter(x=>x.date.startsWith(mk(pv))),'exp');
+ const pt=sum(tx.filter(x=>x.date.startsWith(mk(pv))&&vis(x)),'exp');
  h+=`<p class="note">${t('last')}: ${pt?`${fmt(pt)} (${exp>=pt?'+':'−'}${fmt(Math.abs(exp-pt))})`:t('nolast')}</p>`;
  return h+'</div>';
 }
@@ -417,11 +440,14 @@ function setType(y,sel){
  document.querySelectorAll('[data-type]').forEach(b=>b.classList.toggle('on',b.dataset.type===y));
  fillCats(sel);dl();
  const h=$('#subh');if(h)h.hidden=y!=='sub';
+ syncOwn();
 }
 function openSheet(id,kind){
  edId=id;edKind=kind||'tx';armed='';
  const x=id?(edKind==='plan'?pl:edKind==='sub'?subs:tx).find(r=>r.id===id):null;
+ ownSel=x&&x.own?(x.own==='shared'?'shared':x.own===C.uid?'me':'partner'):(S.scope==='partner'?'partner':S.scope==='shared'?'shared':'me');
  setType(x?(edKind==='plan'?'plan':edKind==='sub'?'sub':x.type):'exp',x&&x.cat);
+ if(C.hid)$('#f-by').value=x&&x.by?x.by:C.uid;
  $('#f-amt').value=x?String(x.amt).replace('.',S.lang==='en'?'.':','):'';
  $('#f-date').value=x?(edKind==='sub'?dueOf(x,x.from):x.date):today();
  $('#f-note').value=x?x.note:'';
@@ -437,10 +463,12 @@ function saveTx(){
   const v=$('#f-amt').value.trim().replace(',','.'),d=$('#f-date').value||today();
   if(!/^\d+(\.\d{1,2})?$/.test(v)||!(parseFloat(v)>0))return err(t('eamt'));
   const o={amt:parseFloat(v),cat:$('#f-cat').value,date:d,note:$('#f-note').value.trim()};
+  const own=C.hid?ownUid():null;
+  if(own){o.own=own;if(type==='exp'&&own==='shared')o.by=$('#f-by').value||C.uid}
   const id=edId||Date.now(),old=edId?tx.find(r=>r.id===edId):null;
   if(edId){tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId)}
   if(type==='plan')pl.push({id,...o});
-  else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7)});
+  else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7),...(own?{own}:{})});
   else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{})});
   view=new Date(d+'T00:00:00');view.setDate(1);
   try{save()}catch(e){console.error(e)}
@@ -458,8 +486,10 @@ document.addEventListener('click',e=>{
  if(tb){switchTab(tb.dataset.tab);return}
  const ty=e.target.closest('[data-type]');
  if(ty){setType(ty.dataset.type);return}
+ const ow=e.target.closest('[data-own]');
+ if(ow){ownSel=ow.dataset.own;syncOwn();return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add')openSheet(null);
@@ -476,8 +506,13 @@ document.addEventListener('click',e=>{
  else if(a==='copy')copy();
  else if(a==='imp')imp();
  else if(a==='togglePlan')togglePlan();
+ else if(a==='accopen')openAcc();
+ else if(a==='closeacc')closeAcc();
+ else if(a==='scope'){S.scope=b.dataset.v;try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(x){}render()}
+ else if(a==='copycode')copyCode();
+ else accDo(a);
 });
-function setDone(){S.name=$('#s-name').value.trim().slice(0,24);S.lang=$('#s-lang').value;S.cur=$('#s-cur').value;saveSet();applyStatic();render();closeSet()}
+function setDone(){S.name=$('#s-name').value.trim().slice(0,24);S.lang=$('#s-lang').value;S.cur=$('#s-cur').value;saveSet();cloudName();applyStatic();render();closeSet()}
 
 async function initDb(){
  try{
@@ -502,6 +537,190 @@ async function initDb(){
   render();
  }catch(e){console.error('db',e)}
 }
+
+/* ===== Cuplu: cont, cămin comun, sincronizare Firebase ===== */
+const FBC={apiKey:"AIzaSyBxH1RlK8cVajT7nb0f4t-szcoOzvfdddg",authDomain:"cheltuieli-f0c26.firebaseapp.com",projectId:"cheltuieli-f0c26",storageBucket:"cheltuieli-f0c26.firebasestorage.app",messagingSenderId:"590978376968",appId:"1:590978376968:web:5dc9d8a103adf841f038bd"};
+const FBV='https://www.gstatic.com/firebasejs/10.14.1/';
+const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,known:{tx:new Map(),planned:new Map(),subs:new Map()},unsubs:[]};
+let bootRes;const bootP=new Promise(r=>{bootRes=r});
+let ownSel='me',rq=0;
+const pname=()=>(C.partner&&C.names[C.partner])||t('sPartner');
+const clean=x=>JSON.parse(JSON.stringify(x));
+const ownUid=()=>ownSel==='shared'?'shared':(ownSel==='partner'&&C.partner)?C.partner:C.uid;
+const vis=x=>{if(!C.hid||S.scope==='all')return true;const o=x.own;return S.scope==='me'?o===C.uid:S.scope==='partner'?(!!C.partner&&o===C.partner):o==='shared'};
+function schedRender(){clearTimeout(rq);rq=setTimeout(()=>{if(lk==='h'){schedRender();return}render();renderAcc()},30)}
+
+function scopeBar(){
+ if(!C.hid)return '';
+ const o=[['all',t('sAll')],['me',t('sMe')],['partner',pname()],['shared',t('sShared')]];
+ return '<div class="scope">'+o.map(([k,l])=>`<button data-act="scope" data-v="${k}" class="${S.scope===k?'on':''}">${esc(l)}</button>`).join('')+'</div>';
+}
+function settleCard(ym){
+ if(!C.hid)return '';
+ const q=tx.filter(x=>x.date.startsWith(ym)&&x.type==='exp'&&x.own==='shared');
+ if(!q.length)return '';
+ const tot=q.reduce((a,x)=>a+x.amt,0),mine=q.filter(x=>x.by===C.uid).reduce((a,x)=>a+x.amt,0),d=mine-tot/2,n=esc(pname());
+ const txt=Math.abs(d)<.005?t('even'):d>0?t('oweMe').replace('{n}',n).replace('{a}',fmt(d)):t('iOwe').replace('{n}',n).replace('{a}',fmt(-d));
+ return `<div class="card setl"><h3>🤝 ${t('setT')}</h3><p class="note">${t('sharedTot')}: <b>${fmt(tot)}</b></p><p class="setx">${txt}</p></div>`;
+}
+function syncOwn(){
+ const w=$('#ownw');if(!w)return;
+ w.hidden=!C.hid;if(!C.hid)return;
+ if(ownSel==='partner'&&!C.partner)ownSel='me';
+ const lab={me:t('sMe'),partner:pname(),shared:t('sShared')};
+ w.querySelectorAll('[data-own]').forEach(b=>{b.textContent=lab[b.dataset.own];b.classList.toggle('on',b.dataset.own===ownSel);b.disabled=b.dataset.own==='partner'&&!C.partner});
+ $('#paidw').hidden=!(type==='exp'&&ownSel==='shared');
+ const by=$('#f-by'),cur=by.value;
+ by.innerHTML=`<option value="${C.uid}">${esc(t('sMe'))}</option>`+(C.partner?`<option value="${C.partner}">${esc(pname())}</option>`:'');
+ if(cur&&[...by.options].some(o=>o.value===cur))by.value=cur;
+}
+
+async function cloudInit(){
+ try{
+  const [A,Au,F]=await Promise.all([import(FBV+'firebase-app.js'),import(FBV+'firebase-auth.js'),import(FBV+'firebase-firestore.js')]);
+  const app=A.initializeApp(FBC);
+  let db;try{db=F.initializeFirestore(app,{localCache:F.persistentLocalCache()})}catch(e){db=F.getFirestore(app)}
+  const auth=Au.getAuth(app);
+  C.fb={A,Au,F,app,db,auth};
+  Au.onAuthStateChanged(auth,u=>{onUser(u)});
+ }catch(e){console.error('cloud',e);C.err='load';renderAcc();bootRes()}
+}
+function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map()};C.sync=false}
+async function onUser(u){
+ const had=!!C.hid;
+ detach();
+ if(!u){
+  if(had){tx=[];pl=[];subs=[];wr();try{localStorage.removeItem(KEY3)}catch(e){}}
+  C.uid=null;C.email='';C.hid=null;C.partner=null;C.names={};C.members=[];C.code='';
+  renderAcc();render();bootRes();return;
+ }
+ C.uid=u.uid;C.email=u.email||'';
+ try{
+  const {F,db}=C.fb;
+  let hid=null;
+  try{const us=await F.getDoc(F.doc(db,'users',u.uid));hid=us.exists()?us.data().hid||null:null}
+  catch(e){try{const k=JSON.parse(localStorage.getItem(KEY3)||'{}');if(k.uid===u.uid)hid=k.hid||null}catch(x){}}
+  if(hid)attach(hid);else{C.hid=null;renderAcc();render();bootRes()}
+ }catch(e){console.error(e);bootRes()}
+}
+function attach(hid){
+ const {F,db}=C.fb;
+ detach();C.hid=hid;
+ try{localStorage.setItem(KEY3,JSON.stringify({uid:C.uid,hid}))}catch(e){}
+ const first={h:false,tx:false,planned:false,subs:false};
+ const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs){C.sync=true;bootRes()}};
+ C.unsubs.push(F.onSnapshot(F.doc(db,'households',hid),s=>{
+  if(s.exists()){const d=s.data();C.members=d.members||[];C.names=d.names||{};C.code=d.code||'';C.partner=C.members.find(m=>m!==C.uid)||null}
+  first.h=true;chk();schedRender();
+ },e=>{console.error(e);first.h=true;chk()}));
+ ['tx','planned','subs'].forEach(k=>{
+  C.unsubs.push(F.onSnapshot(F.collection(db,'households',hid,k),s=>{
+   const arr=s.docs.map(d=>d.data());
+   C.known[k]=new Map(arr.map(x=>[String(x.id),JSON.stringify(x)]));
+   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else subs=arr;
+   first[k]=true;wr();chk();schedRender();
+  },e=>{console.error(e);first[k]=true;chk()}));
+ });
+}
+function cloudPush(){
+ if(!C.hid||!C.sync||!C.fb)return;
+ const {F,db}=C.fb,ops=[];
+ [['tx',tx],['planned',pl],['subs',subs]].forEach(([k,arr])=>{
+  const km=C.known[k],seen=new Set();
+  arr.forEach(x=>{
+   if(!x.own)x.own=C.uid;
+   const id=String(x.id),c=clean(x),j=JSON.stringify(c);seen.add(id);
+   if(km.get(id)!==j){ops.push([0,k,id,c]);km.set(id,j)}
+  });
+  [...km.keys()].forEach(id=>{if(!seen.has(id)){ops.push([1,k,id]);km.delete(id)}});
+ });
+ for(let i=0;i<ops.length;i+=400){
+  const b=F.writeBatch(db);
+  ops.slice(i,i+400).forEach(([d,k,id,x])=>{const r=F.doc(db,'households',C.hid,k,id);if(d)b.delete(r);else b.set(r,x)});
+  b.commit().then(()=>{if(C.syncErr){C.syncErr=false;schedRender()}},e=>{console.error('push',e);C.syncErr=true;schedRender()});
+ }
+}
+function cloudName(){
+ if(!C.hid||!C.fb)return;
+ const {F,db}=C.fb;
+ F.setDoc(F.doc(db,'households',C.hid),{names:{[C.uid]:S.name||''}},{merge:true}).catch(e=>console.error(e));
+}
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',a=new Uint32Array(8);crypto.getRandomValues(a);return [...a].map(v=>c[v%c.length]).join('')}
+async function createHome(){
+ const {F,db}=C.fb,hid=F.doc(F.collection(db,'households')).id,code=genCode(),now=Date.now();
+ const b=F.writeBatch(db);
+ b.set(F.doc(db,'households',hid),{members:[C.uid],names:{[C.uid]:S.name||''},code,createdAt:now});
+ b.set(F.doc(db,'invites',code),{hid,createdAt:now});
+ b.set(F.doc(db,'users',C.uid),{hid,name:S.name||''},{merge:true});
+ await b.commit();
+ for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs]]){
+  for(let i=0;i<arr.length;i+=400){
+   const bb=F.writeBatch(db);
+   arr.slice(i,i+400).forEach(x=>{x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
+   await bb.commit();
+  }
+ }
+ attach(hid);
+}
+async function joinHome(code){
+ const {F,db}=C.fb;code=String(code||'').trim().toUpperCase();
+ if(!code)throw {code:'nocode'};
+ const inv=await F.getDoc(F.doc(db,'invites',code));
+ if(!inv.exists())throw {code:'nocode'};
+ const hid=inv.data().hid;
+ try{localStorage.setItem('cheltuieli_prejoin',JSON.stringify({tx,planned:pl,subs}))}catch(e){}
+ await F.updateDoc(F.doc(db,'households',hid),{members:F.arrayUnion(C.uid),['names.'+C.uid]:S.name||''});
+ await F.setDoc(F.doc(db,'users',C.uid),{hid,name:S.name||''},{merge:true});
+ attach(hid);
+}
+function fbErr(e){
+ const c=(e&&e.code)||'';
+ if(/invalid-credential|wrong-password|user-not-found/.test(c))return t('e_cred');
+ if(/email-already-in-use/.test(c))return t('e_used');
+ if(/weak-password/.test(c))return t('e_weak');
+ if(/invalid-email/.test(c))return t('e_mail');
+ if(/network|unavailable/.test(c))return t('e_net');
+ if(c==='nocode')return t('e_code');
+ if(/permission-denied/.test(c))return t('e_full');
+ return t('e_gen')+(c?' ('+c+')':'');
+}
+async function accDo(a){
+ if(!['signin','signup','mkhome','joinhome','signout'].includes(a))return;
+ const m=$('#acc-msg');m.textContent=t('wait');
+ try{
+  const {Au,auth}=C.fb;
+  if(a==='signin'||a==='signup'){
+   const e=$('#a-mail').value.trim(),p=$('#a-pass').value;
+   if(!e||!p){m.textContent=t('e_fill');return}
+   await (a==='signin'?Au.signInWithEmailAndPassword(auth,e,p):Au.createUserWithEmailAndPassword(auth,e,p));
+  }else if(a==='mkhome')await createHome();
+  else if(a==='joinhome')await joinHome($('#a-code').value);
+  else if(a==='signout')await Au.signOut(auth);
+  m.textContent='';
+ }catch(e){console.error(e);m.textContent=fbErr(e)}
+}
+function renderAcc(){
+ const el=$('#acc-body');if(!el||$('#acc').hidden)return;
+ let h='';
+ if(C.err==='load')h=`<p class="hint">${t('a_off')}</p>`;
+ else if(!C.fb)h=`<p class="hint">${t('a_load')}</p>`;
+ else if(!C.uid)h=`<p class="hint">${t('a_intro')}</p><label><span>${t('email')}</span><input id="a-mail" type="email" autocomplete="email" autocapitalize="off"></label><label><span>${t('pass')}</span><input id="a-pass" type="password" autocomplete="current-password"></label><div class="btns"><button class="pri" data-act="signin">${t('accIn')}</button><button data-act="signup">${t('accUp')}</button></div>`;
+ else if(!C.hid)h=`<p class="hint">${t('signedAs').replace('{e}',esc(C.email))}</p><div class="btns"><button class="pri" data-act="mkhome">${t('hCreate')}</button></div><label><span>${t('hCode')}</span><input id="a-code" autocapitalize="characters" autocomplete="off" maxlength="12"></label><div class="btns"><button data-act="joinhome">${t('hJoin')}</button></div><div class="btns"><button data-act="signout">${t('accOut')}</button></div>`;
+ else{
+  const mem=C.members.map(u=>u===C.uid?esc((S.name||t('sMe'))+' ('+t('sMe')+')'):esc(C.names[u]||t('sPartner'))).join(' · ');
+  h=`<p class="hint">${t('signedAs').replace('{e}',esc(C.email))}</p><p class="hint">✅ ${t('hSync')}<br>${t('members')}: ${mem}</p>`;
+  if(C.members.length<2)h+=`<p class="hint">${t('hMine')}</p><div class="code">${esc(C.code)}</div><p class="hint">${t('hWait')}</p><div class="btns"><button data-act="copycode">${t('copyCode')}</button></div>`;
+  h+=`<div class="btns"><button data-act="signout">${t('accOut')}</button></div>`;
+ }
+ el.innerHTML=h;
+}
+function openAcc(){$('#acc-msg').textContent='';$('#acc').hidden=false;renderAcc()}
+function closeAcc(){$('#acc').hidden=true}
+function copyCode(){
+ const m=$('#acc-msg');
+ (navigator.clipboard?navigator.clipboard.writeText(C.code):Promise.reject()).then(()=>m.textContent=t('copied')).catch(()=>{m.textContent=C.code});
+}
+
 let revealed=false;
 function countUp(){
  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
@@ -518,8 +737,8 @@ function reveal(){
 }
 const T0=performance.now();
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
-load();applyStatic();render();
-Promise.race([initDb(),new Promise(r=>setTimeout(r,2600))]).then(()=>setTimeout(reveal,Math.max(0,1000-(performance.now()-T0))));
+load();applyStatic();render();cloudInit();
+Promise.race([Promise.all([initDb(),bootP]),new Promise(r=>setTimeout(r,2600))]).then(()=>setTimeout(reveal,Math.max(0,1000-(performance.now()-T0))));
 </script>
 </body>
 </html>
