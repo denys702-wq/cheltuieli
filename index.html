@@ -150,6 +150,7 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 .fabb{position:fixed;inset:0;z-index:3}.fabb[hidden],.fabm[hidden]{display:none}
 .fabm{position:fixed;right:18px;bottom:calc(184px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
 .fabm button{display:flex;gap:10px;align-items:center;min-height:48px;padding:0 18px;border-radius:24px;font-weight:650;box-shadow:0 6px 18px rgba(0,0,0,.22);animation:rise .25s ease-out both}
+#ov .seg{grid-template-columns:repeat(3,1fr)}#ov .seg button{font-size:15px;padding:0 6px}.seg[hidden],.seg button[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -465,6 +466,13 @@ function fillCats(sel){
  const l=type==='inc'?[...CATS.inc]:(cats.length?cats.map(c=>c.name):[...CATS.exp]);if(sel&&!l.includes(sel))l.push(sel);
  $('#f-cat').innerHTML=l.map(c=>`<option value="${esc(c)}"${c===sel?' selected':''}>${esc(catEm(c))} ${esc(cn(c))}</option>`).join('');
 }
+let sMode='exp';
+function applySeg(){
+ const sg=document.querySelector('#ov .seg');if(!sg)return;
+ sg.hidden=sMode==='inc';
+ sg.querySelectorAll('[data-type]').forEach(b=>{b.hidden=b.dataset.type==='inc'});
+ const h=document.querySelector('#ov .mh h2');if(h)h.textContent=t(sMode==='inc'?'i1':'txt');
+}
 function setType(y,sel){
  type=y;
  if(y==='sub'&&!sel)sel='Subscripții';
@@ -473,11 +481,13 @@ function setType(y,sel){
  const h=$('#subh');if(h)h.hidden=y!=='sub';
  syncOwn();
 }
-function openSheet(id,kind){
+function openSheet(id,kind,mode){
  edId=id;edKind=kind||'tx';armed='';
  const x=id?(edKind==='plan'?pl:edKind==='sub'?subs:tx).find(r=>r.id===id):null;
+ sMode=mode||(x&&x.type==='inc'?'inc':'exp');
  ownSel=x&&x.own?(x.own==='shared'?'shared':x.own===C.uid?'me':'partner'):(C.hid&&C.mode==='common'?'shared':S.scope==='partner'?'partner':S.scope==='shared'?'shared':'me');
- setType(x?(edKind==='plan'?'plan':edKind==='sub'?'sub':x.type):'exp',x&&x.cat);
+ setType(x?(edKind==='plan'?'plan':edKind==='sub'?'sub':x.type):(sMode==='inc'?'inc':'exp'),x&&x.cat);
+ applySeg();
  if(C.hid)$('#f-by').value=x&&x.by?x.by:C.uid;
  $('#f-amt').value=x?String(x.amt).replace('.',S.lang==='en'?'.':','):'';
  $('#f-date').value=x?(edKind==='sub'?dueOf(x,x.from):x.date):today();
@@ -544,7 +554,7 @@ document.addEventListener('click',e=>{
  else if(a==='closeacc')closeAcc();
  else if(a==='scope'){S.scope=b.dataset.v;try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(x){}render()}
  else if(a==='copycode')copyCode();
- else if(a==='addinc'){closeFabm();openSheet(null);setType('inc')}
+ else if(a==='addinc'){closeFabm();openSheet(null,undefined,'inc')}
  else if(a==='addcat'){closeFabm();openCat(null)}
  else if(a==='editcat')openCat(+b.dataset.id);
  else if(a==='closecat')closeCat();
