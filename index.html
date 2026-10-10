@@ -84,8 +84,8 @@ button:active{transform:scale(.97)}
 #ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp,#acc,#cat,#rul{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
+#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep{align-items:center;padding:16px}
+#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
 @keyframes pop{from{opacity:0;transform:scale(.94)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
@@ -172,10 +172,18 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 .rrow{display:flex;gap:8px;align-items:center;margin-top:8px}.rrow .rt{flex:1;min-width:0}.rrow button.x{min-width:48px;padding:0}
 .pre{white-space:pre-line}.lnk{user-select:all;word-break:break-all;background:var(--bg);border-radius:12px;padding:10px;font-size:13px;margin:6px 0}
 details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0 12px}details.det summary{font-weight:650;min-height:46px;display:flex;align-items:center;cursor:pointer}details.det[open] summary{margin-bottom:4px}
+.sp-chart{display:flex;align-items:flex-end;gap:8px;height:48px;margin-top:10px;animation:fadeup .6s .5s both}
+.sp-chart i{width:11px;height:48px;border-radius:6px 6px 2px 2px;background:#fff;opacity:.92;transform-origin:bottom;transform:scaleY(var(--s));animation:barg 1.8s cubic-bezier(.3,.8,.3,1) infinite}
+.sp-chart i:nth-child(2){animation-delay:.12s}.sp-chart i:nth-child(3){animation-delay:.24s}.sp-chart i:nth-child(4){animation-delay:.36s}.sp-chart i:nth-child(5){animation-delay:.48s}
+@keyframes barg{0%{transform:scaleY(.08)}62%,100%{transform:scaleY(var(--s))}}
+.gprev{font-weight:650;color:var(--accent);min-height:20px}
+.tipc{position:relative;margin-bottom:12px}.tipc h3{margin:0 28px 6px 0;font-size:16px}.tipx{position:absolute;right:6px;top:6px;border:0;background:transparent;min-height:36px;min-width:36px;padding:0;color:var(--muted)}
+.goalw{margin-top:10px;border-top:1px solid var(--bd);padding-top:2px}.goalw:first-of-type{border-top:0}.goalw .brow{margin-top:6px}
+#c-grp{margin:4px 0 2px}
 </style>
 </head>
 <body>
-<div id="splash" aria-hidden="true"><div class="sp-pig"><img src="icon-512.png" alt="" onerror="this.parentNode.textContent='🐷'"></div><div class="sp-name" data-i="app"></div><div class="sp-dots"><i></i><i></i><i></i></div></div>
+<div id="splash" aria-hidden="true"><div class="sp-pig"><img src="icon-512.png" alt="" onerror="this.parentNode.textContent='🐷'"></div><div class="sp-name" data-i="app"></div><div class="sp-chart"><i style="--s:.34"></i><i style="--s:.52"></i><i style="--s:.44"></i><i style="--s:.74"></i><i style="--s:1"></i></div></div>
 <script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.style.display="none"},7000)</script>
 <div class="wrap"><div id="app"></div></div>
 <nav class="dock"><i class="ind"></i><button data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></svg><span data-i="hom"></span></button><button data-tab="hist"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i="his"></span></button><button data-tab="bud"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/></svg><span data-i="budT"></span></button></nav>
@@ -237,6 +245,7 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <label><span data-i="cName"></span><input id="c-name" maxlength="24" autocomplete="off" enterkeyhint="done"></label>
   <label><span data-i="cEmoji"></span><input id="c-emo" maxlength="4" autocomplete="off"></label>
   <div class="emos" id="c-emos"></div>
+  <div class="hint" data-i="cGrp"></div><div class="seg" id="c-grp"><button data-grp="n" data-i="gNeed"></button><button data-grp="w" data-i="gWant"></button></div>
   <div class="btns"><button id="c-del" data-act="delcat" hidden></button></div>
  </div>
 </div>
@@ -245,6 +254,29 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <div class="mh"><h2 data-i="apm"></h2><div class="mr"><button class="nb" data-act="closerul" aria-label="Back">‹</button></div></div>
   <div id="rul-body"></div>
   <div id="rul-msg" class="msg"></div>
+ </div>
+</div>
+<div id="goal" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 id="goal-title"></h2><div class="mr"><button class="nb" data-act="closegoal" aria-label="Back">‹</button><button class="nb done" data-act="savegoal" data-i="done"></button></div></div>
+  <div id="goal-err" class="err"></div>
+  <label><span data-i="gName"></span><input id="g-name" maxlength="30" autocomplete="off" enterkeyhint="done"></label>
+  <label><span data-i="gTarget"></span><input id="g-target" inputmode="decimal" autocomplete="off"></label>
+  <label><span data-i="gSaved"></span><input id="g-saved" inputmode="decimal" autocomplete="off"></label>
+  <label><span data-i="gMonths"></span><input id="g-months" inputmode="numeric" autocomplete="off"></label>
+  <p id="g-prev" class="hint gprev"></p>
+  <label><span data-i="cEmoji"></span><input id="g-emo" maxlength="4" autocomplete="off"></label>
+  <div class="emos" id="g-emos"></div>
+  <div class="btns"><button id="g-del" data-act="delgoal" hidden></button></div>
+ </div>
+</div>
+<div id="dep" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 id="dep-title"></h2><div class="mr"><button class="nb" data-act="closedep" aria-label="Back">‹</button><button class="nb done" data-act="savedep" data-i="done"></button></div></div>
+  <div id="dep-err" class="err"></div>
+  <label><span data-i="amt"></span><input id="d-amt" inputmode="decimal" autocomplete="off" enterkeyhint="done"></label>
+  <label><span data-i="date"></span><input id="d-date" type="date"></label>
+  <p class="hint" data-i="gDepHint"></p>
  </div>
 </div>
 <script>
@@ -256,9 +288,10 @@ Object.assign(T.ro,{acc:'Cont și partener',accIn:'Autentificare',accUp:'Creeaz�
 Object.assign(T.ro,{budT:'Buget',today:'Azi',yday:'Ieri',bSpent:'Cheltuit din buget',ovBud:'Buget depășit la',bAdd:'Adaugă în buget',bInc:'Venituri luna asta',bNone:'Niciun venit adăugat în această lună.',addInc:'Adaugă venit',bAlloc:'Buget pe categorii',bFree:'Nealocat',bOver:'Alocat peste venituri cu',cAdd:'Categorie nouă',cNew:'Categorie nouă',cEdit:'Editează categoria',cName:'Nume',cEmoji:'Emoji',cBud:'Buget lunar',cHint:'Suma se aplică din luna afișată și în lunile următoare, până o schimbi.',cDel:'Șterge categoria',cDupe:'Există deja o categorie cu acest nume.',cEmpty:'Scrie un nume.',cBadAmt:'Suma nu e validă.',cOther:'Alte categorii (fără buget)',cLeft:'rămas',cOver:'depășit cu',cNoBud:'fără buget setat',mCommon:'Bani comuni',mSplit:'Bani împărțiți',mTitle:'Banii voștri',mCommonH:'Veniturile și bugetul sunt comune, într-un singur loc. Nu se calculează cine datorează cui.',mSplitH:'Fiecare are veniturile și bugetul lui. Cheltuielile marcate Comun se împart între voi.',ratio:'Cheltuielile comune se împart',ratioEq:'50% / 50%',ratioInc:'proporțional cu veniturile',splitInfo:'Împărțire: {a}% eu · {b}% {n}'});Object.assign(T.en,{budT:'Budget',today:'Today',yday:'Yesterday',bSpent:'Spent of budget',ovBud:'Over budget in',bAdd:'Add to budget',bInc:'Income this month',bNone:'No income added this month.',addInc:'Add income',bAlloc:'Budget by category',bFree:'Unallocated',bOver:'Allocated above income by',cAdd:'New category',cNew:'New category',cEdit:'Edit category',cName:'Name',cEmoji:'Emoji',cBud:'Monthly budget',cHint:'The amount applies from the month shown and onward, until you change it.',cDel:'Delete category',cDupe:'A category with this name already exists.',cEmpty:'Enter a name.',cBadAmt:'Invalid amount.',cOther:'Other categories (no budget)',cLeft:'left',cOver:'over by',cNoBud:'no budget set',mCommon:'Shared money',mSplit:'Split money',mTitle:'Your money',mCommonH:'Income and budget are shared, in one place. Nobody owes anybody.',mSplitH:'Each person has their own income and budget. Expenses marked Shared are split between you.',ratio:'Shared expenses are split',ratioEq:'50% / 50%',ratioInc:'in proportion to income',splitInfo:'Split: {a}% me · {b}% {n}'});
 Object.assign(T.ro,{apm:'Apple Pay și reguli',apIntro:'Plățile cu Apple Pay se pot adăuga singure. Dacă aplicația nu recunoaște comerciantul, plata apare cu ❓ și o corectezi o dată; corecția se ține minte pentru plățile viitoare.',apLink:'Linkul de început',apCopy:'Copiază linkul',apRules:'Reguli învățate',apNoRules:'Încă nu există. Se creează singure când corectezi o plată Apple Pay.',apAdded:'Plată adăugată',apCheck:'Atinge ca să verifici',apUnk:'Comerciant necunoscut',apChkCard:'Plăți Apple Pay de verificat',apWait:'O plată Apple Pay așteaptă să fie salvată. Autentifică-te în ⚙ Cont și partener.',apDelQ:'Sigur?'});Object.assign(T.en,{apm:'Apple Pay & rules',apIntro:'Apple Pay payments can be added automatically. If the app does not recognise the merchant, the payment shows ❓ and you fix it once; the fix is remembered for future payments.',apLink:'Starting link',apCopy:'Copy link',apRules:'Learned rules',apNoRules:'None yet. They are created automatically when you correct an Apple Pay payment.',apAdded:'Payment added',apCheck:'Tap to review',apUnk:'Unknown merchant',apChkCard:'Apple Pay payments to review',apWait:'An Apple Pay payment is waiting to be saved. Sign in under ⚙ Account & partner.',apDelQ:'Sure?'});
 Object.assign(T.ro,{apAT:'Varianta 1 · Automat cu Apple Pay (iOS 17 sau mai nou)',apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) iOS 17–26: Comenzi rapide → Automatizare → + → Transaction (pe iOS 26: Wallet) → alege cardurile → Run Immediately → New Blank Automation.\n    iOS 27: creează o comandă nouă, apoi Edit → Automation → Transaction, la „When I tap” alege Any Card. Apoi ⓘ → Privacy → pornește Allow Running When Locked.\n2) Prima acțiune: URL Encode. La input alege Shortcut Input și apasă pe el ca să alegi proprietatea Merchant.\n3) A doua acțiune: URL. Scrie linkul de sus (se termină cu ?amt=), adaugă Shortcut Input → proprietatea Amount, scrie &m= și adaugă rezultatul URL Encoded Text de la pasul 2 (Select Variable → bulina albastră de sub acțiune).\n4) A treia acțiune: Open URLs.\n5) Fă o plată de test.\nAtenție: nu codifica tot linkul, doar comerciantul, altfel ? & = / se strică.',apBT:'Varianta 2 · Manual, pe orice iOS',apB:'1) Comenzi rapide → fila Shortcuts → + (comandă nouă).\n2) Add Action → Ask for Input: tip Number, întrebare „Cât ai plătit?”.\n3) Încă un Ask for Input: tip Text, întrebare „Unde ai plătit?”.\n4) Add Action → URL Encode, cu rezultatul întrebării a doua (locul).\n5) Add Action → URL: linkul de sus (se termină cu ?amt=), variabila primei întrebări (suma), scrie &m= și rezultatul URL Encoded Text.\n6) Add Action → Open URLs.\n7) Apasă numele comenzii → Add to Home Screen, sau cheam-o cu Siri.',apTest:'Trimite o plată de test'});Object.assign(T.en,{apAT:'Option 1 · Automatic with Apple Pay (iOS 17 or later)',apA:'0) iPhone Settings → Apps → Wallet → turn on Mobile Data.\n1) iOS 17–26: Shortcuts → Automation → + → Transaction (iOS 26: Wallet) → pick your cards → Run Immediately → New Blank Automation.\n    iOS 27: create a new shortcut, then Edit → Automation → Transaction, under “When I tap” choose Any Card. Then ⓘ → Privacy → turn on Allow Running When Locked.\n2) First action: URL Encode. For its input choose Shortcut Input and tap it to pick the Merchant property.\n3) Second action: URL. Type the link above (it ends with ?amt=), add Shortcut Input → Amount property, type &m= and add the URL Encoded Text result from step 2 (Select Variable → the blue token under the action).\n4) Third action: Open URLs.\n5) Make a test payment.\nCareful: do not encode the whole link, only the merchant, or ? & = / get broken.',apBT:'Option 2 · Manual, any iOS',apB:'1) Shortcuts → Shortcuts tab → + (new shortcut).\n2) Add Action → Ask for Input: type Number, question “How much did you pay?”.\n3) Another Ask for Input: type Text, question “Where did you pay?”.\n4) Add Action → URL Encode, with the answer of the second question (the place).\n5) Add Action → URL: the link above (ends with ?amt=), the variable of the first question (amount), type &m= and the URL Encoded Text result.\n6) Add Action → Open URLs.\n7) Tap the shortcut name → Add to Home Screen, or call it with Siri.',apTest:'Send a test payment'});
-const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
+Object.assign(T.ro,{gTitle:'Obiective de economisire',gNone:'Niciun obiectiv. Alege suma și în câte luni vrei s-o strângi, iar eu calculez cât să aloci lunar.',gAdd:'Obiectiv nou',gNew:'Obiectiv nou',gEdit:'Editează obiectivul',gName:'Nume (de ex. Vacanță)',gTarget:'Suma țintă',gSaved:'Deja economisit (opțional)',gMonths:'În câte luni vrei să ajungi la obiectiv',gDeposit:'Depune',gPlan:'Alocă lunar',gMonthsLeft:'{n} luni rămase',gDeadline:'termen',gDone:'Obiectiv atins 🎉',gThisMonth:'Depus luna asta',gPrev:'Trebuie să aloci {a} pe lună, timp de {n} luni, până în {d}.',gPrevDone:'Ai deja suma țintă.',gBad:'Verifică numele, suma țintă și numărul de luni (1–600).',gDel:'Șterge obiectivul',gDepTitle:'Depune în {g}',gDepHint:'Suma se scade din sold ca o cheltuială în categoria Economii și se adaugă la obiectiv.',gAlloc:'Alocat pentru economii',r532T:'Regula 50/20/30',r532Need:'Necesități (50%)',r532Sav:'Economii (20%)',r532Want:'Dorințe (30%)',r532NoInc:'Adaugă venitul lunii ca să calculez regula 50/20/30.',tipT:'Sfatul lunii',tipRule:'Cu venitul de {i}, regula 50/20/30 înseamnă: necesități {a}, economii {b}, dorințe {c}.',tipOpen:'Vezi în Buget',cGrp:'Tip cheltuială (pentru regula 50/20/30)',gNeed:'Necesitate',gWant:'Dorință'});Object.assign(T.en,{gTitle:'Savings goals',gNone:'No goals yet. Pick an amount and in how many months you want it, and I will calculate how much to set aside monthly.',gAdd:'New goal',gNew:'New goal',gEdit:'Edit goal',gName:'Name (e.g. Vacation)',gTarget:'Target amount',gSaved:'Already saved (optional)',gMonths:'In how many months do you want to reach it',gDeposit:'Deposit',gPlan:'Set aside monthly',gMonthsLeft:'{n} months left',gDeadline:'deadline',gDone:'Goal reached 🎉',gThisMonth:'Deposited this month',gPrev:'You need to set aside {a} per month, for {n} months, until {d}.',gPrevDone:'You already have the target amount.',gBad:'Check the name, target amount and number of months (1–600).',gDel:'Delete goal',gDepTitle:'Deposit into {g}',gDepHint:'The amount is deducted from your balance as an expense in the Savings category and added to the goal.',gAlloc:'Allocated to savings',r532T:'50/20/30 rule',r532Need:'Needs (50%)',r532Sav:'Savings (20%)',r532Want:'Wants (30%)',r532NoInc:'Add this month’s income so I can calculate the 50/20/30 rule.',tipT:'Tip of the month',tipRule:'With an income of {i}, the 50/20/30 rule means: needs {a}, savings {b}, wants {c}.',tipOpen:'See in Budget',cGrp:'Expense type (for the 50/20/30 rule)',gNeed:'Need',gWant:'Want'});
+const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:'',scope:'all'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:''},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -277,17 +310,18 @@ const err=m=>{$('#err').textContent=m};
 function load(){
  try{localStorage.setItem('_t','1');localStorage.removeItem('_t');
   const r=localStorage.getItem(KEY);
-  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats;if(Array.isArray(o.rules))rules=o.rules}
+  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats;if(Array.isArray(o.rules))rules=o.rules;if(Array.isArray(o.goals))goals=o.goals}
   const q=JSON.parse(localStorage.getItem(KEY2)||'{}');
   if(T[q.lang])S.lang=q.lang;
   if(['RON','EUR','USD','GBP','MDL'].includes(q.cur))S.cur=q.cur;
   if(typeof q.name==='string')S.name=q.name.slice(0,24);
   if(['all','me','partner','shared'].includes(q.scope))S.scope=q.scope;
+  if(typeof q.tipDone==='string')S.tipDone=q.tipDone.slice(0,7);
  }catch(e){ok=false}
  if(!cats.length)cats=defCats();
 }
 let U=0,DB=null,pushT=0;
-function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,rules,u:U}))}catch(e){ok=false}}
+function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,rules,goals,u:U}))}catch(e){ok=false}}
 function push(){
  if(!DB)return;clearTimeout(pushT);
  pushT=setTimeout(()=>{try{DB.set({tx,planned:pl,subs,set:{lang:S.lang,cur:S.cur,name:S.name},u:U}).catch(e=>console.error('db',e))}catch(e){console.error('db',e)}},500);
@@ -316,7 +350,7 @@ function render(){
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big">${fmt(bal)}</div><div class="two"><div><span>↑ ${t('inc')}</span><b>${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b>${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${tipCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);
@@ -382,6 +416,8 @@ document.addEventListener('keydown',e=>{
  if(id==='f-amt'||id==='f-note'){e.preventDefault();saveTx()}
  else if(id==='c-name'||id==='c-amt'||id==='c-emo'){e.preventDefault();saveCat()}
  else if(id==='s-name'){e.preventDefault();setDone()}
+ else if(id==='g-name'||id==='g-target'||id==='g-saved'||id==='g-months'||id==='g-emo'){e.preventDefault();saveGoal()}
+ else if(id==='d-amt'){e.preventDefault();saveDep()}
  else if(id==='a-pass'){e.preventDefault();accDo('signin')}
  else if(id==='a-code'){e.preventDefault();accDo('joinhome')}
 });
@@ -446,7 +482,7 @@ function list(m){
  return h;
 }
 
-const EM={'Mâncare':'🍽️','Subscripții':'🔄','Combustibil':'⛽','Facturi':'🧾','Casă':'🏠','Sănătate':'💊','Distracție':'🎮','Cumpărături':'🛍️','Altele':'✨','Salariu':'💼','Bonus':'🎁'};
+const EM={'Mâncare':'🍽️','Subscripții':'🔄','Combustibil':'⛽','Facturi':'🧾','Casă':'🏠','Sănătate':'💊','Distracție':'🎮','Cumpărături':'🛍️','Altele':'✨','Economii':'🏦','Salariu':'💼','Bonus':'🎁'};
 const catEm=c=>{const k=cats.find(k=>k.name===c);return (k&&k.emoji)||EM[c]||'✨'};
 const ic=x=>{const c=x.type==='inc'?'#16a34a':cc(x.cat);return `<i class="ic" style="background:${c}2e">${esc(catEm(x.cat))}</i>`};
 const COL=['#0f766e','#0284c7','#ea580c','#d97706','#7c3aed','#db2777','#65a30d','#dc2626','#64748b'];
@@ -481,7 +517,7 @@ function charts(m,inc,exp){
 }
 
 function openSet(){applyStatic();$('#st').hidden=false}
-function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
+function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules,goals},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
 function closeBk(){$('#bkp').hidden=true;armed=''}
 function closeSet(){$('#st').hidden=true;armed=''}
 
@@ -504,9 +540,10 @@ function imp(){
   subs=Array.isArray(o.subs)?o.subs.filter(x=>x&&Number.isFinite(+x.amt)&&+x.amt>0&&/^\d{4}-\d{2}$/.test(x.from)&&+x.day>=1&&+x.day<=31).map((x,i)=>({id:+x.id||Date.now()+i,amt:+x.amt,cat:String(x.cat||'Altele').slice(0,40),day:+x.day,from:x.from,note:String(x.note||'').slice(0,80)})):[];
   if(Array.isArray(o.cats)&&o.cats.length)cats=o.cats.filter(x=>x&&typeof x.name==='string'&&x.name.trim()).map((x,i)=>({id:+x.id||Date.now()+i,name:String(x.name).slice(0,24),emoji:String(x.emoji||'✨').slice(0,4),b:(x.b&&typeof x.b==='object')?x.b:{},ord:+x.ord||i}));
   if(Array.isArray(o.rules))rules=o.rules.filter(x=>x&&typeof x.key==='string'&&x.key&&typeof x.cat==='string').map((x,i)=>({id:+x.id||Date.now()+i,key:x.key.slice(0,60),cat:x.cat.slice(0,24),note:String(x.note||'').slice(0,80),own:x.own==='shared'?'shared':''}));
+  goals=Array.isArray(o.goals)?o.goals.filter(x=>x&&typeof x.name==='string'&&Number.isFinite(+x.target)&&+x.target>0&&+x.months>=1&&/^\d{4}-\d{2}$/.test(x.start)).map((x,i)=>({id:+x.id||Date.now()+i,name:String(x.name).slice(0,30),emoji:String(x.emoji||'🎯').slice(0,4),target:+x.target,saved0:Math.max(0,+x.saved0||0),months:Math.round(+x.months),start:x.start})):[];
   save();render();armed='';
   b.textContent=t('imp');b.classList.remove('dng');
-  $('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules},null,1);
+  $('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules,goals},null,1);
   $('#msg').textContent=t('impok').replace('{n}',tx.length);
  }catch(e){armed='';b.textContent=t('imp');b.classList.remove('dng');$('#msg').textContent=t('impbad')}
 }
@@ -559,7 +596,7 @@ function saveTx(){
   if(edId){tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId)}
   if(type==='plan')pl.push({id,...o});
   else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7),...(own?{own}:{})});
-  else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{}),...(old&&old.ap?{ap:old.ap}:{})});
+  else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{}),...(old&&old.ap?{ap:old.ap}:{}),...(old&&old.sv?{sv:old.sv}:{})});
   if(old&&old.ap&&type==='exp')learnRule(old.ap,o.cat,o.note,own);
   view=new Date(d+'T00:00:00');view.setDate(1);
   try{save()}catch(e){console.error(e)}
@@ -579,10 +616,14 @@ document.addEventListener('click',e=>{
  if(ty){setType(ty.dataset.type);return}
  const ow=e.target.closest('[data-own]');
  if(ow){ownSel=ow.dataset.own;syncOwn();return}
+ const gm=e.target.closest('[data-gemo]');
+ if(gm){$('#g-emo').value=gm.dataset.gemo;return}
+ const gp=e.target.closest('[data-grp]');
+ if(gp){catGrp=gp.dataset.grp;syncGrp();return}
  const em=e.target.closest('[data-emo]');
  if(em){$('#c-emo').value=em.dataset.emo;return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add'){if(tab==='bud')toggleFabm();else openSheet(null)}
@@ -613,6 +654,15 @@ document.addEventListener('click',e=>{
  else if(a==='copycode')copyCode();
  else if(a==='addinc'){closeFabm();openSheet(null,undefined,'inc')}
  else if(a==='addcat'){closeFabm();openCat(null)}
+ else if(a==='addgoal')openGoal(null);
+ else if(a==='editgoal')openGoal(+b.dataset.id);
+ else if(a==='closegoal')closeGoal();
+ else if(a==='savegoal')saveGoal();
+ else if(a==='delgoal')delGoal();
+ else if(a==='deposit')openDep(+b.dataset.id);
+ else if(a==='closedep')closeDep();
+ else if(a==='savedep')saveDep();
+ else if(a==='tipx'){S.tipDone=mk(new Date());try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(x){}render()}
  else if(a==='editcat')openCat(+b.dataset.id);
  else if(a==='closecat')closeCat();
  else if(a==='savecat')saveCat();
@@ -742,6 +792,116 @@ function copyLink(){
 }
 window.addEventListener('hashchange',apParse);
 
+
+/* ===== Economii, regula 50/20/30, sfatul lunii ===== */
+const mi=ym=>+ym.slice(0,4)*12+(+ym.slice(5,7)-1);
+const ymAdd=(ym,n)=>{const i=mi(ym)+n;return Math.floor(i/12)+'-'+p2(i%12+1)};
+const goalEnd=g=>ymAdd(g.start,g.months-1);
+const monthLbl=ym=>new Date(+ym.slice(0,4),+ym.slice(5,7)-1,1).toLocaleDateString(loc(),{month:'short',year:'numeric'});
+const savedBefore=(g,ym)=>g.saved0+tx.reduce((a,x)=>a+(x.sv===g.id&&x.date.slice(0,7)<ym?x.amt:0),0);
+const savedTotal=g=>g.saved0+tx.reduce((a,x)=>a+(x.sv===g.id?x.amt:0),0);
+const depMonth=(g,ym)=>tx.reduce((a,x)=>a+(x.sv===g.id&&x.date.startsWith(ym)?x.amt:0),0);
+function goalPlan(g,ym){
+ const sb=savedBefore(g,ym),left=Math.max(0,g.target-sb),end=goalEnd(g),from=ym<g.start?g.start:ym;
+ const n=Math.max(1,mi(end)-mi(from)+1);
+ return {sb,left,n,plan:left/n,end};
+}
+const goalActive=(g,ym)=>ym>=g.start&&savedBefore(g,ym)<g.target;
+const savAlloc=ym=>goals.reduce((a,g)=>a+(goalActive(g,ym)?goalPlan(g,ym).plan:0),0);
+const numIn=v=>{const q=String(v||'').trim().replace(',','.');return /^\d+(\.\d{1,2})?$/.test(q)?parseFloat(q):NaN};
+function goalsCard(ym){
+ let h=`<div class="card bcard"><h3><span>🎯 ${t('gTitle')}</span><b>${fmt(savAlloc(ym))}</b></h3>`;
+ if(!goals.length)h+=`<p class="hint">${t('gNone')}</p>`;
+ goals.forEach(g=>{
+  const p=goalPlan(g,ym),saved=savedTotal(g),pct=g.target>0?Math.min(100,saved/g.target*100):0,dm=depMonth(g,ym),done=saved>=g.target;
+  h+=`<div class="goalw"><button class="brow" data-act="editgoal" data-id="${g.id}"><i class="ic" style="background:#0f766e2e">${esc(g.emoji||'🎯')}</i><span class="bm"><span class="bl2"><b>${esc(g.name)}</b><span>${nf(saved)} / ${fmt(g.target)}</span></span><span class="tr"><i style="width:${pct}%;background:${done?'var(--g)':'var(--accent)'}"></i></span><small>${done?t('gDone'):t('gPlan')+' '+fmt(p.plan)+' · '+t('gMonthsLeft').replace('{n}',p.n)+' · '+t('gDeadline')+' '+monthLbl(p.end)}</small>${done?'':`<small>${t('gThisMonth')}: ${fmt(dm)} / ${fmt(p.plan)}</small>`}</span></button>${done?'':`<button class="plt" data-act="deposit" data-id="${g.id}">+ ${t('gDeposit')}</button>`}</div>`;
+ });
+ return h+`<button class="plt" data-act="addgoal">+ ${t('gAdd')}</button></div>`;
+}
+const EMOG=['🏖️','🚗','🏠','💻','📱','🎓','💍','👶','✈️','🛡️','🎁','🏦'];
+let goalId=null,depId=null,catGrp='w';
+function openGoal(id){
+ goalId=id;armed='';
+ const g=id?goals.find(k=>k.id===id):null;
+ $('#goal-title').textContent=t(g?'gEdit':'gNew');
+ $('#g-name').value=g?g.name:'';$('#g-emo').value=g?(g.emoji||''):'';
+ const f=n=>n?String(n).replace('.',S.lang==='en'?'.':','):'';
+ $('#g-target').value=g?f(g.target):'';$('#g-saved').value=g?f(g.saved0):'';$('#g-months').value=g?g.months:12;
+ $('#g-emos').innerHTML=EMOG.map(e=>`<button data-gemo="${e}">${e}</button>`).join('');
+ const d=$('#g-del');d.hidden=!g;d.textContent=t('gDel');d.classList.remove('dng');
+ $('#goal-err').textContent='';goalPrev();$('#goal').hidden=false;
+}
+function closeGoal(){$('#goal').hidden=true;goalId=null;armed=''}
+function goalPrev(){
+ const el=$('#g-prev');if(!el)return;
+ const tg=numIn($('#g-target').value),sv=$('#g-saved').value.trim()?numIn($('#g-saved').value):0,mo=parseInt($('#g-months').value,10);
+ if(!(tg>0)||!(mo>=1)||isNaN(sv)){el.textContent='';return}
+ const g=goalId?goals.find(k=>k.id===goalId):null,start=g?g.start:mk(view),dep=g?tx.reduce((a,x)=>a+(x.sv===g.id?x.amt:0),0):0;
+ const left=Math.max(0,tg-sv-dep);
+ if(left<=0){el.textContent=t('gPrevDone');return}
+ const endYm=ymAdd(start,mo-1),cur=mk(new Date()),from=cur>start?cur:start,n=Math.max(1,mi(endYm)-mi(from)+1);
+ el.textContent=t('gPrev').replace('{a}',fmt(left/n)).replace('{n}',n).replace('{d}',monthLbl(endYm));
+}
+function saveGoal(){
+ const name=$('#g-name').value.trim().slice(0,30),emo=($('#g-emo').value.trim()||'🎯').slice(0,4);
+ const tg=numIn($('#g-target').value),sv=$('#g-saved').value.trim()?numIn($('#g-saved').value):0,mo=parseInt($('#g-months').value,10);
+ if(!name||!(tg>0)||isNaN(sv)||!(mo>=1&&mo<=600))return $('#goal-err').textContent=t('gBad');
+ const g=goalId?goals.find(k=>k.id===goalId):null;
+ if(g)Object.assign(g,{name,emoji:emo,target:tg,saved0:sv,months:mo});
+ else goals.push({id:Date.now(),name,emoji:emo,target:tg,saved0:sv,months:mo,start:mk(view)});
+ save();closeGoal();render();
+}
+function delGoal(){
+ const b=$('#g-del');
+ if(armed!=='gdel'){armed='gdel';b.textContent=t('sure');b.classList.add('dng');return}
+ goals=goals.filter(k=>k.id!==goalId);save();closeGoal();render();
+}
+function openDep(id){
+ const g=goals.find(k=>k.id===id);if(!g)return;
+ depId=id;const ym=mk(new Date()),rest=Math.max(0,goalPlan(g,ym).plan-depMonth(g,ym));
+ $('#dep-title').textContent=t('gDepTitle').replace('{g}',g.name);
+ $('#d-amt').value=rest>0?String(Math.round(rest*100)/100).replace('.',S.lang==='en'?'.':','):'';
+ $('#d-date').value=today();$('#dep-err').textContent='';$('#dep').hidden=false;
+}
+function closeDep(){$('#dep').hidden=true;depId=null}
+function saveDep(){
+ const g=goals.find(k=>k.id===depId);if(!g)return;
+ const amt=numIn($('#d-amt').value),d=$('#d-date').value||today();
+ if(!(amt>0))return $('#dep-err').textContent=t('eamt');
+ const x={id:Date.now(),type:'exp',amt,cat:'Economii',date:d,note:g.name,sv:g.id};
+ if(C.hid){x.own=C.mode==='common'?'shared':C.uid;if(x.own==='shared')x.by=C.uid}
+ tx.push(x);save();closeDep();render();
+}
+const NEEDS=['Mâncare','Facturi','Casă','Sănătate','Combustibil','Transport'];
+const grpOf=c=>c.grp||(NEEDS.includes(c.name)?'n':'w');
+function syncGrp(){document.querySelectorAll('[data-grp]').forEach(b=>b.classList.toggle('on',b.dataset.grp===catGrp))}
+function rule532(ym){
+ const known=new Set(cats.map(c=>c.name));let n=0,w=0,sv=0;
+ cats.forEach(c=>{const v=spentIn(c.name,ym);if(grpOf(c)==='n')n+=v;else w+=v});
+ tx.forEach(x=>{if(x.type!=='exp'||!x.date.startsWith(ym))return;if(x.sv)sv+=share(x,ym);else if(!known.has(x.cat))w+=share(x,ym)});
+ return {n,w,sv};
+}
+function ruleCard(ym,inc){
+ let h=`<div class="card bcard"><h3><span>📐 ${t('r532T')}</span></h3>`;
+ if(!(inc>0))return h+`<p class="hint">${t('r532NoInc')}</p></div>`;
+ const a=rule532(ym),rows=[['🏠',t('r532Need'),inc*.5,a.n,'cap'],['🏦',t('r532Sav'),inc*.2,a.sv,'goal'],['🎈',t('r532Want'),inc*.3,a.w,'cap']];
+ rows.forEach(([e,l,tg,v,k])=>{
+  const over=k==='cap'&&v>tg,ok=k==='goal'&&v>=tg,pct=tg>0?Math.min(100,v/tg*100):0;
+  const col=over?'var(--r)':ok?'var(--g)':(k==='cap'&&v>=tg*.8?'#d97706':'var(--accent)');
+  h+=`<div class="ovr"><div class="bl2"><span>${e} ${l}</span><span>${nf(v)} / ${fmt(tg)}</span></div><div class="tr"><i style="width:${pct}%;background:${col}"></i></div></div>`;
+ });
+ return h+'</div>';
+}
+const TIPS={ro:['Plătește-te primul: mută banii pentru economii imediat ce intră salariul.','Notează fiecare cheltuială în aceeași zi; sumele mici se adună.','Verifică abonamentele: anulează ce nu ai folosit luna trecută.','Planifică mesele săptămânii înainte să mergi la cumpărături.','Construiește un fond de urgență de 3–6 luni de cheltuieli.','Așteaptă 48 de ore înainte de o cumpărătură neplanificată.','Pune o sumă mică pentru dorințe, ca să nu te simți vinovat când le cumperi.','Compară prețurile la facturi (internet, energie) o dată pe an.','Redu întâi cheltuielile mari, nu cafeaua: de acolo vine economia reală.','Setează o sumă fixă lunară pentru fiecare obiectiv de economisire.','Revizuiește bugetul la mijlocul lunii și ajustează categoriile depășite.','La final de an, adună ce ai economisit și stabilește obiectivele pentru anul următor.'],
+ en:['Pay yourself first: move savings the moment your salary arrives.','Log every expense the same day; small amounts add up.','Review subscriptions: cancel what you did not use last month.','Plan the week’s meals before you go shopping.','Build an emergency fund of 3–6 months of expenses.','Wait 48 hours before an unplanned purchase.','Set a small amount for wants, so you do not feel guilty buying them.','Compare bill prices (internet, energy) once a year.','Cut big expenses first, not the coffee: that is where real savings come from.','Set a fixed monthly amount for each savings goal.','Review your budget mid-month and adjust the categories you overspent.','At year end, add up what you saved and set goals for next year.']};
+function tipCard(){
+ const cur=mk(new Date());
+ if(mk(view)!==cur||S.tipDone===cur)return '';
+ const inc=incomeIn(cur),body=inc>0?t('tipRule').replace('{i}',fmt(inc)).replace('{a}',fmt(inc*.5)).replace('{b}',fmt(inc*.2)).replace('{c}',fmt(inc*.3)):t('r532NoInc');
+ return `<div class="card tipc"><button class="tipx" data-act="tipx" aria-label="OK">✕</button><h3>💡 ${t('tipT')}</h3><p class="note">${body}</p><p class="note"><i>${TIPS[S.lang][new Date().getMonth()]}</i></p><button class="plt" data-act="gobud">${t('tipOpen')}</button></div>`;
+}
+document.addEventListener('input',e=>{if(e.target.id==='g-target'||e.target.id==='g-saved'||e.target.id==='g-months')goalPrev()});
+
 /* ===== Buget și categorii proprii ===== */
 const defCats=()=>CATS.exp.map((n,i)=>({id:i+1,name:n,emoji:EM[n]||'✨',b:{},ord:i}));
 const wal=()=>(!C.hid||C.mode==='common')?'shared':C.uid;
@@ -760,9 +920,9 @@ const stCol=(s,b)=>b>0?(s>b?'var(--r)':s>=b*.8?'#d97706':null):(s>0?'var(--r)':n
 function budgetPane(){
  const ym=mk(view),w=wal(),inc=incomeIn(ym);
  const rows=cats.map(c=>({c,b:bud(c,ym,w),s:spentIn(c.name,ym)}));
- const alloc=rows.reduce((a,r)=>a+r.b,0),free=inc-alloc;
+ const alloc=rows.reduce((a,r)=>a+r.b,0),sa=savAlloc(ym),free=inc-alloc-sa;
  const known=new Set(cats.map(c=>c.name));
- let other=0;tx.forEach(x=>{if(x.type==='exp'&&!known.has(x.cat)&&x.date.startsWith(ym))other+=share(x,ym)});
+ let other=0;tx.forEach(x=>{if(x.type==='exp'&&!x.sv&&!known.has(x.cat)&&x.date.startsWith(ym))other+=share(x,ym)});
  let h='';
  if(C.hid)h+=`<button class="modeb" data-act="accopen"><span>${C.mode==='common'?'💞 '+t('mCommon'):'👥 '+t('mSplit')}</span><span>›</span></button>`;
  const ins=tx.filter(x=>x.type==='inc'&&x.date.startsWith(ym)&&share(x,ym)>0).sort((a,b)=>b.date.localeCompare(a.date));
@@ -770,8 +930,10 @@ function budgetPane(){
  if(!ins.length)h+=`<p class="hint">${t('bNone')}</p>`;
  ins.forEach(x=>{h+=`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}</b><small>${fd(x.date)}${(x.own==='shared'&&C.hid&&C.mode!=='common')?' · '+t('sShared'):''}${x.note?' · '+esc(x.note):''}</small></span><em class="g">+${fmt(share(x,ym))}</em></button>`});
  h+=`<button class="plt" data-act="addinc">+ ${t('addInc')}</button></div>`;
+ h+=ruleCard(ym,inc);
  h+=`<div class="card bcard"><h3><span>🧮 ${t('bAlloc')}</span><b>${fmt(alloc)}</b></h3>`;
  h+=`<p class="note${free<0?' over':''}">${free<0?t('bOver'):t('bFree')}: <b>${fmt(Math.abs(free))}</b></p>`;
+ if(sa>0)h+=`<p class="note">🏦 ${t('gAlloc')}: <b>${fmt(sa)}</b></p>`;
  const sp=rows.reduce((a,r)=>a+r.s,0);
  if(alloc>0)h+=`<div class="ovr"><div class="bl2"><span>${t('bSpent')}</span><span>${nf(sp)} / ${fmt(alloc)}</span></div><div class="tr"><i style="width:${Math.min(100,sp/alloc*100)}%;background:${stCol(sp,alloc)||'var(--accent)'}"></i></div></div>`;
  rows.forEach(({c,b,s})=>{
@@ -780,6 +942,7 @@ function budgetPane(){
  });
  if(other>0)h+=`<div class="brow"><i class="ic" style="background:#64748b2e">📦</i><span class="bm"><span class="bl2"><b>${t('cOther')}</b><span>${fmt(other)}</span></span></span></div>`;
  h+=`<button class="plt" data-act="addcat">+ ${t('cAdd')}</button></div>`;
+ h+=goalsCard(ym);
  return h;
 }
 let catId=null;
@@ -794,6 +957,7 @@ function openCat(id){
  $('#c-bl').textContent=t('cBud')+' ('+S.cur+') · '+mt(view);
  $('#c-emos').innerHTML=EMOS.map(e=>`<button data-emo="${e}">${e}</button>`).join('');
  const d=$('#c-del');d.hidden=!c;d.textContent=t('cDel');d.classList.remove('dng');
+ catGrp=c?grpOf(c):'w';syncGrp();
  $('#cat-err').textContent='';$('#cat').hidden=false;
 }
 function closeCat(){$('#cat').hidden=true;catId=null;armed=''}
@@ -809,6 +973,7 @@ function saveCat(){
   if(c.name!==name){const o=c.name;[tx,pl,subs].forEach(a=>a.forEach(x=>{if(x.cat===o)x.cat=name}));c.name=name}
   c.emoji=emo;
  }else{c={id:Date.now(),name,emoji:emo,b:{},ord:cats.length};cats.push(c)}
+ c.grp=catGrp;
  c.b=c.b||{};c.b[ym]=Object.assign({},c.b[ym],{[w]:amt});
  save();closeCat();render();
 }
@@ -840,7 +1005,7 @@ document.addEventListener('change',e=>{if(e.target.id==='a-ratio')setHome({ratio
 /* ===== Cuplu: cont, cămin comun, sincronizare Firebase ===== */
 const FBC={apiKey:"AIzaSyBxH1RlK8cVajT7nb0f4t-szcoOzvfdddg",authDomain:"cheltuieli-f0c26.firebaseapp.com",projectId:"cheltuieli-f0c26",storageBucket:"cheltuieli-f0c26.firebasestorage.app",messagingSenderId:"590978376968",appId:"1:590978376968:web:5dc9d8a103adf841f038bd"};
 const FBV='https://www.gstatic.com/firebasejs/10.14.1/';
-const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,booted:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map()},unsubs:[]};
+const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,booted:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map()},unsubs:[]};
 let bootRes;const bootP=new Promise(r=>{bootRes=r});
 bootP.then(()=>{C.booted=true;apRun()});
 let ownSel='me',rq=0;
@@ -886,12 +1051,12 @@ async function cloudInit(){
   Au.onAuthStateChanged(auth,u=>{onUser(u)});
  }catch(e){console.warn('cloud',e);C.err='load';renderAcc();bootRes()}
 }
-function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map()};C.sync=false;C.seeded=false}
+function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map()};C.sync=false;C.seeded=false}
 async function onUser(u){
  const had=!!C.hid;
  detach();
  if(!u){
-  if(had){tx=[];pl=[];subs=[];rules=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
+  if(had){tx=[];pl=[];subs=[];rules=[];goals=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
   C.uid=null;C.email='';C.hid=null;C.partner=null;C.names={};C.members=[];C.code='';
   renderAcc();render();bootRes();return;
  }
@@ -908,17 +1073,17 @@ function attach(hid){
  const {F,db}=C.fb;
  detach();C.hid=hid;
  try{localStorage.setItem(KEY3,JSON.stringify({uid:C.uid,hid}))}catch(e){}
- const first={h:false,tx:false,planned:false,subs:false,cats:false,rules:false};
- const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats&&first.rules){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush();apRun()}};
+ const first={h:false,tx:false,planned:false,subs:false,cats:false,rules:false,goals:false};
+ const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats&&first.rules&&first.goals){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush();apRun()}};
  C.unsubs.push(F.onSnapshot(F.doc(db,'households',hid),s=>{
   if(s.exists()){const d=s.data();C.members=d.members||[];C.names=d.names||{};C.code=d.code||'';C.mode=d.mode||'split';C.ratio=d.ratio||'equal';C.partner=C.members.find(m=>m!==C.uid)||null}
   first.h=true;chk();schedRender();
  },e=>{console.error(e);first.h=true;chk()}));
- ['tx','planned','subs','cats','rules'].forEach(k=>{
+ ['tx','planned','subs','cats','rules','goals'].forEach(k=>{
   C.unsubs.push(F.onSnapshot(F.collection(db,'households',hid,k),s=>{
    const arr=s.docs.map(d=>d.data());
    C.known[k]=new Map(arr.map(x=>[String(x.id),JSON.stringify(x)]));
-   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else if(k==='rules')rules=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
+   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else if(k==='rules')rules=arr;else if(k==='goals')goals=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
    first[k]=true;wr();chk();schedRender();
   },e=>{console.error(e);first[k]=true;chk()}));
  });
@@ -926,10 +1091,10 @@ function attach(hid){
 function cloudPush(){
  if(!C.hid||!C.sync||!C.fb)return;
  const {F,db}=C.fb,ops=[];
- [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules]].forEach(([k,arr])=>{
+ [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals]].forEach(([k,arr])=>{
   const km=C.known[k],seen=new Set();
   arr.forEach(x=>{
-   if(k!=='cats'&&k!=='rules'&&!x.own)x.own=C.uid;
+   if(k!=='cats'&&k!=='rules'&&k!=='goals'&&!x.own)x.own=C.uid;
    const id=String(x.id),c=clean(x),j=JSON.stringify(c);seen.add(id);
    if(km.get(id)!==j){ops.push([0,k,id,c]);km.set(id,j)}
   });
@@ -954,10 +1119,10 @@ async function createHome(){
  b.set(F.doc(db,'invites',code),{hid,createdAt:now});
  b.set(F.doc(db,'users',C.uid),{hid,name:S.name||''},{merge:true});
  await b.commit();
- for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules]]){
+ for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals]]){
   for(let i=0;i<arr.length;i+=400){
    const bb=F.writeBatch(db);
-   arr.slice(i,i+400).forEach(x=>{if(k!=='cats'&&k!=='rules')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
+   arr.slice(i,i+400).forEach(x=>{if(k!=='cats'&&k!=='rules'&&k!=='goals')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
    await bb.commit();
   }
  }
