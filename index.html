@@ -84,8 +84,8 @@ button:active{transform:scale(.97)}
 #ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp,#acc,#cat{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
+#ov,#st,#bkp,#acc,#cat,#rul{align-items:center;padding:16px}
+#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
 @keyframes pop{from{opacity:0;transform:scale(.94)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
@@ -166,6 +166,11 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 .pay{width:40px;min-width:40px}.plan{padding:10px 8px}.pr{gap:6px}.brow{padding:8px;gap:8px}
 .dock button{font-size:11.5px}.scope button{font-size:13px;padding:0 4px}
 }
+.toast{position:fixed;left:14px;right:14px;top:calc(10px + env(safe-area-inset-top,0px));z-index:30;display:flex;gap:10px;align-items:center;text-align:left;min-height:56px;padding:10px 14px;border-radius:18px;background:var(--card);box-shadow:0 10px 30px rgba(0,0,0,.28);border:1px solid var(--bd);animation:fadeup .3s ease-out both}
+.toast[hidden]{display:none}.toast b{display:block}.toast small{display:block;color:var(--muted);font-size:13px}
+.wchk h3{margin:0 0 6px;font-size:16px}.wchk{margin-bottom:12px;border-color:#d97706}.wchk .row{margin-top:6px}
+.rrow{display:flex;gap:8px;align-items:center;margin-top:8px}.rrow .rt{flex:1;min-width:0}.rrow button.x{min-width:48px;padding:0}
+.pre{white-space:pre-line}.lnk{user-select:all;word-break:break-all;background:var(--bg);border-radius:12px;padding:10px;font-size:13px;margin:6px 0}
 </style>
 </head>
 <body>
@@ -173,6 +178,7 @@ input[type=date]::-webkit-datetime-edit{padding:0}
 <script>setTimeout(function(){var s=document.getElementById("splash");if(s)s.style.display="none"},7000)</script>
 <div class="wrap"><div id="app"></div></div>
 <nav class="dock"><i class="ind"></i><button data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></svg><span data-i="hom"></span></button><button data-tab="hist"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i="his"></span></button><button data-tab="bud"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/></svg><span data-i="budT"></span></button></nav>
+<button id="toast" class="toast" data-act="toast" hidden></button>
 <button class="fab" data-act="add">+</button>
 <div id="fabb" class="fabb" data-act="closefabm" hidden></div>
 <div id="fabm" class="fabm" hidden><button data-act="addinc"><span>💰</span><span data-i="addInc"></span></button><button data-act="addcat"><span>🏷️</span><span data-i="cAdd"></span></button></div>
@@ -198,6 +204,7 @@ input[type=date]::-webkit-datetime-edit{padding:0}
   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
   <p class="hint" data-i="curh"></p>
+  <button class="menu" data-act="rulopen"><span data-i="apm"></span><span>›</span></button>
   <button class="menu" data-act="accopen"><span data-i="acc"></span><span>›</span></button>
   <button class="menu" data-act="bkopen"><span data-i="bk"></span><span>›</span></button>
   
@@ -232,16 +239,24 @@ input[type=date]::-webkit-datetime-edit{padding:0}
   <div class="btns"><button id="c-del" data-act="delcat" hidden></button></div>
  </div>
 </div>
+<div id="rul" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="apm"></h2><div class="mr"><button class="nb" data-act="closerul" aria-label="Back">‹</button></div></div>
+  <div id="rul-body"></div>
+  <div id="rul-msg" class="msg"></div>
+ </div>
+</div>
 <script>
-const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud';
+const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud',KEYQ='cheltuieli_apq';
 const T={
 ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic de plătit în această lună. Adaugă cu + și alege „De plătit” sau „Abonament”.',paid:'Plătit?',all:'Arată toate',sub1:'Abonament',due1:'Prima scadență',subh:'Se repetă lunar, începând cu luna datei alese. Modificările se aplică tuturor lunilor.',less:'Restrânge',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare',more:'mai multe',avail:'disponibil'},
 en:{app:'Expenses',bal:'Balance',inc:'Income',exp:'Expenses',list:'Transactions',stat:'Statistics',none:'No transactions this month.<br>Tap + to add the first one.',noexp:'No expenses this month.',tot:'Total expenses',last:'Last month',nolast:'No data for last month.',e1:'Expense',i1:'Income',amt:'Amount',cat:'Category',date:'Date',note:'Note (optional)',save:'Save',cancel:'Cancel',del:'Delete',sure:'Sure? Tap again',eamt:'Enter an amount above 0, for example 25.50.',edate:'Pick a date.',set:'Settings',lang:'Language',cur:'Currency',curh:'Changing the currency only changes how amounts are shown. It does not convert them.',bk:'Backup and import',bkh:'Copy the text and keep it somewhere safe (for example in Notes). To restore, paste it here and tap Import.',copy:'Copy',copied:'Copied.',manual:'Select the text and copy it manually.',imp:'Import from text',impsure:'Sure? This replaces your data',impok:'Imported: {n} transactions.',impbad:'Invalid text. Paste the whole backup exactly as it was copied.',close:'Close',nostore:'Storage is not available in this browser. Data is lost when you close it; use Settings → Backup.',add:'Add transaction',back:'Back',done:'Done',txt:'Transaction',nm:'Your name',nmp:'What should I call you?',gm:'Good morning',ga:'Good afternoon',ge:'Good evening',hom:'Overview',his:'History',spent:'of income',ofexp:'of expenses',over:'Expenses exceed income by',left:'Left from income',noinc:'No income this month, so percentages are based on expenses.',top:'Biggest expense',p1:'To pay',due:'Due date',pl:'Upcoming',plnone:'Nothing to pay this month. Tap + and choose “To pay” or “Subscription”.',paid:'Paid?',all:'Show all',sub1:'Subscription',due1:'First due date',subh:'Repeats every month, starting with the chosen date. Changes apply to all months.',less:'Collapse',late:'overdue',prev:'Previous month',next:'Next month',more:'more',avail:'available'}};
 Object.assign(T.ro,{acc:'Cont și partener',accIn:'Autentificare',accUp:'Creează cont',email:'Email',pass:'Parolă',accOut:'Deconectare',hCreate:'Creează cămin comun',hJoin:'Intră cu cod',hCode:'Cod de invitație',hMine:'Codul tău de invitație',hWait:'Partenerul nu s-a alăturat încă. Trimite-i codul.',hSync:'Sincronizat în timp real',members:'Membri',signedAs:'Conectat ca {e}',a_intro:'Creează un cont (sau autentifică-te) ca să sincronizezi cu partenerul. Fiecare persoană are contul ei.',a_off:'Sincronizarea nu e disponibilă acum. Verifică internetul și redeschide aplicația.',a_load:'Se încarcă…',wait:'Un moment…',e_fill:'Completează emailul și parola.',e_cred:'Email sau parolă greșite.',e_used:'Există deja un cont cu acest email.',e_weak:'Parola e prea scurtă (minim 6 caractere).',e_mail:'Email invalid.',e_net:'Fără conexiune la internet.',e_code:'Cod invalid.',e_full:'Căminul are deja doi membri sau codul nu mai e valabil.',e_gen:'Eroare',sAll:'Toate',sMe:'Eu',sPartner:'Partener',sShared:'Comun',forWho:'Pentru',paidBy:'Plătit de',setT:'Decontare cheltuieli comune',sharedTot:'Total comun',even:'Cheltuielile comune sunt echilibrate.',oweMe:'{n} îți datorează {a}.',iOwe:'Îi datorezi {a} lui {n}.',syncErr:'Sincronizarea a întâmpinat o problemă. Ultima modificare poate să nu fi ajuns la partener.',copyCode:'Copiază codul'});Object.assign(T.en,{acc:'Account & partner',accIn:'Sign in',accUp:'Create account',email:'Email',pass:'Password',accOut:'Sign out',hCreate:'Create shared home',hJoin:'Join with code',hCode:'Invite code',hMine:'Your invite code',hWait:'Your partner has not joined yet. Send them the code.',hSync:'Synced in real time',members:'Members',signedAs:'Signed in as {e}',a_intro:'Create an account (or sign in) to sync with your partner. Each person has their own account.',a_off:'Sync is not available right now. Check your connection and reopen the app.',a_load:'Loading…',wait:'One moment…',e_fill:'Enter your email and password.',e_cred:'Wrong email or password.',e_used:'An account with this email already exists.',e_weak:'Password is too short (min 6 characters).',e_mail:'Invalid email.',e_net:'No internet connection.',e_code:'Invalid code.',e_full:'This home already has two members, or the code is no longer valid.',e_gen:'Error',sAll:'All',sMe:'Me',sPartner:'Partner',sShared:'Shared',forWho:'For',paidBy:'Paid by',setT:'Shared expenses settlement',sharedTot:'Shared total',even:'Shared expenses are balanced.',oweMe:'{n} owes you {a}.',iOwe:'You owe {n} {a}.',syncErr:'Sync ran into a problem. Your last change may not have reached your partner.',copyCode:'Copy code'});
 Object.assign(T.ro,{budT:'Buget',today:'Azi',yday:'Ieri',bSpent:'Cheltuit din buget',ovBud:'Buget depășit la',bAdd:'Adaugă în buget',bInc:'Venituri luna asta',bNone:'Niciun venit adăugat în această lună.',addInc:'Adaugă venit',bAlloc:'Buget pe categorii',bFree:'Nealocat',bOver:'Alocat peste venituri cu',cAdd:'Categorie nouă',cNew:'Categorie nouă',cEdit:'Editează categoria',cName:'Nume',cEmoji:'Emoji',cBud:'Buget lunar',cHint:'Suma se aplică din luna afișată și în lunile următoare, până o schimbi.',cDel:'Șterge categoria',cDupe:'Există deja o categorie cu acest nume.',cEmpty:'Scrie un nume.',cBadAmt:'Suma nu e validă.',cOther:'Alte categorii (fără buget)',cLeft:'rămas',cOver:'depășit cu',cNoBud:'fără buget setat',mCommon:'Bani comuni',mSplit:'Bani împărțiți',mTitle:'Banii voștri',mCommonH:'Veniturile și bugetul sunt comune, într-un singur loc. Nu se calculează cine datorează cui.',mSplitH:'Fiecare are veniturile și bugetul lui. Cheltuielile marcate Comun se împart între voi.',ratio:'Cheltuielile comune se împart',ratioEq:'50% / 50%',ratioInc:'proporțional cu veniturile',splitInfo:'Împărțire: {a}% eu · {b}% {n}'});Object.assign(T.en,{budT:'Budget',today:'Today',yday:'Yesterday',bSpent:'Spent of budget',ovBud:'Over budget in',bAdd:'Add to budget',bInc:'Income this month',bNone:'No income added this month.',addInc:'Add income',bAlloc:'Budget by category',bFree:'Unallocated',bOver:'Allocated above income by',cAdd:'New category',cNew:'New category',cEdit:'Edit category',cName:'Name',cEmoji:'Emoji',cBud:'Monthly budget',cHint:'The amount applies from the month shown and onward, until you change it.',cDel:'Delete category',cDupe:'A category with this name already exists.',cEmpty:'Enter a name.',cBadAmt:'Invalid amount.',cOther:'Other categories (no budget)',cLeft:'left',cOver:'over by',cNoBud:'no budget set',mCommon:'Shared money',mSplit:'Split money',mTitle:'Your money',mCommonH:'Income and budget are shared, in one place. Nobody owes anybody.',mSplitH:'Each person has their own income and budget. Expenses marked Shared are split between you.',ratio:'Shared expenses are split',ratioEq:'50% / 50%',ratioInc:'in proportion to income',splitInfo:'Split: {a}% me · {b}% {n}'});
+Object.assign(T.ro,{apm:'Apple Pay și reguli',apIntro:'Plățile cu Apple Pay se pot adăuga singure. Dacă aplicația nu recunoaște comerciantul, plata apare cu ❓ și o corectezi o dată; corecția se ține minte pentru plățile viitoare.',apSteps:'Pași în aplicația Comenzi rapide (Shortcuts):\n1) Automation → + → Transaction. Alege cardurile și „Run Immediately”.\n2) Adaugă acțiunea „Text”: lipește linkul de mai jos, apoi adaugă Shortcut Input cu proprietatea Amount, tastează /, apoi Shortcut Input cu proprietatea Merchant.\n3) Adaugă acțiunea „Open URLs” cu acel text.\n4) Salvează și fă o plată de test. Dacă suma apare 0, spune-mi.',apLink:'Linkul de început',apCopy:'Copiază linkul',apRules:'Reguli învățate',apNoRules:'Încă nu există. Se creează singure când corectezi o plată Apple Pay.',apAdded:'Plată adăugată',apCheck:'Atinge ca să verifici',apUnk:'Comerciant necunoscut',apChkCard:'Plăți Apple Pay de verificat',apWait:'O plată Apple Pay așteaptă să fie salvată. Autentifică-te în ⚙ Cont și partener.',apDelQ:'Sigur?'});Object.assign(T.en,{apm:'Apple Pay & rules',apIntro:'Apple Pay payments can be added automatically. If the app does not recognise the merchant, the payment shows ❓ and you fix it once; the fix is remembered for future payments.',apSteps:'Steps in the Shortcuts app:\n1) Automation → + → Transaction. Pick your cards and “Run Immediately”.\n2) Add a “Text” action: paste the link below, then add Shortcut Input with the Amount property, type /, then Shortcut Input with the Merchant property.\n3) Add an “Open URLs” action with that text.\n4) Save and make a test payment. If the amount shows 0, tell me.',apLink:'Starting link',apCopy:'Copy link',apRules:'Learned rules',apNoRules:'None yet. They are created automatically when you correct an Apple Pay payment.',apAdded:'Payment added',apCheck:'Tap to review',apUnk:'Unknown merchant',apChkCard:'Apple Pay payments to review',apWait:'An Apple Pay payment is waiting to be saved. Sign in under ⚙ Account & partner.',apDelQ:'Sure?'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:'',scope:'all'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -260,7 +275,7 @@ const err=m=>{$('#err').textContent=m};
 function load(){
  try{localStorage.setItem('_t','1');localStorage.removeItem('_t');
   const r=localStorage.getItem(KEY);
-  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats}
+  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats;if(Array.isArray(o.rules))rules=o.rules}
   const q=JSON.parse(localStorage.getItem(KEY2)||'{}');
   if(T[q.lang])S.lang=q.lang;
   if(['RON','EUR','USD','GBP','MDL'].includes(q.cur))S.cur=q.cur;
@@ -270,7 +285,7 @@ function load(){
  if(!cats.length)cats=defCats();
 }
 let U=0,DB=null,pushT=0;
-function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,u:U}))}catch(e){ok=false}}
+function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,rules,u:U}))}catch(e){ok=false}}
 function push(){
  if(!DB)return;clearTimeout(pushT);
  pushT=setTimeout(()=>{try{DB.set({tx,planned:pl,subs,set:{lang:S.lang,cur:S.cur,name:S.name},u:U}).catch(e=>console.error('db',e))}catch(e){console.error('db',e)}},500);
@@ -293,12 +308,13 @@ function render(){
  const inc=sum(m,'inc'),exp=sum(m,'exp'),bal=inc-exp,hr=new Date().getHours();
  let h=(ok||DB)?'':`<div class="warn">${t('nostore')}</div>`;
  if(C.syncErr)h+=`<div class="warn">${t('syncErr')}</div>`;
+ if(apQ().length&&!apReady())h+=`<div class="warn">${t('apWait')}</div>`;
  h+=`<div class="hd"><div><small>${t('app')}</small><h2>${t(hr<12?'gm':hr<18?'ga':'ge')}${S.name?', '+esc(S.name):''} 👋</h2></div><button class="gear" data-act="set" aria-label="${t('set')}">⚙️</button></div>`;
  h+=scopeBar();
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big">${fmt(bal)}</div><div class="two"><div><span>↑ ${t('inc')}</span><b>${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b>${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${planCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);
@@ -423,7 +439,7 @@ function list(m){
  let h='',d='';
  for(const x of s){
   if(x.date!==d){d=x.date;h+=`<div class="day">${dayLbl(d)}</div>`}
-  h+=`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button>`;
+  h+=`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}${x.chk?' ❓':''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button>`;
  }
  return h;
 }
@@ -463,7 +479,7 @@ function charts(m,inc,exp){
 }
 
 function openSet(){applyStatic();$('#st').hidden=false}
-function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
+function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
 function closeBk(){$('#bkp').hidden=true;armed=''}
 function closeSet(){$('#st').hidden=true;armed=''}
 
@@ -485,9 +501,10 @@ function imp(){
   pl=Array.isArray(o.planned)?o.planned.filter(x=>x&&Number.isFinite(+x.amt)&&+x.amt>0&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map((x,i)=>({id:+x.id||Date.now()+i,amt:+x.amt,cat:String(x.cat||'Altele').slice(0,40),date:x.date,note:String(x.note||'').slice(0,80)})):[];
   subs=Array.isArray(o.subs)?o.subs.filter(x=>x&&Number.isFinite(+x.amt)&&+x.amt>0&&/^\d{4}-\d{2}$/.test(x.from)&&+x.day>=1&&+x.day<=31).map((x,i)=>({id:+x.id||Date.now()+i,amt:+x.amt,cat:String(x.cat||'Altele').slice(0,40),day:+x.day,from:x.from,note:String(x.note||'').slice(0,80)})):[];
   if(Array.isArray(o.cats)&&o.cats.length)cats=o.cats.filter(x=>x&&typeof x.name==='string'&&x.name.trim()).map((x,i)=>({id:+x.id||Date.now()+i,name:String(x.name).slice(0,24),emoji:String(x.emoji||'✨').slice(0,4),b:(x.b&&typeof x.b==='object')?x.b:{},ord:+x.ord||i}));
+  if(Array.isArray(o.rules))rules=o.rules.filter(x=>x&&typeof x.key==='string'&&x.key&&typeof x.cat==='string').map((x,i)=>({id:+x.id||Date.now()+i,key:x.key.slice(0,60),cat:x.cat.slice(0,24),note:String(x.note||'').slice(0,80),own:x.own==='shared'?'shared':''}));
   save();render();armed='';
   b.textContent=t('imp');b.classList.remove('dng');
-  $('#bk').value=JSON.stringify({tx,planned:pl,subs,cats},null,1);
+  $('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules},null,1);
   $('#msg').textContent=t('impok').replace('{n}',tx.length);
  }catch(e){armed='';b.textContent=t('imp');b.classList.remove('dng');$('#msg').textContent=t('impbad')}
 }
@@ -540,7 +557,8 @@ function saveTx(){
   if(edId){tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId)}
   if(type==='plan')pl.push({id,...o});
   else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7),...(own?{own}:{})});
-  else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{})});
+  else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{}),...(old&&old.ap?{ap:old.ap}:{})});
+  if(old&&old.ap&&type==='exp')learnRule(old.ap,o.cat,o.note,own);
   view=new Date(d+'T00:00:00');view.setDate(1);
   try{save()}catch(e){console.error(e)}
   closeSheet();render();
@@ -562,11 +580,16 @@ document.addEventListener('click',e=>{
  const em=e.target.closest('[data-emo]');
  if(em){$('#c-emo').value=em.dataset.emo;return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add'){if(tab==='bud')toggleFabm();else openSheet(null)}
  else if(a==='closefabm')closeFabm();
+ else if(a==='toast'){const id=+$('#toast').dataset.id;$('#toast').hidden=true;if(id)openSheet(id)}
+ else if(a==='rulopen')openRul();
+ else if(a==='closerul')closeRul();
+ else if(a==='copylink'){copyLink()}
+ else if(a==='delrule')delRule(+b.dataset.id);
  else if(a==='gobud')switchTab('bud');
  else if(a==='edit')openSheet(+b.dataset.id,b.dataset.kind);
  else if(a==='pay')payPlan(b.dataset.key);
@@ -620,6 +643,96 @@ async function initDb(){
  }catch(e){console.error('db',e)}
 }
 
+
+
+/* ===== Apple Pay: plăți adăugate automat, cu reguli învățate ===== */
+const nm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();
+const apKey=m=>nm(m).split(' ').filter(w=>w&&!/\d/.test(w)).slice(0,3).join(' ');
+const apPretty=m=>{const w=String(m).replace(/\s+/g,' ').trim().split(' ').filter(x=>!/\d{3,}/.test(x)).slice(0,5);return w.map(x=>x.length>3&&x===x.toUpperCase()?x.charAt(0)+x.slice(1).toLowerCase():x).join(' ')||String(m)};
+const AP_DEF={'Mâncare':'kaufland|lidl|mega image|carrefour|profi|penny|auchan|selgros|cora|mcdonald s|mcdonalds|kfc|starbucks|tazz|glovo|bolt food|pizza|restaurant|cafenea|brutarie|patiserie','Combustibil':'omv|petrom|mol|rompetrol|lukoil|socar|gazprom|peco','Subscripții':'netflix|spotify|youtube|hbo|disney|apple com|itunes|icloud|google one|prime video','Sănătate':'farmacia|farmacie|catena|help net|dr max|sensiblu|dona|clinica|medlife|regina maria|synevo','Cumpărături':'emag|altex|flanco|dedeman|ikea|zara|decathlon|pepco|jysk|leroy merlin|sephora|douglas','Distracție':'cinema|cinemacity|steam|playstation|xbox','Facturi':'digi|orange|vodafone|telekom|engie|enel|electrica|apa nova|rcs'};
+function defCat(n){const q=' '+n+' ';for(const k in AP_DEF)for(const p of AP_DEF[k].split('|'))if(q.includes(' '+p+' '))return k;return null}
+const bestRule=n=>rules.filter(r=>r.key&&n.startsWith(r.key)).sort((a,b)=>b.key.length-a.key.length)[0];
+function parseAmt(v){
+ let s=String(v||'').replace(/[^\d.,]/g,'');if(!s)return 0;
+ const lc=s.lastIndexOf(','),ld=s.lastIndexOf('.');
+ if(lc>-1&&ld>-1)s=lc>ld?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');
+ else if(lc>-1){const f=s.split(',');s=(f.length===2&&f[1].length<=2)?s.replace(',','.'):s.replace(/,/g,'')}
+ else if(ld>-1){const f=s.split('.');if(!(f.length===2&&f[1].length<=2))s=s.replace(/\./g,'')}
+ return Math.round((parseFloat(s)||0)*100)/100;
+}
+let apM=[];
+function apQ(){try{const r=localStorage.getItem(KEYQ);return r?JSON.parse(r):apM}catch(e){return apM}}
+function apSave(q){apM=q;try{localStorage.setItem(KEYQ,JSON.stringify(q))}catch(e){}}
+const hadCloud=()=>{try{return !!localStorage.getItem(KEY3)}catch(e){return false}};
+function apReady(){return !!((C.hid&&C.sync)||(C.booted&&!C.hid&&!hadCloud()))}
+function apParse(){
+ const m=location.hash.match(/^#ap\/([^\/]*)\/([\s\S]*)$/);
+ if(!m)return;
+ const dec=v=>{try{return decodeURIComponent(v)}catch(e){return v}};
+ const amt=parseAmt(dec(m[1])),mer=dec(m[2]).trim().slice(0,80);
+ try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+ if(amt>0&&mer){const q=apQ().slice();q.push({amt,mer,t:Date.now()});apSave(q)}
+ apRun();
+}
+function apAdd(amt,mer){
+ if(tx.some(x=>x.ap===mer&&x.amt===amt&&Date.now()-x.id<60000))return null;
+ const n=nm(mer),r=bestRule(n);
+ let cat=null,note=null,own=null,chk=0;
+ if(r){cat=r.cat;note=r.note;own=r.own}else{cat=defCat(n);if(!cat)chk=1}
+ if(!cat||!cats.some(c=>c.name===cat))cat=cats.some(c=>c.name==='Altele')?'Altele':((cats[0]&&cats[0].name)||'Altele');
+ const x={id:Date.now(),type:'exp',amt,cat,date:today(),note:note||apPretty(mer),ap:mer,...(chk?{chk:1}:{})};
+ if(C.hid){x.own=(own==='shared'||C.mode==='common')?'shared':C.uid;if(x.own==='shared')x.by=C.uid}
+ tx.push(x);save();return x;
+}
+function apRun(){
+ const q=apQ();if(!q.length)return;
+ if(!apReady()){if(C.booted)render();return}
+ apSave([]);
+ let last=null;
+ q.forEach(it=>{const r=apAdd(it.amt,it.mer);if(r)last=r});
+ render();
+ if(last){
+  const go=()=>toast(`<span style="font-size:24px">${last.chk?'❓':'✅'}</span><span><b>${esc(last.note)} · ${fmt(last.amt)}</b><small>${last.chk?t('apUnk')+' · '+t('apCheck'):cn(last.cat)+' · '+t('apCheck')}</small></span>`,last.id);
+  if(typeof revealed!=='undefined'&&revealed)go();else setTimeout(go,2200);
+ }
+}
+function learnRule(mer,cat,note,own){
+ const key=apKey(mer);if(!key)return;
+ const o={key,cat,note:(note&&note!==apPretty(mer))?note:'',own:own==='shared'?'shared':''};
+ const r=rules.find(x=>x.key===key);
+ if(r)Object.assign(r,o);else rules.push({id:Date.now(),...o});
+}
+function apCard(){
+ const q=tx.filter(x=>x.chk).slice(-3).reverse();
+ if(!q.length)return '';
+ return `<div class="card wchk"><h3>❓ ${t('apChkCard')}</h3>`+q.map(x=>`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(x.note||x.ap)}</b><small>${t('apUnk')} · ${fd(x.date)}</small></span><em class="r">−${fmt(x.amt)}</em></button>`).join('')+'</div>';
+}
+let toastT=0;
+function toast(html,id){
+ const el=$('#toast');el.innerHTML=html;el.dataset.id=id||'';el.hidden=false;
+ clearTimeout(toastT);toastT=setTimeout(()=>{el.hidden=true},8000);
+}
+const apLink=()=>location.href.split('#')[0].split('?')[0]+'#ap/';
+function openRul(){$('#rul-msg').textContent='';$('#rul').hidden=false;renderRul()}
+function closeRul(){$('#rul').hidden=true;armed=''}
+function renderRul(){
+ const el=$('#rul-body');if(!el||$('#rul').hidden)return;
+ let h=`<p class="hint">${t('apIntro')}</p><p class="hint pre">${esc(t('apSteps'))}</p><p class="hint">${t('apLink')}</p><div class="lnk">${esc(apLink())}</div><div class="btns"><button data-act="copylink">${t('apCopy')}</button></div><h3 style="margin:16px 0 4px;font-size:16px">${t('apRules')}</h3>`;
+ if(!rules.length)h+=`<p class="hint">${t('apNoRules')}</p>`;
+ [...rules].sort((a,b)=>a.key.localeCompare(b.key)).forEach(r=>{
+  h+=`<div class="rrow"><span class="rt"><b>${esc(r.key)}</b><small style="display:block;color:var(--muted)">${esc(catEm(r.cat))} ${esc(cn(r.cat))}${r.note?' · '+esc(r.note):''}${r.own==='shared'?' · '+t('sShared'):''}</small></span><button class="x${armed==='r'+r.id?' dng':''}" data-act="delrule" data-id="${r.id}">${armed==='r'+r.id?t('apDelQ'):'✕'}</button></div>`;
+ });
+ el.innerHTML=h;
+}
+function delRule(id){
+ if(armed!=='r'+id){armed='r'+id;renderRul();return}
+ armed='';rules=rules.filter(r=>r.id!==id);save();renderRul();
+}
+function copyLink(){
+ const m=$('#rul-msg');
+ (navigator.clipboard?navigator.clipboard.writeText(apLink()):Promise.reject()).then(()=>m.textContent=t('copied')).catch(()=>{m.textContent=apLink()});
+}
+window.addEventListener('hashchange',apParse);
 
 /* ===== Buget și categorii proprii ===== */
 const defCats=()=>CATS.exp.map((n,i)=>({id:i+1,name:n,emoji:EM[n]||'✨',b:{},ord:i}));
@@ -719,8 +832,9 @@ document.addEventListener('change',e=>{if(e.target.id==='a-ratio')setHome({ratio
 /* ===== Cuplu: cont, cămin comun, sincronizare Firebase ===== */
 const FBC={apiKey:"AIzaSyBxH1RlK8cVajT7nb0f4t-szcoOzvfdddg",authDomain:"cheltuieli-f0c26.firebaseapp.com",projectId:"cheltuieli-f0c26",storageBucket:"cheltuieli-f0c26.firebasestorage.app",messagingSenderId:"590978376968",appId:"1:590978376968:web:5dc9d8a103adf841f038bd"};
 const FBV='https://www.gstatic.com/firebasejs/10.14.1/';
-const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map()},unsubs:[]};
+const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,booted:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map()},unsubs:[]};
 let bootRes;const bootP=new Promise(r=>{bootRes=r});
+bootP.then(()=>{C.booted=true;apRun()});
 let ownSel='me',rq=0;
 const pname=()=>(C.partner&&C.names[C.partner])||t('sPartner');
 const clean=x=>JSON.parse(JSON.stringify(x));
@@ -764,12 +878,12 @@ async function cloudInit(){
   Au.onAuthStateChanged(auth,u=>{onUser(u)});
  }catch(e){console.warn('cloud',e);C.err='load';renderAcc();bootRes()}
 }
-function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map()};C.sync=false;C.seeded=false}
+function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map()};C.sync=false;C.seeded=false}
 async function onUser(u){
  const had=!!C.hid;
  detach();
  if(!u){
-  if(had){tx=[];pl=[];subs=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
+  if(had){tx=[];pl=[];subs=[];rules=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
   C.uid=null;C.email='';C.hid=null;C.partner=null;C.names={};C.members=[];C.code='';
   renderAcc();render();bootRes();return;
  }
@@ -786,17 +900,17 @@ function attach(hid){
  const {F,db}=C.fb;
  detach();C.hid=hid;
  try{localStorage.setItem(KEY3,JSON.stringify({uid:C.uid,hid}))}catch(e){}
- const first={h:false,tx:false,planned:false,subs:false,cats:false};
- const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush()}};
+ const first={h:false,tx:false,planned:false,subs:false,cats:false,rules:false};
+ const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats&&first.rules){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush();apRun()}};
  C.unsubs.push(F.onSnapshot(F.doc(db,'households',hid),s=>{
   if(s.exists()){const d=s.data();C.members=d.members||[];C.names=d.names||{};C.code=d.code||'';C.mode=d.mode||'split';C.ratio=d.ratio||'equal';C.partner=C.members.find(m=>m!==C.uid)||null}
   first.h=true;chk();schedRender();
  },e=>{console.error(e);first.h=true;chk()}));
- ['tx','planned','subs','cats'].forEach(k=>{
+ ['tx','planned','subs','cats','rules'].forEach(k=>{
   C.unsubs.push(F.onSnapshot(F.collection(db,'households',hid,k),s=>{
    const arr=s.docs.map(d=>d.data());
    C.known[k]=new Map(arr.map(x=>[String(x.id),JSON.stringify(x)]));
-   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
+   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else if(k==='rules')rules=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
    first[k]=true;wr();chk();schedRender();
   },e=>{console.error(e);first[k]=true;chk()}));
  });
@@ -804,10 +918,10 @@ function attach(hid){
 function cloudPush(){
  if(!C.hid||!C.sync||!C.fb)return;
  const {F,db}=C.fb,ops=[];
- [['tx',tx],['planned',pl],['subs',subs],['cats',cats]].forEach(([k,arr])=>{
+ [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules]].forEach(([k,arr])=>{
   const km=C.known[k],seen=new Set();
   arr.forEach(x=>{
-   if(k!=='cats'&&!x.own)x.own=C.uid;
+   if(k!=='cats'&&k!=='rules'&&!x.own)x.own=C.uid;
    const id=String(x.id),c=clean(x),j=JSON.stringify(c);seen.add(id);
    if(km.get(id)!==j){ops.push([0,k,id,c]);km.set(id,j)}
   });
@@ -832,10 +946,10 @@ async function createHome(){
  b.set(F.doc(db,'invites',code),{hid,createdAt:now});
  b.set(F.doc(db,'users',C.uid),{hid,name:S.name||''},{merge:true});
  await b.commit();
- for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats]]){
+ for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules]]){
   for(let i=0;i<arr.length;i+=400){
    const bb=F.writeBatch(db);
-   arr.slice(i,i+400).forEach(x=>{if(k!=='cats')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
+   arr.slice(i,i+400).forEach(x=>{if(k!=='cats'&&k!=='rules')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
    await bb.commit();
   }
  }
@@ -918,7 +1032,7 @@ function reveal(){
 }
 const T0=performance.now();
 try{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){})}catch(e){}
-load();applyStatic();render();cloudInit();
+load();applyStatic();render();cloudInit();apParse();
 Promise.race([Promise.all([initDb(),bootP]),new Promise(r=>setTimeout(r,2600))]).then(()=>setTimeout(reveal,Math.max(0,1000-(performance.now()-T0))));
 </script>
 </body>
