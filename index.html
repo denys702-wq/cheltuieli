@@ -201,6 +201,41 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
 .filebtn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;background:var(--accent);color:var(--on)!important;font-weight:650;cursor:pointer;margin:8px 0}.filebtn input{display:none}
 .cpv{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:14px}.cpv:last-child{border:0}.cpv span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cpv b{white-space:nowrap}
 .jrow{display:flex;gap:10px;align-items:flex-start;padding:8px 0}.av{width:34px;height:34px;border-radius:17px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700;flex:none}.jrow small{display:block;color:var(--muted);font-size:12px}
+
+/* ===== v2.0: Liquid Glass, setări compacte, teme ===== */
+:root{--glass:rgba(255,255,255,.55);--glass-bd:rgba(255,255,255,.75);--glass-sh:0 10px 30px rgba(15,40,50,.18);--lens:color-mix(in srgb,var(--accent) 16%,rgba(255,255,255,.62))}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--glass:rgba(24,36,44,.5);--glass-bd:rgba(255,255,255,.14);--glass-sh:0 10px 30px rgba(0,0,0,.45);--lens:color-mix(in srgb,var(--accent) 26%,rgba(255,255,255,.1));--bd:#2b3b47;--muted:#9fb3c1}:root:not([data-theme="light"]) .card,:root:not([data-theme="light"]) .sheet{box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}}
+:root[data-theme="dark"]{--glass:rgba(24,36,44,.5);--glass-bd:rgba(255,255,255,.14);--glass-sh:0 10px 30px rgba(0,0,0,.45);--lens:color-mix(in srgb,var(--accent) 26%,rgba(255,255,255,.1));--bd:#2b3b47;--muted:#9fb3c1}
+:root[data-theme="dark"] .card,:root[data-theme="dark"] .sheet{box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.dock{background:var(--glass);-webkit-backdrop-filter:blur(24px) saturate(1.9);backdrop-filter:blur(24px) saturate(1.9);border:1px solid var(--glass-bd);box-shadow:var(--glass-sh),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(0,0,0,.04);touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.dock button{color:var(--muted);transition:color .25s,transform .3s cubic-bezier(.34,1.56,.64,1)}
+.dock button.on{color:var(--accent)}
+.dock.drag button.on{transform:scale(1.06)}
+.ind{background:none!important;box-shadow:none!important;pointer-events:none}
+.ind::before{content:"";position:absolute;inset:0;border-radius:24px;background:var(--lens);border:1px solid var(--glass-bd);box-shadow:0 3px 10px rgba(15,40,50,.14),inset 0 1px 1px rgba(255,255,255,.85),inset 0 -2px 4px rgba(255,255,255,.18);-webkit-backdrop-filter:blur(6px) saturate(1.8) brightness(1.06);backdrop-filter:blur(6px) saturate(1.8) brightness(1.06);transition:transform .5s cubic-bezier(.34,1.56,.64,1),box-shadow .35s}
+.dock.drag .ind::before{transform:scale(1.14,1.22);box-shadow:0 12px 28px rgba(15,40,50,.28),inset 0 1px 2px rgba(255,255,255,.95),inset 0 -3px 6px rgba(255,255,255,.22)}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.aprow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px;flex-wrap:wrap}
+.seg3{display:flex;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:3px;gap:2px}
+.seg3 button{min-height:34px;padding:0 10px;border:0;border-radius:9px;background:transparent;font-size:14px;color:var(--muted)}
+.seg3 button.on{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.15);font-weight:600}
+.dots{display:flex;gap:6px}
+.dots button{width:27px;min-height:27px;height:27px;padding:0;border-radius:50%;border:2px solid transparent;box-shadow:0 0 0 1px var(--bd)}
+.dots button.on{border-color:var(--card);box-shadow:0 0 0 2.5px var(--text)}
+.gh{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 4px 5px;font-weight:600}
+.grp{background:var(--bg);border-radius:14px;overflow:hidden;border:1px solid var(--bd)}
+.mi{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;border:0;border-radius:0;background:transparent;padding:0 12px;text-align:left;border-bottom:1px solid var(--bd);font-size:15.5px}
+.mi:last-child{border-bottom:0}
+.mi i{font-style:normal;width:26px;text-align:center;font-size:18px}
+.mi span{flex:1}
+.mi em{font-style:normal;color:var(--muted);font-size:13px}
+.mi b{color:var(--muted);font-weight:400}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.2);margin:-4px 0 10px}
+.chip::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--dot,#86efac)}
+.cf{position:fixed;inset:0;pointer-events:none;z-index:40;overflow:hidden}
+.cf i{position:absolute;top:62%;width:8px;height:12px;border-radius:2px;animation:cfy 1.8s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes cfy{0%{transform:translate(0,0) rotate(0);opacity:1}70%{opacity:1}100%{transform:translate(var(--dx),calc(var(--dy) + 440px)) rotate(var(--rot));opacity:0}}
+@media(prefers-reduced-motion:reduce){.ind::before,.dock button{transition:none}}
 </style>
 </head>
 <body>
@@ -232,20 +267,33 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
  <div class="sheet" role="dialog">
   <div class="mh"><h2 data-i="set"></h2><div class="mr"><button class="nb" data-act="closeset" aria-label="Back">‹</button><button class="nb done" data-act="setdone" data-i="done"></button></div></div>
   <label><span data-i="nm"></span><input id="s-name" maxlength="24" autocomplete="off"></label>
-  <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
-  <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
+  <div class="two2">
+   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
+   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
+  </div>
   <p class="hint" data-i="curh"></p>
-  <button class="menu" data-act="erropen"><span data-i="erT"></span><span><span id="er-b"></span>›</span></button>
-  <button class="menu" data-act="peropen"><span data-i="perT"></span><span>›</span></button>
-  <button class="menu" data-act="calopen"><span data-i="calT"></span><span>›</span></button>
-  <button class="menu" data-act="csvopen"><span data-i="csvT"></span><span>›</span></button>
-  <button class="menu" data-act="jrnopen"><span data-i="jrnT"></span><span>›</span></button>
-  <button class="menu" data-act="prvopen"><span data-i="prvT"></span><span>›</span></button>
-  <button class="menu" data-act="logopen"><span data-i="logT"></span><span><span id="log-v"></span> ›</span></button>
-  <button class="menu" data-act="rulopen"><span data-i="apm"></span><span>›</span></button>
-  <button class="menu" data-act="accopen"><span data-i="acc"></span><span>›</span></button>
-  <button class="menu" data-act="bkopen"><span data-i="bk"></span><span>›</span></button>
-  
+  <div class="aprow"><div class="seg3" id="look-seg"><button data-act="look" data-v="auto" data-i="lkAuto"></button><button data-act="look" data-v="light" aria-label="Light">☀️</button><button data-act="look" data-v="dark" aria-label="Dark">🌙</button></div><div class="dots" id="thm-dots"></div></div>
+  <div class="gh" data-i="stGA"></div>
+  <div class="grp">
+   <button class="mi" data-act="rulopen"><i>🍎</i><span data-i="apm"></span><b>›</b></button>
+   <button class="mi" data-act="calopen"><i>📅</i><span data-i="calT"></span><b>›</b></button>
+  </div>
+  <div class="gh" data-i="stGD"></div>
+  <div class="grp">
+   <button class="mi" data-act="csvopen"><i>📥</i><span data-i="csvT"></span><b>›</b></button>
+   <button class="mi" data-act="bkopen"><i>💾</i><span data-i="bk"></span><b>›</b></button>
+  </div>
+  <div class="gh" data-i="stGP"></div>
+  <div class="grp">
+   <button class="mi" data-act="prvopen"><i>🙈</i><span data-i="prvT"></span><b>›</b></button>
+   <button class="mi" data-act="accopen"><i>👥</i><span data-i="acc"></span><b>›</b></button>
+  </div>
+  <div class="gh" data-i="stGS"></div>
+  <div class="grp">
+   <button class="mi" data-act="jrnopen"><i>📝</i><span data-i="jrnT"></span><b>›</b></button>
+   <button class="mi" data-act="erropen"><i>🛠️</i><span data-i="erT"></span><em id="er-b"></em><b>›</b></button>
+   <button class="mi" data-act="logopen"><i>🆕</i><span data-i="logT"></span><em id="log-v"></em><b>›</b></button>
+  </div>
  </div>
 </div>
 <div id="bkp" class="ov" hidden>
@@ -445,6 +493,16 @@ window.ERR=(function(){
  return {report,flush,text,list:()=>list,crumb:a=>{crumbs.push(String(a).slice(0,24));if(crumbs.length>10)crumbs.shift()},clear:()=>{list=[];persist();refresh()},test:()=>report('test','Eroare de test '+new Date().toISOString().slice(11,19),'Error: test\n    at errtest (index.html)','manual')};
 })();
 
+const THEMES={teal:{h1:'#0b5f59',h2:'#12907f',a:'#0f766e',ad:'#2dd4bf',ond:'#06201c'},blue:{h1:'#1e3a8a',h2:'#2563eb',a:'#1d4ed8',ad:'#60a5fa',ond:'#08142e'},violet:{h1:'#4c1d95',h2:'#7c3aed',a:'#6d28d9',ad:'#a78bfa',ond:'#140a30'},orange:{h1:'#9a3412',h2:'#ea580c',a:'#c2410c',ad:'#fb923c',ond:'#2a1004'},rose:{h1:'#9f1239',h2:'#e11d48',a:'#be123c',ad:'#fb7185',ond:'#2f0612'}};
+function applyTheme(){
+ try{
+  const th=THEMES[S.theme]||THEMES.teal;
+  let el=document.getElementById('thm');if(!el){el=document.createElement('style');el.id='thm';document.head.appendChild(el)}
+  el.textContent=`:root{--h1:${th.h1};--h2:${th.h2};--accent:${th.a}}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:${th.ad};--on:${th.ond}}}:root[data-theme="dark"]{--accent:${th.ad};--on:${th.ond}}.sum{box-shadow:0 10px 24px ${th.a}47}`;
+  const m=document.querySelector('meta[name=theme-color]');if(m)m.content=th.h1;
+  if(S.look==='light'||S.look==='dark')document.documentElement.dataset.theme=S.look;else delete document.documentElement.dataset.theme;
+ }catch(e){}
+}
 const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud',KEYQ='cheltuieli_apq';
 const T={
 ro:{app:'Cheltuieli',bal:'Sold',inc:'Venituri',exp:'Cheltuieli',list:'Tranzacții',stat:'Statistici',none:'Nicio tranzacție în această lună.<br>Apasă + ca să adaugi prima.',noexp:'Nicio cheltuială în această lună.',tot:'Total cheltuieli',last:'Luna trecută',nolast:'Nu există date pentru luna trecută.',e1:'Cheltuială',i1:'Venit',amt:'Sumă',cat:'Categorie',date:'Data',note:'Notă (opțional)',save:'Salvează',cancel:'Anulează',del:'Șterge',sure:'Sigur? Apasă din nou',eamt:'Introdu o sumă mai mare ca 0, de exemplu 25,50.',edate:'Alege data.',set:'Setări',lang:'Limbă',cur:'Monedă',curh:'Schimbarea monedei modifică doar afișarea, nu convertește sumele.',bk:'Backup și import',bkh:'Copiază textul și păstrează-l (de exemplu în Notițe). Pentru restaurare, lipește-l aici și apasă Importă.',copy:'Copiază',copied:'Copiat.',manual:'Selectează textul și copiază-l manual.',imp:'Importă din text',impsure:'Sigur? Înlocuiește datele',impok:'Importat: {n} tranzacții.',impbad:'Text invalid. Lipește tot backup-ul, exact cum a fost copiat.',close:'Închide',nostore:'Stocarea nu e disponibilă în acest browser. Datele se pierd la închidere; folosește Setări → Backup.',add:'Adaugă tranzacție',back:'Înapoi',done:'Gata',txt:'Tranzacție',nm:'Numele tău',nmp:'Cum te cheamă?',gm:'Bună dimineața',ga:'Bună ziua',ge:'Bună seara',hom:'Prezentare',his:'Istoric',spent:'din venituri',ofexp:'din cheltuieli',over:'Cheltuielile depășesc veniturile cu',left:'Rămas din venituri',noinc:'Nu ai venituri în această lună, deci procentele sunt calculate din cheltuieli.',top:'Cea mai mare cheltuială',p1:'De plătit',due:'Scadență',pl:'De plătit',plnone:'Nimic de plătit în această lună. Adaugă cu + și alege „De plătit” sau „Abonament”.',paid:'Plătit?',all:'Arată toate',sub1:'Abonament',due1:'Prima scadență',subh:'Se repetă lunar, începând cu luna datei alese. Modificările se aplică tuturor lunilor.',less:'Restrânge',late:'întârziat',prev:'Luna anterioară',next:'Luna următoare',more:'mai multe',avail:'disponibil'},
@@ -462,9 +520,11 @@ Object.assign(T.ro,{perT:'Vacanță și sezoane',perSel:'Perioadă specială',pe
 Object.assign(T.en,{perT:'Vacation & seasons',perSel:'Special period',perNone:'— none —',perPre:'Pick a theme',perFrom:'From',perTo:'To',perBud:'Budget for the period (optional)',perHow:'Expenses in the period get its tag automatically and stop counting toward the monthly category budgets. The period closes itself on the end date.',perNew:'New period',perEdit:'Edit period',perAdd:'+ Add vacation or season',perAct:'In progress',perUp:'Upcoming',perDone:'Ended',perNoneYet:'No periods yet. Add a vacation or a seasonal theme (Christmas, Black Friday, back to school) with its own budget.',perOut:'From special periods (outside the budget)',perDay:'Day {d} of {n}',perStarts:'Starts in {n} days',perStartsT:'Starts tomorrow',perLeft:'You can spend ~{a} per day',perOver:'Over budget by {a}',perSpent:'Spent',perEndNow:'End now',perDel:'Delete period',perBad:'Enter a name and valid dates (from ≤ to).',perNoBud:'no budget',perEnded:'Ended',perVac:'Vacation',perCust:'Other theme',perXmas:'Christmas',perNY:'New Year',perBF:'Black Friday',perSch:'Back to school'});
 Object.assign(T.ro,{erT:'Raport erori',erIntro:'Dacă aplicația întâlnește o eroare, o salvează aici, iar când ești conectat o trimite în baza de date, ca să poată fi reparată.',erPriv:'Raportul conține doar: versiunea aplicației, mesajul și locul erorii, numele ultimelor butoane apăsate, numere de elemente și tipul telefonului. Nu conține sume, note sau nume.',erAuto:'Trimite automat rapoartele',erNone:'Nicio eroare înregistrată. Dacă apare ceva, o vei vedea aici.',erCopy:'Copiază raportul',erSend:'Trimite acum',erTest:'Generează o eroare de test',erClear:'Șterge istoricul',erSent:'trimis',erNot:'netrimis',erNoCloud:'Nu ești conectat la un cont, deci rapoartele rămân pe telefon. Le poți copia și trimite.',erCopied:'Copiat. Lipește-l în conversație.',erToastT:'A apărut o eroare',erToastS:'Raportul s-a salvat în Setări → Raport erori.',erSentN:'Trimit {n} rapoarte…',erNoneToSend:'Nimic de trimis.',erTestDone:'Eroare de test creată.',erCopyFail:'Nu am putut copia automat. Selectează textul de mai jos.'});
 Object.assign(T.en,{erT:'Error report',erIntro:'If the app runs into an error, it saves it here and, when you are signed in, sends it to the database so it can be fixed.',erPriv:'A report contains only: the app version, the error message and place, the names of the last buttons pressed, item counts and the phone type. No amounts, notes or names.',erAuto:'Send reports automatically',erNone:'No errors recorded. If something happens you will see it here.',erCopy:'Copy report',erSend:'Send now',erTest:'Generate a test error',erClear:'Clear history',erSent:'sent',erNot:'not sent',erNoCloud:'You are not signed in, so reports stay on the phone. You can copy and send them.',erCopied:'Copied. Paste it into the conversation.',erToastT:'An error occurred',erToastS:'The report was saved in Settings → Error report.',erSentN:'Sending {n} reports…',erNoneToSend:'Nothing to send.',erTestDone:'Test error created.',erCopyFail:'Could not copy automatically. Select the text below.'});
+Object.assign(T.ro,{lkAuto:'Auto',stGA:'Automatizări',stGD:'Date',stGP:'Confidențialitate și cont',stGS:'Activitate și suport',bsOk:'În buget',bsNear:'Aproape de limită',bsOver:'Buget depășit',perDoneN:'Perioade încheiate ({n}) ›'});
+Object.assign(T.en,{lkAuto:'Auto',stGA:'Automation',stGD:'Data',stGP:'Privacy and account',stGS:'Activity and support',bsOk:'On budget',bsNear:'Near the limit',bsOver:'Over budget',perDoneN:'Ended periods ({n}) ›'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],per=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false,theme:'teal',look:'auto'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],per=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -495,6 +555,7 @@ function load(){
   if(typeof q.seenVer==='string')S.seenVer=q.seenVer.slice(0,10);
   if(q.cal&&typeof q.cal==='object'){const c=q.cal;S.cal={d0:c.d0!==0&&c.d0!==false,d1:c.d1!==0&&c.d1!==false,d3:c.d3===1||c.d3===true,d7:c.d7===1||c.d7===true,h:Math.min(22,Math.max(6,+c.h||9))}}
   if(q.errAuto===false)S.errAuto=false;
+  if(THEMES[q.theme])S.theme=q.theme;if(['auto','light','dark'].includes(q.look))S.look=q.look;
   if(q.priv===true)S.priv=true;if(q.privStart===true){S.privStart=true;S.priv=true}
  }catch(e){ok=false}
  if(!cats.length)cats=defCats();
@@ -509,7 +570,7 @@ function save(){U=Date.now();wr();push();cloudPush()}
 function saveSet(){U=Date.now();try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(e){}wr();push()}
 
 function applyStatic(){
- document.documentElement.lang=S.lang;
+ document.documentElement.lang=S.lang;applyTheme();
  document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t(e.dataset.i));
  $('.fab').setAttribute('aria-label',t('add'));$('#l-amt').textContent=t('amt')+' ('+S.cur+')';
  $('#f-amt').placeholder=S.lang==='en'?'0.00':'0,00';
@@ -528,11 +589,11 @@ function render(){
  h+=scopeBar();
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
- h+=`<div class="sum"><span>${t('bal')}</span><div class="big">${fmt(bal)}</div><div class="two"><div><span>↑ ${t('inc')}</span><b>${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b>${fmt(exp)}</b></div></div></div></div>`;
+ h+=`<div class="sum"><span>${t('bal')}</span><div class="big" data-cuk="bal" data-cu="${bal}">${fmt(bal)}</div>${budChip()}<div class="two"><div><span>↑ ${t('inc')}</span><b data-cuk="inc" data-cu="${inc}">${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b data-cuk="exp" data-cu="${exp}">${fmt(exp)}</b></div></div></div></div>`;
  h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${whatsNewCard()+tipCard()+perCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
- place(false);
+ place(false);animNums();barsIn();
 }
 let offT=0,mAnim=0,busy=false,paT=0;
 const TABS=['home','hist','bud'],TI=()=>TABS.indexOf(tab);
@@ -549,9 +610,11 @@ function place(anim){
  if(anim){offAll(false);offT=setTimeout(setOff,430)}else setOff();
 }
 function switchTab(k){
- if(k!==tab){tab=k;window.scrollTo(0,0)}
+ const ch=k!==tab;
+ if(ch){tab=k;window.scrollTo(0,0)}
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(true);
+ if(ch)barsIn($('#p-'+tab));
 }
 let sx=0,sy=0,dx=0,lk='',zn='';
 document.addEventListener('touchstart',e=>{
@@ -695,7 +758,12 @@ function charts(m,inc,exp){
  return h+'</div>';
 }
 
-function openSet(){applyStatic();$('#log-v').textContent='v'+APP_VER;{const n=ERR.list().filter(x=>!x.sent).length,b=$('#er-b');if(b)b.textContent=n?String(n)+' ':''}$('#st').hidden=false}
+function setPick(){
+ document.querySelectorAll('#look-seg button').forEach(x=>x.classList.toggle('on',x.dataset.v===(S.look||'auto')));
+ const d=$('#thm-dots');
+ if(d)d.innerHTML=Object.keys(THEMES).map(k=>`<button data-act="thm" data-v="${k}" class="${(S.theme||'teal')===k?'on':''}" style="background:linear-gradient(135deg,${THEMES[k].h1},${THEMES[k].h2})" aria-label="${k}"></button>`).join('');
+}
+function openSet(){applyStatic();setPick();$('#log-v').textContent='v'+APP_VER;{const n=ERR.list().filter(x=>!x.sent).length,b=$('#er-b');if(b)b.textContent=n?String(n)+' ':''}$('#st').hidden=false}
 function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules,goals,periods:per},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
 function closeBk(){$('#bkp').hidden=true;armed=''}
 function closeSet(){$('#st').hidden=true;armed=''}
@@ -847,6 +915,8 @@ document.addEventListener('click',e=>{
  else if(a==='jrnopen'){closeSet();openJrn()}
  else if(a==='closejrn')closeJrn();
  else if(a==='priv'){S.priv=!S.priv;saveLocal();render();prvRender()}
+ else if(a==='look'){S.look=b.dataset.v;saveSet();applyTheme();setPick()}
+ else if(a==='thm'){S.theme=b.dataset.v;saveSet();applyTheme();setPick()}
  else if(a==='erropen'){closeSet();openErr()}
  else if(a==='closeerr')closeErr();
  else if(a==='errauto'){S.errAuto=S.errAuto===false;saveSet();errRender();if(S.errAuto!==false)ERR.flush(false)}
@@ -1199,6 +1269,92 @@ function renderJrn(){
 function openJrn(){renderJrn();$('#jrn').hidden=false}
 function closeJrn(){$('#jrn').hidden=true}
 
+/* ===== v2.0: efecte (cifre, bare, confetti, dock) ===== */
+const cuPrev={},reduceM=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+function animNums(){
+ const rm=reduceM();
+ document.querySelectorAll('[data-cu]').forEach(el=>{
+  const k=el.dataset.cuk,to=+el.dataset.cu,from=cuPrev[k]!=null?cuPrev[k]:0;
+  cuPrev[k]=to;
+  if(S.priv||rm||from===to||!isFinite(to))return;
+  const t0=performance.now(),D=650;
+  const step=n=>{
+   if(!el.isConnected)return;
+   const p=Math.min(1,(n-t0)/D),e=1-Math.pow(1-p,3);
+   el.textContent=fmt(p<1?from+(to-from)*e:to);
+   if(p<1)requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+ });
+}
+function barsIn(root){
+ if(reduceM())return;
+ (root||document).querySelectorAll('.tr i').forEach(b=>{
+  const w=b.style.width;if(!w)return;
+  b.style.transition='none';b.style.width='0%';b.getBoundingClientRect();
+  b.style.transition='width .75s cubic-bezier(.22,.8,.3,1)';
+  requestAnimationFrame(()=>{b.style.width=w});
+ });
+}
+function confetti(){
+ if(reduceM())return;
+ const c=document.createElement('div');c.className='cf';
+ const cols=['#f59e0b','#10b981','#3b82f6','#ec4899','#8b5cf6','#ef4444'];
+ for(let i=0;i<46;i++){
+  const q=document.createElement('i');
+  q.style.cssText=`left:${50+(Math.random()-.5)*20}%;background:${cols[i%6]};--dx:${((Math.random()-.5)*360).toFixed(0)}px;--dy:${(-120-Math.random()*260).toFixed(0)}px;--rot:${(Math.random()*720).toFixed(0)}deg;animation-delay:${(Math.random()*.15).toFixed(2)}s`;
+  c.appendChild(q);
+ }
+ document.body.appendChild(c);setTimeout(()=>c.remove(),2300);
+}
+function budChip(){
+ try{
+  const ym=mk(view),w=wal();
+  const alloc=cats.reduce((a,c)=>a+bud(c,ym,w),0);
+  if(!(alloc>0))return '';
+  const sp=cats.reduce((a,c)=>a+spentIn(c.name,ym),0),r=sp/alloc;
+  const st=r>1?['bsOver','#fca5a5']:r>=.8?['bsNear','#fcd34d']:['bsOk','#86efac'];
+  return `<div class="chip" style="--dot:${st[1]}">${t(st[0])} · ${Math.round(r*100)}%</div>`;
+ }catch(e){return ''}
+}
+(function(){
+ const dock=document.querySelector('.dock');if(!dock)return;
+ let act=false,pid=null,x0=0,moved=false,cur=0;
+ const geo=()=>{const r=dock.getBoundingClientRect(),W=(r.width-18)/3;return {l:r.left+5,W,step:W+4}};
+ const posOf=x=>{const g=geo();return Math.min(2,Math.max(0,(x-g.l-g.W/2)/g.step))};
+ const marks=k=>document.querySelectorAll('.dock button').forEach((b,i)=>b.classList.toggle('on',i===k));
+ function live(p,follow){
+  marks(Math.round(p));
+  if(follow){
+   ind(p,false);
+   const tr=$('#trk');
+   if(tr){offAll(false);tr.style.transition='none';tr.style.transform=`translateX(${-p*100/3}%)`}
+  }else ind(Math.round(p),true);
+ }
+ dock.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='mouse'&&e.button!==0)return;
+  act=true;moved=false;x0=e.clientX;pid=e.pointerId;
+  try{dock.setPointerCapture(pid)}catch(_){}
+  dock.classList.add('drag');
+  cur=posOf(e.clientX);live(cur,false);
+ });
+ dock.addEventListener('pointermove',e=>{
+  if(!act)return;
+  if(!moved&&Math.abs(e.clientX-x0)>5)moved=true;
+  cur=posOf(e.clientX);
+  if(moved)live(cur,true);
+ });
+ const end=()=>{
+  if(!act)return;act=false;
+  dock.classList.remove('drag');
+  try{dock.releasePointerCapture(pid)}catch(_){}
+  const k=Math.round(cur);
+  switchTab(TABS[k]);
+ };
+ dock.addEventListener('pointerup',end);
+ dock.addEventListener('pointercancel',end);
+})();
+
 /* ===== Raport erori (ecran) ===== */
 function openErr(){errRender();$('#err-msg').textContent='';$('#erp').hidden=false}
 function closeErr(){$('#erp').hidden=true}
@@ -1224,6 +1380,19 @@ async function errCopy(){
 }
 
 /* ===== Vacanță și sezoane ===== */
+function perBudCard(){
+ const td=today(),act=per.filter(p=>perSt(p,td)!=='done').sort((a,b)=>a.start.localeCompare(b.start)),done=per.length-act.length;
+ let h=`<div class="card bcard"><h3><span>🧳 ${t('perT')}</span></h3>`;
+ if(!act.length)h+=`<p class="hint">${t('perNoneYet')}</p>`;
+ act.forEach(p=>{
+  const st=perSt(p,td),sp=perSpent(p),pct=p.budget>0?Math.min(100,sp/p.budget*100):0,over=p.budget>0&&sp>p.budget;
+  const when=st==='act'?t('perDay').replace('{d}',dayDiff(p.start,td)+1).replace('{n}',dayDiff(p.start,p.end)+1):(()=>{const k=dayDiff(td,p.start);return k===1?t('perStartsT'):t('perStarts').replace('{n}',k)})();
+  h+=`<button class="brow" data-act="peedit" data-id="${p.id}"><i class="ic" style="background:var(--bd)">${esc(p.emoji||'✨')}</i><span class="bm"><span class="bl2"><b>${esc(p.name)}</b><span>${p.budget>0?nf(sp)+' / '+fmt(p.budget):fmt(sp)}</span></span>${p.budget>0?`<span class="tr"><i style="width:${pct}%;background:${over?'var(--r)':'var(--accent)'}"></i></span>`:''}<small>${fd(p.start)} – ${fd(p.end)} · ${when}</small></span></button>`;
+ });
+ h+=`<button class="plt" data-act="peedit">${t('perAdd')}</button>`;
+ if(done)h+=`<button class="plt" data-act="peropen">${t('perDoneN').replace('{n}',done)}</button>`;
+ return h+'</div>';
+}
 const dstr=d=>mk(d)+'-'+p2(d.getDate());
 const dayDiff=(a,b)=>Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/864e5);
 const perSt=(p,td)=>{td=td||today();return td<p.start?'up':td>p.end?'done':'act'};
@@ -1383,8 +1552,9 @@ async function calGo(){
 }
 
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='1.9';
+const APP_VER='2.0';
 const CHANGELOG=[
+ {v:'2.0',d:'2026-10-13',ro:['Bară de jos în stil Liquid Glass: o tragi cu degetul și pagina o urmează, cu efect de sticlă','Setări compacte, grupate pe categorii, cu teme de culoare și aspect luminos sau întunecat','Vacanța și sezoanele sunt acum în tabul Buget','Sumele se numără animat, barele se umplu lin, confetti la un obiectiv atins și stare a bugetului pe cardul de sold'],en:['Liquid Glass style bottom bar: drag it with your finger and the page follows, with a glass effect','Compact settings grouped by category, with color themes and light or dark look','Vacation and seasons now live in the Budget tab','Animated number count-up, smooth progress bars, confetti when a goal is reached and a budget status on the balance card']},
  {v:'1.9',d:'2026-10-13',ro:['Raport automat de erori: dacă apare un bug, aplicația îl salvează și îl trimite în baza de date, ca să poată fi reparat','Ecran „Raport erori” în Setări, cu copiere și trimitere manuală','Rapoartele nu conțin sume, note sau nume'],en:['Automatic error report: if a bug appears, the app saves it and sends it to the database so it can be fixed','“Error report” screen in Settings with copy and manual send','Reports contain no amounts, notes or names']},
  {v:'1.8',d:'2026-10-13',ro:['Mod vacanță și teme de sezon (Crăciun, Black Friday, începutul școlii): dată de început și sfârșit, buget propriu și închidere automată','Cheltuielile din perioadă se etichetează singure (și la Apple Pay sau CSV) și nu mai strică bugetele lunare','Card pe prima pagină cu cât mai poți cheltui pe zi'],en:['Vacation mode and seasonal themes (Christmas, Black Friday, back to school): start and end dates, own budget and automatic closing','Expenses in the period are tagged automatically (also from Apple Pay and CSV) and no longer break monthly budgets','Home card showing how much you can spend per day']},
  {v:'1.7',d:'2026-10-12',ro:['Reminder în calendar pentru plățile viitoare și abonamente, cu notificare în ziua plății sau cu zile înainte','Alegi ora notificării și ce plăți adaugi','Abonamentele se repetă lunar în Calendar'],en:['Calendar reminders for upcoming payments and subscriptions, alerting on the day or days before','Pick the alert time and which payments to add','Subscriptions repeat monthly in Calendar']},
@@ -1556,7 +1726,9 @@ function saveDep(){
  if(!(amt>0))return $('#dep-err').textContent=t('eamt');
  const x={id:Date.now(),type:'exp',amt,cat:'Economii',date:d,note:g.name,sv:g.id};
  if(C.hid){x.own=C.mode==='common'?'shared':C.uid;if(x.own==='shared')x.by=C.uid}
+ const was=g.saved0+tx.reduce((a,r)=>a+(r.sv===g.id?r.amt:0),0);
  tx.push(x);logAdd('dep','goal',{g:g.name,m:amt});save();closeDep();render();
+ if(was<g.target&&was+amt>=g.target)setTimeout(confetti,350);
 }
 const NEEDS=['Mâncare','Facturi','Casă','Sănătate','Combustibil','Transport'];
 const grpOf=c=>c.grp||(NEEDS.includes(c.name)?'n':'w');
@@ -1629,6 +1801,8 @@ function budgetPane(){
  if(other>0)h+=`<div class="brow"><i class="ic" style="background:#64748b2e">📦</i><span class="bm"><span class="bl2"><b>${t('cOther')}</b><span>${fmt(other)}</span></span></span></div>`;
  h+=`<button class="plt" data-act="addcat">+ ${t('cAdd')}</button></div>`;
  {let ps=0;tx.forEach(x=>{if(x.type==='exp'&&x.pk&&x.date.startsWith(ym))ps+=share(x,ym)});if(ps>0)h+=`<p class="hint">🧳 ${t('perOut')}: <b>${fmt(ps)}</b></p>`}
+
+ h+=perBudCard();
  h+=goalsCard(ym);
  return h;
 }
