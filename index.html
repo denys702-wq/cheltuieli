@@ -84,8 +84,8 @@ button:active{transform:scale(.97)}
 #ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
+#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep,#prv,#log{align-items:center;padding:16px}
+#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet,#prv .sheet,#log .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
 @keyframes pop{from{opacity:0;transform:scale(.94)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
@@ -180,6 +180,17 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
 .tipc{position:relative;margin-bottom:12px}.tipc h3{margin:0 28px 6px 0;font-size:16px}.tipx{position:absolute;right:6px;top:6px;border:0;background:transparent;min-height:36px;min-width:36px;padding:0;color:var(--muted)}
 .goalw{margin-top:10px;border-top:1px solid var(--bd);padding-top:2px}.goalw:first-of-type{border-top:0}.goalw .brow{margin-top:6px}
 #c-grp{margin:4px 0 2px}
+.hbt{display:flex;gap:8px}.hbt .gear{width:46px;height:46px}
+.lock{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,var(--h1),var(--h2));color:#fff;padding:24px}.lock[hidden]{display:none}
+.lk-in{width:100%;max-width:320px;text-align:center}.lk-ic{font-size:40px;margin-bottom:8px}.lk-t{font-size:20px;font-weight:700;margin-bottom:14px}
+.lk-dots{display:flex;gap:14px;justify-content:center;margin-bottom:8px}.lk-dots i{width:14px;height:14px;border-radius:50%;border:2px solid #fff;opacity:.7}.lk-dots i.on{background:#fff;opacity:1}.lk-dots.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.lk-m{min-height:22px;font-size:14px;margin-bottom:10px}
+.lk-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;justify-items:center}
+.lk-pad button{width:72px;height:72px;min-height:72px;border-radius:50%;background:rgba(255,255,255,.18);border:0;color:#fff;font-size:26px;font-weight:600;padding:0}
+.lk-f{margin-top:14px;background:transparent;border:0;color:#fff;text-decoration:underline;font-size:14px}
+.lgv{margin:14px 0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}.lgv b{font-size:16px}.lgv span{color:var(--muted);font-size:13px}
+.lgl{margin:2px 0 0;padding-left:18px;font-size:14px}.lgl li{margin:4px 0}
 </style>
 </head>
 <body>
@@ -213,6 +224,8 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
   <p class="hint" data-i="curh"></p>
+  <button class="menu" data-act="prvopen"><span data-i="prvT"></span><span>›</span></button>
+  <button class="menu" data-act="logopen"><span data-i="logT"></span><span><span id="log-v"></span> ›</span></button>
   <button class="menu" data-act="rulopen"><span data-i="apm"></span><span>›</span></button>
   <button class="menu" data-act="accopen"><span data-i="acc"></span><span>›</span></button>
   <button class="menu" data-act="bkopen"><span data-i="bk"></span><span>›</span></button>
@@ -279,6 +292,29 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <p class="hint" data-i="gDepHint"></p>
  </div>
 </div>
+<div id="prv" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="prvT"></h2><div class="mr"><button class="nb" data-act="closeprv" aria-label="Back">‹</button></div></div>
+  <div id="prv-body"></div>
+ </div>
+</div>
+<div id="log" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="logT"></h2><div class="mr"><button class="nb" data-act="closelog" aria-label="Back">‹</button></div></div>
+  <div id="log-body"></div>
+ </div>
+</div>
+<div id="lock" class="lock" hidden>
+ <div class="lk-in">
+  <div class="lk-ic">🔒</div>
+  <div id="lk-title" class="lk-t"></div>
+  <div id="lk-dots" class="lk-dots"><i></i><i></i><i></i><i></i></div>
+  <div id="lk-msg" class="lk-m"></div>
+  <div class="lk-pad"><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><span></span><button data-k="0">0</button><button data-k="b" aria-label="Delete">⌫</button></div>
+  <button id="lk-forgot" class="lk-f" data-act="lkforgot" hidden></button>
+  <button id="lk-cancel" class="lk-f" data-act="lkcancel" hidden></button>
+ </div>
+</div>
 <script>
 const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud',KEYQ='cheltuieli_apq';
 const T={
@@ -289,9 +325,10 @@ Object.assign(T.ro,{budT:'Buget',today:'Azi',yday:'Ieri',bSpent:'Cheltuit din bu
 Object.assign(T.ro,{apm:'Apple Pay și reguli',apIntro:'Plățile cu Apple Pay se pot adăuga singure. Dacă aplicația nu recunoaște comerciantul, plata apare cu ❓ și o corectezi o dată; corecția se ține minte pentru plățile viitoare.',apLink:'Linkul de început',apCopy:'Copiază linkul',apRules:'Reguli învățate',apNoRules:'Încă nu există. Se creează singure când corectezi o plată Apple Pay.',apAdded:'Plată adăugată',apCheck:'Atinge ca să verifici',apUnk:'Comerciant necunoscut',apChkCard:'Plăți Apple Pay de verificat',apWait:'O plată Apple Pay așteaptă să fie salvată. Autentifică-te în ⚙ Cont și partener.',apDelQ:'Sigur?'});Object.assign(T.en,{apm:'Apple Pay & rules',apIntro:'Apple Pay payments can be added automatically. If the app does not recognise the merchant, the payment shows ❓ and you fix it once; the fix is remembered for future payments.',apLink:'Starting link',apCopy:'Copy link',apRules:'Learned rules',apNoRules:'None yet. They are created automatically when you correct an Apple Pay payment.',apAdded:'Payment added',apCheck:'Tap to review',apUnk:'Unknown merchant',apChkCard:'Apple Pay payments to review',apWait:'An Apple Pay payment is waiting to be saved. Sign in under ⚙ Account & partner.',apDelQ:'Sure?'});
 Object.assign(T.ro,{apAT:'Varianta 1 · Automat cu Apple Pay (iOS 17 sau mai nou)',apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) iOS 17–26: Comenzi rapide → Automatizare → + → Transaction (pe iOS 26: Wallet) → alege cardurile → Run Immediately → New Blank Automation.\n    iOS 27: creează o comandă nouă, apoi Edit → Automation → Transaction, la „When I tap” alege Any Card. Apoi ⓘ → Privacy → pornește Allow Running When Locked.\n2) Prima acțiune: URL Encode. La input alege Shortcut Input și apasă pe el ca să alegi proprietatea Merchant.\n3) A doua acțiune: URL. Scrie linkul de sus (se termină cu ?amt=), adaugă Shortcut Input → proprietatea Amount, scrie &m= și adaugă rezultatul URL Encoded Text de la pasul 2 (Select Variable → bulina albastră de sub acțiune).\n4) A treia acțiune: Open URLs.\n5) Fă o plată de test.\nAtenție: nu codifica tot linkul, doar comerciantul, altfel ? & = / se strică.',apBT:'Varianta 2 · Manual, pe orice iOS',apB:'1) Comenzi rapide → fila Shortcuts → + (comandă nouă).\n2) Add Action → Ask for Input: tip Number, întrebare „Cât ai plătit?”.\n3) Încă un Ask for Input: tip Text, întrebare „Unde ai plătit?”.\n4) Add Action → URL Encode, cu rezultatul întrebării a doua (locul).\n5) Add Action → URL: linkul de sus (se termină cu ?amt=), variabila primei întrebări (suma), scrie &m= și rezultatul URL Encoded Text.\n6) Add Action → Open URLs.\n7) Apasă numele comenzii → Add to Home Screen, sau cheam-o cu Siri.',apTest:'Trimite o plată de test'});Object.assign(T.en,{apAT:'Option 1 · Automatic with Apple Pay (iOS 17 or later)',apA:'0) iPhone Settings → Apps → Wallet → turn on Mobile Data.\n1) iOS 17–26: Shortcuts → Automation → + → Transaction (iOS 26: Wallet) → pick your cards → Run Immediately → New Blank Automation.\n    iOS 27: create a new shortcut, then Edit → Automation → Transaction, under “When I tap” choose Any Card. Then ⓘ → Privacy → turn on Allow Running When Locked.\n2) First action: URL Encode. For its input choose Shortcut Input and tap it to pick the Merchant property.\n3) Second action: URL. Type the link above (it ends with ?amt=), add Shortcut Input → Amount property, type &m= and add the URL Encoded Text result from step 2 (Select Variable → the blue token under the action).\n4) Third action: Open URLs.\n5) Make a test payment.\nCareful: do not encode the whole link, only the merchant, or ? & = / get broken.',apBT:'Option 2 · Manual, any iOS',apB:'1) Shortcuts → Shortcuts tab → + (new shortcut).\n2) Add Action → Ask for Input: type Number, question “How much did you pay?”.\n3) Another Ask for Input: type Text, question “Where did you pay?”.\n4) Add Action → URL Encode, with the answer of the second question (the place).\n5) Add Action → URL: the link above (ends with ?amt=), the variable of the first question (amount), type &m= and the URL Encoded Text result.\n6) Add Action → Open URLs.\n7) Tap the shortcut name → Add to Home Screen, or call it with Siri.',apTest:'Send a test payment'});
 Object.assign(T.ro,{gTitle:'Obiective de economisire',gNone:'Niciun obiectiv. Alege suma și în câte luni vrei s-o strângi, iar eu calculez cât să aloci lunar.',gAdd:'Obiectiv nou',gNew:'Obiectiv nou',gEdit:'Editează obiectivul',gName:'Nume (de ex. Vacanță)',gTarget:'Suma țintă',gSaved:'Deja economisit (opțional)',gMonths:'În câte luni vrei să ajungi la obiectiv',gDeposit:'Depune',gPlan:'Alocă lunar',gMonthsLeft:'{n} luni rămase',gDeadline:'termen',gDone:'Obiectiv atins 🎉',gThisMonth:'Depus luna asta',gPrev:'Trebuie să aloci {a} pe lună, timp de {n} luni, până în {d}.',gPrevDone:'Ai deja suma țintă.',gBad:'Verifică numele, suma țintă și numărul de luni (1–600).',gDel:'Șterge obiectivul',gDepTitle:'Depune în {g}',gDepHint:'Suma se scade din sold ca o cheltuială în categoria Economii și se adaugă la obiectiv.',gAlloc:'Alocat pentru economii',r532T:'Regula 50/20/30',r532Need:'Necesități (50%)',r532Sav:'Economii (20%)',r532Want:'Dorințe (30%)',r532NoInc:'Adaugă venitul lunii ca să calculez regula 50/20/30.',tipT:'Sfatul lunii',tipRule:'Cu venitul de {i}, regula 50/20/30 înseamnă: necesități {a}, economii {b}, dorințe {c}.',tipOpen:'Vezi în Buget',cGrp:'Tip cheltuială (pentru regula 50/20/30)',gNeed:'Necesitate',gWant:'Dorință'});Object.assign(T.en,{gTitle:'Savings goals',gNone:'No goals yet. Pick an amount and in how many months you want it, and I will calculate how much to set aside monthly.',gAdd:'New goal',gNew:'New goal',gEdit:'Edit goal',gName:'Name (e.g. Vacation)',gTarget:'Target amount',gSaved:'Already saved (optional)',gMonths:'In how many months do you want to reach it',gDeposit:'Deposit',gPlan:'Set aside monthly',gMonthsLeft:'{n} months left',gDeadline:'deadline',gDone:'Goal reached 🎉',gThisMonth:'Deposited this month',gPrev:'You need to set aside {a} per month, for {n} months, until {d}.',gPrevDone:'You already have the target amount.',gBad:'Check the name, target amount and number of months (1–600).',gDel:'Delete goal',gDepTitle:'Deposit into {g}',gDepHint:'The amount is deducted from your balance as an expense in the Savings category and added to the goal.',gAlloc:'Allocated to savings',r532T:'50/20/30 rule',r532Need:'Needs (50%)',r532Sav:'Savings (20%)',r532Want:'Wants (30%)',r532NoInc:'Add this month’s income so I can calculate the 50/20/30 rule.',tipT:'Tip of the month',tipRule:'With an income of {i}, the 50/20/30 rule means: needs {a}, savings {b}, wants {c}.',tipOpen:'See in Budget',cGrp:'Expense type (for the 50/20/30 rule)',gNeed:'Need',gWant:'Want'});
+Object.assign(T.ro,{prvT:'Mod confidențial',prvHideH:'Înlocuiește sumele cu •••• pe tot ecranul. Îl poți porni și cu ochiul din colțul de sus.',privOn:'Sume ascunse',privOff:'Sume vizibile',prvStart:'Ascunde sumele la deschidere',prvPin:'PIN de deschidere',prvPinOn:'Activ (4 cifre). Se cere la deschidere și după ce lași aplicația în fundal mai mult de 30 de secunde.',prvPinOff:'Dezactivat.',prvSetPin:'Setează PIN',prvChPin:'Schimbă PIN-ul',prvRmPin:'Oprește PIN-ul',prvNote:'Blocare simplă: împiedică privirile în treacăt. Nu înlocuiește blocarea telefonului și nu criptează datele.',prvNoCrypto:'PIN-ul nu e disponibil în acest browser.',lkEnter:'Introdu PIN-ul',lkNew:'Alege un PIN de 4 cifre',lkRep:'Repetă PIN-ul',lkOld:'Introdu PIN-ul curent',lkBad:'PIN greșit',lkMis:'PIN-urile nu se potrivesc. Încearcă din nou.',lkWait:'Prea multe încercări. Așteaptă {s} secunde.',lkForgot:'Ai uitat PIN-ul?',lkSure:'Apasă din nou: șterge PIN-ul și datele salvate doar pe acest telefon',lkCancel:'Anulează',logT:'Ce e nou',logNew:'Ce e nou în versiunea {v}',logSee:'Vezi detalii'});Object.assign(T.en,{prvT:'Privacy mode',prvHideH:'Replaces amounts with •••• across the screen. You can also toggle it with the eye at the top.',privOn:'Amounts hidden',privOff:'Amounts visible',prvStart:'Hide amounts on launch',prvPin:'Launch PIN',prvPinOn:'On (4 digits). Asked at launch and after the app has been in the background for over 30 seconds.',prvPinOff:'Off.',prvSetPin:'Set PIN',prvChPin:'Change PIN',prvRmPin:'Turn off PIN',prvNote:'A simple lock: it stops casual glances. It does not replace your phone lock and does not encrypt data.',prvNoCrypto:'PIN is not available in this browser.',lkEnter:'Enter your PIN',lkNew:'Choose a 4-digit PIN',lkRep:'Repeat the PIN',lkOld:'Enter your current PIN',lkBad:'Wrong PIN',lkMis:'PINs do not match. Try again.',lkWait:'Too many attempts. Wait {s} seconds.',lkForgot:'Forgot your PIN?',lkSure:'Tap again: removes the PIN and data saved only on this phone',lkCancel:'Cancel',logT:'What’s new',logNew:'What’s new in version {v}',logSee:'See details'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:''},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -300,7 +337,9 @@ const cn=c=>S.lang==='en'&&CN[c]||c;
 const p2=n=>String(n).padStart(2,'0');
 const mk=d=>d.getFullYear()+'-'+p2(d.getMonth()+1);
 const today=()=>mk(new Date())+'-'+p2(new Date().getDate());
-const fmt=n=>{try{return n.toLocaleString(loc(),{style:'currency',currency:S.cur})}catch(e){return n.toFixed(2)+' '+S.cur}};
+const fmtR=n=>{try{return n.toLocaleString(loc(),{style:'currency',currency:S.cur})}catch(e){return n.toFixed(2)+' '+S.cur}};
+const maskS=x=>x.replace(/[-−]/g,'').replace(/\d[\d.,\s\u00a0\u202f]*\d|\d/,'••••');
+const fmt=n=>S.priv?maskS(fmtR(n)):fmtR(n);
 const fd=s=>new Date(s+'T00:00:00').toLocaleDateString(loc(),{day:'2-digit',month:'2-digit',year:'numeric'});
 const mt=d=>{const s=d.toLocaleDateString(loc(),{month:'long',year:'numeric'});return s.charAt(0).toUpperCase()+s.slice(1)};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -317,6 +356,8 @@ function load(){
   if(typeof q.name==='string')S.name=q.name.slice(0,24);
   if(['all','me','partner','shared'].includes(q.scope))S.scope=q.scope;
   if(typeof q.tipDone==='string')S.tipDone=q.tipDone.slice(0,7);
+  if(typeof q.seenVer==='string')S.seenVer=q.seenVer.slice(0,10);
+  if(q.priv===true)S.priv=true;if(q.privStart===true){S.privStart=true;S.priv=true}
  }catch(e){ok=false}
  if(!cats.length)cats=defCats();
 }
@@ -345,12 +386,12 @@ function render(){
  let h=(ok||DB)?'':`<div class="warn">${t('nostore')}</div>`;
  if(C.syncErr)h+=`<div class="warn">${t('syncErr')}</div>`;
  if(apQ().length&&!apReady())h+=`<div class="warn">${t('apWait')}</div>`;
- h+=`<div class="hd"><div><small>${t('app')}</small><h2>${t(hr<12?'gm':hr<18?'ga':'ge')}${S.name?', '+esc(S.name):''} 👋</h2></div><button class="gear" data-act="set" aria-label="${t('set')}">⚙️</button></div>`;
+ h+=`<div class="hd"><div><small>${t('app')}</small><h2>${t(hr<12?'gm':hr<18?'ga':'ge')}${S.name?', '+esc(S.name):''} 👋</h2></div><div class="hbt"><button class="gear" data-act="priv" aria-label="${t(S.priv?'privOn':'privOff')}"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>${S.priv?'<path d="M3 3l18 18"/>':''}</svg></button><button class="gear" data-act="set" aria-label="${t('set')}">⚙️</button></div></div>`;
  h+=scopeBar();
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big">${fmt(bal)}</div><div class="two"><div><span>↑ ${t('inc')}</span><b>${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b>${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${tipCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${whatsNewCard()+tipCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);
@@ -516,7 +557,7 @@ function charts(m,inc,exp){
  return h+'</div>';
 }
 
-function openSet(){applyStatic();$('#st').hidden=false}
+function openSet(){applyStatic();$('#log-v').textContent='v'+APP_VER;$('#st').hidden=false}
 function openBk(){$('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules,goals},null,1);$('#msg').textContent='';$('#imp').textContent=t('imp');$('#imp').classList.remove('dng');armed='';$('#bkp').hidden=false}
 function closeBk(){$('#bkp').hidden=true;armed=''}
 function closeSet(){$('#st').hidden=true;armed=''}
@@ -620,10 +661,12 @@ document.addEventListener('click',e=>{
  if(gm){$('#g-emo').value=gm.dataset.gemo;return}
  const gp=e.target.closest('[data-grp]');
  if(gp){catGrp=gp.dataset.grp;syncGrp();return}
+ const kk=e.target.closest('[data-k]');
+ if(kk){lkKey(kk.dataset.k);return}
  const em=e.target.closest('[data-emo]');
  if(em){$('#c-emo').value=em.dataset.emo;return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='prv')closePrv();if(e.target.id==='log')closeLog();if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add'){if(tab==='bud')toggleFabm();else openSheet(null)}
@@ -654,6 +697,19 @@ document.addEventListener('click',e=>{
  else if(a==='copycode')copyCode();
  else if(a==='addinc'){closeFabm();openSheet(null,undefined,'inc')}
  else if(a==='addcat'){closeFabm();openCat(null)}
+ else if(a==='priv'){S.priv=!S.priv;saveLocal();render();prvRender()}
+ else if(a==='prvopen')openPrv();
+ else if(a==='closeprv')closePrv();
+ else if(a==='privset'){S.priv=b.dataset.v==='1';saveLocal();render();prvRender()}
+ else if(a==='privstart'){S.privStart=!S.privStart;saveLocal();prvRender()}
+ else if(a==='pinset')lockShow('set1');
+ else if(a==='pinchange')lockShow('old');
+ else if(a==='pinoff')lockShow('off');
+ else if(a==='lkforgot')lkForgot();
+ else if(a==='lkcancel'){$('#lock').hidden=true;pinBuf=''}
+ else if(a==='logopen'){closeSet();openLog()}
+ else if(a==='closelog')closeLog();
+ else if(a==='logx'){S.seenVer=APP_VER;saveLocal();render()}
  else if(a==='addgoal')openGoal(null);
  else if(a==='editgoal')openGoal(+b.dataset.id);
  else if(a==='closegoal')closeGoal();
@@ -793,6 +849,100 @@ function copyLink(){
 window.addEventListener('hashchange',apParse);
 
 
+
+/* ===== Jurnal actualizări + mod confidențial ===== */
+const APP_VER='1.5';
+const CHANGELOG=[
+ {v:'1.5',d:'2026-10-11',ro:['Mod confidențial: ascunzi sumele cu ochiul din colțul de sus','PIN opțional la deschiderea aplicației','Jurnal cu ultimele actualizări (această pagină)'],en:['Privacy mode: hide amounts with the eye at the top','Optional PIN when opening the app','Update log (this page)']},
+ {v:'1.4',d:'2026-10-10',ro:['Obiective de economisire: alegi suma și numărul de luni, iar aplicația calculează cât aloci lunar','Regula 50/20/30 în Buget și sfatul lunii','Animație de pornire cu grafic care crește'],en:['Savings goals: pick an amount and months, and the app calculates the monthly amount','50/20/30 rule in Budget and a tip of the month','Startup animation with a growing chart']},
+ {v:'1.3',d:'2026-10-10',ro:['Plăți Apple Pay adăugate automat, cu reguli care învață din corecții','Link rapid cu parametri pentru Comenzi rapide (iOS 17–27)','Ghid și buton de plată de test'],en:['Apple Pay payments added automatically, with rules that learn from corrections','Quick link with parameters for Shortcuts (iOS 17–27)','Guide and a test payment button']},
+ {v:'1.2',d:'2026-10-09',ro:['Tab Buget: venituri, categorii proprii și sume alocate','Bani comuni sau împărțiți, cu împărțire 50/50 sau după venituri','Butonul + diferit pe fiecare pagină'],en:['Budget tab: income, custom categories and allocations','Shared or split money, with a 50/50 or income-based split','The + button differs on each page']},
+ {v:'1.1',d:'2026-10-09',ro:['Cont și partener: sincronizare în timp real','Filtre Eu / Partener / Comun și decontare','Îmbunătățiri pentru ecrane mici și modul întunecat'],en:['Account and partner: real-time sync','Me / Partner / Shared filters and settlement','Improvements for small screens and dark mode']},
+ {v:'1.0',d:'2026-10-08',ro:['Cheltuieli, venituri, plăți de făcut și abonamente','Grafic pe categorii și istoric','Limbă, monedă și backup'],en:['Expenses, income, upcoming payments and subscriptions','Category chart and history','Language, currency and backup']}
+];
+function whatsNewCard(){
+ if(S.seenVer===APP_VER)return '';
+ return `<div class="card tipc"><button class="tipx" data-act="logx" aria-label="OK">✕</button><h3>🆕 ${t('logNew').replace('{v}',APP_VER)}</h3><p class="note">${esc(CHANGELOG[0][S.lang][0])}</p><button class="plt" data-act="logopen">${t('logSee')}</button></div>`;
+}
+function saveLocal(){try{localStorage.setItem(KEY2,JSON.stringify(S))}catch(e){}}
+function openLog(){
+ S.seenVer=APP_VER;saveLocal();
+ $('#log-body').innerHTML=CHANGELOG.map(c=>`<div class="lgv"><b>${t('logT')==='Ce e nou'?'Versiunea':'Version'} ${c.v}</b><span>${fd(c.d)}</span></div><ul class="lgl">${c[S.lang].map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('');
+ $('#log').hidden=false;render();
+}
+function closeLog(){$('#log').hidden=true}
+/* --- PIN --- */
+const KEYP='cheltuieli_pin';
+let pinH=null,lockMode='unlock',pinBuf='',pinTmp='',pinFail=0,pinUntil=0,hiddenAt=0,lkArm=false;
+const canPin=()=>!!(window.crypto&&crypto.subtle&&window.TextEncoder);
+function pinLoad(){try{pinH=JSON.parse(localStorage.getItem(KEYP)||'null')}catch(e){pinH=null}}
+async function hashPin(p,salt){const d=new TextEncoder().encode(salt+':'+p),h=await crypto.subtle.digest('SHA-256',d);return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join('')}
+function lockShow(mode){lockMode=mode;pinBuf='';pinTmp='';lkArm=false;$('#lock').hidden=false;lkRender()}
+function lkRender(msg){
+ const ti={unlock:'lkEnter',off:'lkOld',old:'lkOld',set1:'lkNew',set2:'lkRep'}[lockMode];
+ $('#lk-title').textContent=t(ti);$('#lk-msg').textContent=msg||'';
+ document.querySelectorAll('#lk-dots i').forEach((d,i)=>d.classList.toggle('on',i<pinBuf.length));
+ const f=$('#lk-forgot'),c=$('#lk-cancel');
+ f.hidden=lockMode!=='unlock';f.textContent=lkArm?t('lkSure'):t('lkForgot');
+ c.hidden=lockMode==='unlock';c.textContent=t('lkCancel');
+}
+function lkBad(msg){
+ pinBuf='';lkRender(msg);
+ const d=$('#lk-dots');d.classList.remove('shake');void d.offsetWidth;d.classList.add('shake');
+}
+function lkKey(k){
+ if(k==='b')pinBuf=pinBuf.slice(0,-1);
+ else if(pinBuf.length<4)pinBuf+=k;
+ lkRender();
+ if(pinBuf.length===4)setTimeout(lkDone,120);
+}
+async function lkDone(){
+ const p=pinBuf;if(p.length!==4)return;
+ try{
+  if(lockMode==='set1'){pinTmp=p;pinBuf='';lockMode='set2';lkRender();return}
+  if(lockMode==='set2'){
+   if(p!==pinTmp){lockMode='set1';pinTmp='';lkBad(t('lkMis'));return}
+   const salt=Math.random().toString(36).slice(2,10);
+   pinH={s:salt,h:await hashPin(p,salt)};
+   try{localStorage.setItem(KEYP,JSON.stringify(pinH))}catch(e){}
+   $('#lock').hidden=true;prvRender();return;
+  }
+  if(Date.now()<pinUntil){lkBad(t('lkWait').replace('{s}',Math.ceil((pinUntil-Date.now())/1000)));return}
+  const ok=pinH&&(await hashPin(p,pinH.s))===pinH.h;
+  if(!ok){pinFail++;if(pinFail>=5){pinUntil=Date.now()+30000;pinFail=0}lkBad(t('lkBad'));return}
+  pinFail=0;
+  if(lockMode==='unlock')$('#lock').hidden=true;
+  else if(lockMode==='off'){pinH=null;try{localStorage.removeItem(KEYP)}catch(e){}$('#lock').hidden=true;prvRender()}
+  else if(lockMode==='old'){lockMode='set1';pinBuf='';lkRender()}
+ }catch(e){console.error(e);lkBad('Eroare')}
+}
+function lkForgot(){
+ if(!lkArm){lkArm=true;lkRender();return}
+ try{localStorage.removeItem(KEYP);localStorage.removeItem(KEY)}catch(e){}
+ location.reload();
+}
+function prvRender(){
+ const el=$('#prv-body');if(!el||$('#prv').hidden)return;
+ let h=`<p class="hint">${t('prvHideH')}</p><div class="seg"><button data-act="privset" data-v="0" class="${S.priv?'':'on'}">${t('privOff')}</button><button data-act="privset" data-v="1" class="${S.priv?'on':''}">${t('privOn')}</button></div>`;
+ h+=`<button class="menu" data-act="privstart"><span>${t('prvStart')}</span><span>${S.privStart?'✓':'○'}</span></button>`;
+ h+=`<h3 style="margin:16px 0 4px;font-size:16px">${t('prvPin')}</h3><p class="hint">${pinH?t('prvPinOn'):t('prvPinOff')}</p>`;
+ if(!canPin())h+=`<p class="hint">${t('prvNoCrypto')}</p>`;
+ else if(pinH)h+=`<div class="btns"><button data-act="pinchange">${t('prvChPin')}</button><button data-act="pinoff">${t('prvRmPin')}</button></div>`;
+ else h+=`<div class="btns"><button class="pri" data-act="pinset">${t('prvSetPin')}</button></div>`;
+ h+=`<p class="hint">${t('prvNote')}</p>`;
+ el.innerHTML=h;
+}
+function openPrv(){$('#prv').hidden=false;prvRender()}
+function closePrv(){$('#prv').hidden=true}
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){hiddenAt=Date.now();return}
+ if(pinH&&$('#lock').hidden&&Date.now()-hiddenAt>30000)lockShow('unlock');
+});
+document.addEventListener('keydown',e=>{
+ if($('#lock').hidden)return;
+ if(/^\d$/.test(e.key))lkKey(e.key);else if(e.key==='Backspace')lkKey('b');
+});
+
 /* ===== Economii, regula 50/20/30, sfatul lunii ===== */
 const mi=ym=>+ym.slice(0,4)*12+(+ym.slice(5,7)-1);
 const ymAdd=(ym,n)=>{const i=mi(ym)+n;return Math.floor(i/12)+'-'+p2(i%12+1)};
@@ -840,7 +990,7 @@ function goalPrev(){
  const left=Math.max(0,tg-sv-dep);
  if(left<=0){el.textContent=t('gPrevDone');return}
  const endYm=ymAdd(start,mo-1),cur=mk(new Date()),from=cur>start?cur:start,n=Math.max(1,mi(endYm)-mi(from)+1);
- el.textContent=t('gPrev').replace('{a}',fmt(left/n)).replace('{n}',n).replace('{d}',monthLbl(endYm));
+ el.textContent=t('gPrev').replace('{a}',fmtR(left/n)).replace('{n}',n).replace('{d}',monthLbl(endYm));
 }
 function saveGoal(){
  const name=$('#g-name').value.trim().slice(0,30),emo=($('#g-emo').value.trim()||'🎯').slice(0,4);
@@ -915,7 +1065,7 @@ const share=(x,ym)=>{if(!C.hid||C.mode==='common')return x.amt;if(x.own==='share
 function bud(c,ym,w){const ks=Object.keys(c.b||{}).filter(k=>k<=ym&&c.b[k]&&c.b[k][w]!==undefined).sort();return ks.length?(+c.b[ks[ks.length-1]][w]||0):0}
 const incomeIn=ym=>{let s=0;tx.forEach(x=>{if(x.type==='inc'&&x.date.startsWith(ym))s+=share(x,ym)});return s};
 const spentIn=(n,ym)=>{let s=0;tx.forEach(x=>{if(x.type==='exp'&&x.cat===n&&x.date.startsWith(ym))s+=share(x,ym)});return s};
-const nf=n=>n.toLocaleString(loc(),{maximumFractionDigits:2});
+const nf=n=>S.priv?'••••':n.toLocaleString(loc(),{maximumFractionDigits:2});
 const stCol=(s,b)=>b>0?(s>b?'var(--r)':s>=b*.8?'#d97706':null):(s>0?'var(--r)':null);
 function budgetPane(){
  const ym=mk(view),w=wal(),inc=incomeIn(ym);
@@ -1205,7 +1355,7 @@ function reveal(){
 }
 const T0=performance.now();
 try{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){})}catch(e){}
-load();applyStatic();render();cloudInit();apParse();
+pinLoad();load();applyStatic();render();if(pinH)lockShow('unlock');cloudInit();apParse();
 Promise.race([Promise.all([initDb(),bootP]),new Promise(r=>setTimeout(r,2600))]).then(()=>setTimeout(reveal,Math.max(0,1000-(performance.now()-T0))));
 </script>
 </body>
