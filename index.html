@@ -84,8 +84,8 @@ button:active{transform:scale(.97)}
 #ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep,#prv,#log{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet,#prv .sheet,#log .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
+#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep,#prv,#log,#csv,#jrn{align-items:center;padding:16px}
+#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet,#prv .sheet,#log .sheet,#csv .sheet,#jrn .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
 @keyframes pop{from{opacity:0;transform:scale(.94)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
@@ -191,6 +191,9 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
 .lk-f{margin-top:14px;background:transparent;border:0;color:#fff;text-decoration:underline;font-size:14px}
 .lgv{margin:14px 0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}.lgv b{font-size:16px}.lgv span{color:var(--muted);font-size:13px}
 .lgl{margin:2px 0 0;padding-left:18px;font-size:14px}.lgl li{margin:4px 0}
+.filebtn{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;background:var(--accent);color:var(--on)!important;font-weight:650;cursor:pointer;margin:8px 0}.filebtn input{display:none}
+.cpv{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:14px}.cpv:last-child{border:0}.cpv span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cpv b{white-space:nowrap}
+.jrow{display:flex;gap:10px;align-items:flex-start;padding:8px 0}.av{width:34px;height:34px;border-radius:17px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:700;flex:none}.jrow small{display:block;color:var(--muted);font-size:12px}
 </style>
 </head>
 <body>
@@ -224,6 +227,8 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
   <p class="hint" data-i="curh"></p>
+  <button class="menu" data-act="csvopen"><span data-i="csvT"></span><span>›</span></button>
+  <button class="menu" data-act="jrnopen"><span data-i="jrnT"></span><span>›</span></button>
   <button class="menu" data-act="prvopen"><span data-i="prvT"></span><span>›</span></button>
   <button class="menu" data-act="logopen"><span data-i="logT"></span><span><span id="log-v"></span> ›</span></button>
   <button class="menu" data-act="rulopen"><span data-i="apm"></span><span>›</span></button>
@@ -315,6 +320,19 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <button id="lk-cancel" class="lk-f" data-act="lkcancel" hidden></button>
  </div>
 </div>
+<div id="csv" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="csvT"></h2><div class="mr"><button class="nb" data-act="closecsv" aria-label="Back">‹</button><button id="csv-go" class="nb done" data-act="csvgo" hidden></button></div></div>
+  <div id="csv-body"></div>
+  <div id="csv-msg" class="msg"></div>
+ </div>
+</div>
+<div id="jrn" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="jrnT"></h2><div class="mr"><button class="nb" data-act="closejrn" aria-label="Back">‹</button></div></div>
+  <div id="jrn-body"></div>
+ </div>
+</div>
 <script>
 const KEY='cheltuieli_v1',KEY2='cheltuieli_set',KEY3='cheltuieli_cloud',KEYQ='cheltuieli_apq';
 const T={
@@ -326,9 +344,10 @@ Object.assign(T.ro,{apm:'Apple Pay și reguli',apIntro:'Plățile cu Apple Pay s
 Object.assign(T.ro,{apAT:'Varianta 1 · Automat cu Apple Pay (iOS 17 sau mai nou)',apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) iOS 17–26: Comenzi rapide → Automatizare → + → Transaction (pe iOS 26: Wallet) → alege cardurile → Run Immediately → New Blank Automation.\n    iOS 27: creează o comandă nouă, apoi Edit → Automation → Transaction, la „When I tap” alege Any Card. Apoi ⓘ → Privacy → pornește Allow Running When Locked.\n2) Prima acțiune: URL Encode. La input alege Shortcut Input și apasă pe el ca să alegi proprietatea Merchant.\n3) A doua acțiune: URL. Scrie linkul de sus (se termină cu ?amt=), adaugă Shortcut Input → proprietatea Amount, scrie &m= și adaugă rezultatul URL Encoded Text de la pasul 2 (Select Variable → bulina albastră de sub acțiune).\n4) A treia acțiune: Open URLs.\n5) Fă o plată de test.\nAtenție: nu codifica tot linkul, doar comerciantul, altfel ? & = / se strică.',apBT:'Varianta 2 · Manual, pe orice iOS',apB:'1) Comenzi rapide → fila Shortcuts → + (comandă nouă).\n2) Add Action → Ask for Input: tip Number, întrebare „Cât ai plătit?”.\n3) Încă un Ask for Input: tip Text, întrebare „Unde ai plătit?”.\n4) Add Action → URL Encode, cu rezultatul întrebării a doua (locul).\n5) Add Action → URL: linkul de sus (se termină cu ?amt=), variabila primei întrebări (suma), scrie &m= și rezultatul URL Encoded Text.\n6) Add Action → Open URLs.\n7) Apasă numele comenzii → Add to Home Screen, sau cheam-o cu Siri.',apTest:'Trimite o plată de test'});Object.assign(T.en,{apAT:'Option 1 · Automatic with Apple Pay (iOS 17 or later)',apA:'0) iPhone Settings → Apps → Wallet → turn on Mobile Data.\n1) iOS 17–26: Shortcuts → Automation → + → Transaction (iOS 26: Wallet) → pick your cards → Run Immediately → New Blank Automation.\n    iOS 27: create a new shortcut, then Edit → Automation → Transaction, under “When I tap” choose Any Card. Then ⓘ → Privacy → turn on Allow Running When Locked.\n2) First action: URL Encode. For its input choose Shortcut Input and tap it to pick the Merchant property.\n3) Second action: URL. Type the link above (it ends with ?amt=), add Shortcut Input → Amount property, type &m= and add the URL Encoded Text result from step 2 (Select Variable → the blue token under the action).\n4) Third action: Open URLs.\n5) Make a test payment.\nCareful: do not encode the whole link, only the merchant, or ? & = / get broken.',apBT:'Option 2 · Manual, any iOS',apB:'1) Shortcuts → Shortcuts tab → + (new shortcut).\n2) Add Action → Ask for Input: type Number, question “How much did you pay?”.\n3) Another Ask for Input: type Text, question “Where did you pay?”.\n4) Add Action → URL Encode, with the answer of the second question (the place).\n5) Add Action → URL: the link above (ends with ?amt=), the variable of the first question (amount), type &m= and the URL Encoded Text result.\n6) Add Action → Open URLs.\n7) Tap the shortcut name → Add to Home Screen, or call it with Siri.',apTest:'Send a test payment'});
 Object.assign(T.ro,{gTitle:'Obiective de economisire',gNone:'Niciun obiectiv. Alege suma și în câte luni vrei s-o strângi, iar eu calculez cât să aloci lunar.',gAdd:'Obiectiv nou',gNew:'Obiectiv nou',gEdit:'Editează obiectivul',gName:'Nume (de ex. Vacanță)',gTarget:'Suma țintă',gSaved:'Deja economisit (opțional)',gMonths:'În câte luni vrei să ajungi la obiectiv',gDeposit:'Depune',gPlan:'Alocă lunar',gMonthsLeft:'{n} luni rămase',gDeadline:'termen',gDone:'Obiectiv atins 🎉',gThisMonth:'Depus luna asta',gPrev:'Trebuie să aloci {a} pe lună, timp de {n} luni, până în {d}.',gPrevDone:'Ai deja suma țintă.',gBad:'Verifică numele, suma țintă și numărul de luni (1–600).',gDel:'Șterge obiectivul',gDepTitle:'Depune în {g}',gDepHint:'Suma se scade din sold ca o cheltuială în categoria Economii și se adaugă la obiectiv.',gAlloc:'Alocat pentru economii',r532T:'Regula 50/20/30',r532Need:'Necesități (50%)',r532Sav:'Economii (20%)',r532Want:'Dorințe (30%)',r532NoInc:'Adaugă venitul lunii ca să calculez regula 50/20/30.',tipT:'Sfatul lunii',tipRule:'Cu venitul de {i}, regula 50/20/30 înseamnă: necesități {a}, economii {b}, dorințe {c}.',tipOpen:'Vezi în Buget',cGrp:'Tip cheltuială (pentru regula 50/20/30)',gNeed:'Necesitate',gWant:'Dorință'});Object.assign(T.en,{gTitle:'Savings goals',gNone:'No goals yet. Pick an amount and in how many months you want it, and I will calculate how much to set aside monthly.',gAdd:'New goal',gNew:'New goal',gEdit:'Edit goal',gName:'Name (e.g. Vacation)',gTarget:'Target amount',gSaved:'Already saved (optional)',gMonths:'In how many months do you want to reach it',gDeposit:'Deposit',gPlan:'Set aside monthly',gMonthsLeft:'{n} months left',gDeadline:'deadline',gDone:'Goal reached 🎉',gThisMonth:'Deposited this month',gPrev:'You need to set aside {a} per month, for {n} months, until {d}.',gPrevDone:'You already have the target amount.',gBad:'Check the name, target amount and number of months (1–600).',gDel:'Delete goal',gDepTitle:'Deposit into {g}',gDepHint:'The amount is deducted from your balance as an expense in the Savings category and added to the goal.',gAlloc:'Allocated to savings',r532T:'50/20/30 rule',r532Need:'Needs (50%)',r532Sav:'Savings (20%)',r532Want:'Wants (30%)',r532NoInc:'Add this month’s income so I can calculate the 50/20/30 rule.',tipT:'Tip of the month',tipRule:'With an income of {i}, the 50/20/30 rule means: needs {a}, savings {b}, wants {c}.',tipOpen:'See in Budget',cGrp:'Expense type (for the 50/20/30 rule)',gNeed:'Need',gWant:'Want'});
 Object.assign(T.ro,{prvT:'Mod confidențial',prvHideH:'Înlocuiește sumele cu •••• pe tot ecranul. Îl poți porni și cu ochiul din colțul de sus.',privOn:'Sume ascunse',privOff:'Sume vizibile',prvStart:'Ascunde sumele la deschidere',prvPin:'PIN de deschidere',prvPinOn:'Activ (4 cifre). Se cere la deschidere și după ce lași aplicația în fundal mai mult de 30 de secunde.',prvPinOff:'Dezactivat.',prvSetPin:'Setează PIN',prvChPin:'Schimbă PIN-ul',prvRmPin:'Oprește PIN-ul',prvNote:'Blocare simplă: împiedică privirile în treacăt. Nu înlocuiește blocarea telefonului și nu criptează datele.',prvNoCrypto:'PIN-ul nu e disponibil în acest browser.',lkEnter:'Introdu PIN-ul',lkNew:'Alege un PIN de 4 cifre',lkRep:'Repetă PIN-ul',lkOld:'Introdu PIN-ul curent',lkBad:'PIN greșit',lkMis:'PIN-urile nu se potrivesc. Încearcă din nou.',lkWait:'Prea multe încercări. Așteaptă {s} secunde.',lkForgot:'Ai uitat PIN-ul?',lkSure:'Apasă din nou: șterge PIN-ul și datele salvate doar pe acest telefon',lkCancel:'Anulează',logT:'Ce e nou',logNew:'Ce e nou în versiunea {v}',logSee:'Vezi detalii'});Object.assign(T.en,{prvT:'Privacy mode',prvHideH:'Replaces amounts with •••• across the screen. You can also toggle it with the eye at the top.',privOn:'Amounts hidden',privOff:'Amounts visible',prvStart:'Hide amounts on launch',prvPin:'Launch PIN',prvPinOn:'On (4 digits). Asked at launch and after the app has been in the background for over 30 seconds.',prvPinOff:'Off.',prvSetPin:'Set PIN',prvChPin:'Change PIN',prvRmPin:'Turn off PIN',prvNote:'A simple lock: it stops casual glances. It does not replace your phone lock and does not encrypt data.',prvNoCrypto:'PIN is not available in this browser.',lkEnter:'Enter your PIN',lkNew:'Choose a 4-digit PIN',lkRep:'Repeat the PIN',lkOld:'Enter your current PIN',lkBad:'Wrong PIN',lkMis:'PINs do not match. Try again.',lkWait:'Too many attempts. Wait {s} seconds.',lkForgot:'Forgot your PIN?',lkSure:'Tap again: removes the PIN and data saved only on this phone',lkCancel:'Cancel',logT:'What’s new',logNew:'What’s new in version {v}',logSee:'See details'});
+Object.assign(T.ro,{csvT:'Import din extras de cont (CSV)',csvIntro:'Alege fișierul CSV exportat din aplicația băncii sau lipește conținutul lui. Recunosc singur coloanele și comercianții; poți corecta înainte de import. Sumele în altă monedă se sar.',csvPick:'Alege fișier CSV',csvPaste:'sau lipește aici conținutul:',csvNext:'Continuă',csvCols:'Coloane',cDate:'Data',cDesc:'Descriere',cAmt:'Sumă (cu semn)',cDeb:'Debit (opțional)',cCre:'Credit (opțional)',cNone:'— nimic —',csvFmt:'Format dată',csvDmy:'zi / lună / an',csvMdy:'lună / zi / an',csvNeg:'Sumele negative sunt cheltuieli',csvDup:'Sari peste ce pare deja introdus (aceeași sumă, ±1 zi)',csvFlag:'Marchează cu ❓ ce nu recunosc',csvSum:'{n} tranzacții de importat: {e} cheltuieli, {i} venituri',csvSkip:'Sărite: {d} deja existente, {b} rânduri invalide, {o} în altă monedă, {s} respinse sau în așteptare',csvPrev:'Previzualizare',csvGo:'Importă',csvDone:'Importate: {n} tranzacții',csvEmpty:'Nu am găsit rânduri valide. Verifică coloanele și formatul datei.',csvRead:'Nu am putut citi fișierul.',jrnT:'Jurnal de activitate',jrnNone:'Încă nu există activitate.',lgYou:'Tu',lgAdd:'a adăugat',lgEdit:'a modificat',lgDel:'a șters',lgPaid:'a plătit',lgImp:'a importat {n} tranzacții din CSV',lgDep:'a depus în obiectivul {g}',lgExp:'cheltuiala',lgInc:'venitul',lgPlan:'plata de făcut',lgSub:'abonamentul'});Object.assign(T.en,{csvT:'Import from bank statement (CSV)',csvIntro:'Choose the CSV exported from your bank app or paste its contents. I detect columns and merchants automatically; you can correct before importing. Amounts in other currencies are skipped.',csvPick:'Choose CSV file',csvPaste:'or paste the contents here:',csvNext:'Continue',csvCols:'Columns',cDate:'Date',cDesc:'Description',cAmt:'Amount (signed)',cDeb:'Debit (optional)',cCre:'Credit (optional)',cNone:'— none —',csvFmt:'Date format',csvDmy:'day / month / year',csvMdy:'month / day / year',csvNeg:'Negative amounts are expenses',csvDup:'Skip what looks already entered (same amount, ±1 day)',csvFlag:'Mark unrecognised ones with ❓',csvSum:'{n} transactions to import: {e} expenses, {i} income',csvSkip:'Skipped: {d} already existing, {b} invalid rows, {o} other currency, {s} declined or pending',csvPrev:'Preview',csvGo:'Import',csvDone:'Imported: {n} transactions',csvEmpty:'No valid rows found. Check the columns and date format.',csvRead:'Could not read the file.',jrnT:'Activity log',jrnNone:'No activity yet.',lgYou:'You',lgAdd:'added',lgEdit:'edited',lgDel:'deleted',lgPaid:'paid',lgImp:'imported {n} transactions from CSV',lgDep:'deposited into goal {g}',lgExp:'expense',lgInc:'income',lgPlan:'upcoming payment',lgSub:'subscription'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
-let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
+let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
 view.setDate(1);
 const $=s=>document.querySelector(s);
 const t=k=>T[S.lang][k];
@@ -349,7 +368,7 @@ const err=m=>{$('#err').textContent=m};
 function load(){
  try{localStorage.setItem('_t','1');localStorage.removeItem('_t');
   const r=localStorage.getItem(KEY);
-  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats;if(Array.isArray(o.rules))rules=o.rules;if(Array.isArray(o.goals))goals=o.goals}
+  if(r){const o=JSON.parse(r);U=+o.u||((o.tx&&o.tx.length)||(o.planned&&o.planned.length)||(o.subs&&o.subs.length)?1:0);if(Array.isArray(o.tx))tx=o.tx;if(Array.isArray(o.planned))pl=o.planned;if(Array.isArray(o.subs))subs=o.subs;if(Array.isArray(o.cats))cats=o.cats;if(Array.isArray(o.rules))rules=o.rules;if(Array.isArray(o.goals))goals=o.goals;if(Array.isArray(o.logs))logs=o.logs}
   const q=JSON.parse(localStorage.getItem(KEY2)||'{}');
   if(T[q.lang])S.lang=q.lang;
   if(['RON','EUR','USD','GBP','MDL'].includes(q.cur))S.cur=q.cur;
@@ -362,7 +381,7 @@ function load(){
  if(!cats.length)cats=defCats();
 }
 let U=0,DB=null,pushT=0;
-function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,rules,goals,u:U}))}catch(e){ok=false}}
+function wr(){try{localStorage.setItem(KEY,JSON.stringify({tx,planned:pl,subs,cats,rules,goals,logs,u:U}))}catch(e){ok=false}}
 function push(){
  if(!DB)return;clearTimeout(pushT);
  pushT=setTimeout(()=>{try{DB.set({tx,planned:pl,subs,set:{lang:S.lang,cur:S.cur,name:S.name},u:U}).catch(e=>console.error('db',e))}catch(e){console.error('db',e)}},500);
@@ -495,10 +514,10 @@ function payPlan(key){
  const id=+key.slice(1),ym=mk(view),cur=ym<=mk(new Date());
  if(key[0]==='p'){
   const x=pl.find(r=>r.id===id);
-  if(x){pl=pl.filter(r=>r.id!==id);tx.push({id:x.id,type:'exp',amt:x.amt,cat:x.cat,date:today(),note:x.note,...(x.own?{own:x.own}:{}),...(x.own==='shared'?{by:C.uid}:{})});save()}
+  if(x){pl=pl.filter(r=>r.id!==id);tx.push({id:x.id,type:'exp',amt:x.amt,cat:x.cat,date:today(),note:x.note,...(x.own?{own:x.own}:{}),...(x.own==='shared'?{by:C.uid}:{})});logAdd('paid','plan',{c:x.cat,m:x.amt,n:x.note});save()}
  }else{
   const sb=subs.find(r=>r.id===id);
-  if(sb&&!paidSub(sb,ym)){tx.push({id:Date.now(),type:'exp',amt:sb.amt,cat:sb.cat,date:ym<mk(new Date())?dueOf(sb,ym):today(),note:sb.note,sid:sb.id,sm:ym,...(sb.own?{own:sb.own}:{}),...(sb.own==='shared'?{by:C.uid}:{})});save()}
+  if(sb&&!paidSub(sb,ym)){tx.push({id:Date.now(),type:'exp',amt:sb.amt,cat:sb.cat,date:ym<mk(new Date())?dueOf(sb,ym):today(),note:sb.note,sid:sb.id,sm:ym,...(sb.own?{own:sb.own}:{}),...(sb.own==='shared'?{by:C.uid}:{})});logAdd('paid','sub',{c:sb.cat,m:sb.amt,n:sb.note});save()}
  }
  render();
 }
@@ -639,6 +658,7 @@ function saveTx(){
   else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7),...(own?{own}:{})});
   else tx.push({id,type,...o,...(old&&old.sid&&type==='exp'?{sid:old.sid,sm:old.sm}:{}),...(old&&old.ap?{ap:old.ap}:{}),...(old&&old.sv?{sv:old.sv}:{})});
   if(old&&old.ap&&type==='exp')learnRule(old.ap,o.cat,o.note,own);
+  logAdd(edId?'edit':'add',type==='inc'?'inc':type==='plan'?'plan':type==='sub'?'sub':'exp',{c:o.cat,m:o.amt,n:o.note});
   view=new Date(d+'T00:00:00');view.setDate(1);
   try{save()}catch(e){console.error(e)}
   closeSheet();render();
@@ -647,6 +667,7 @@ function saveTx(){
 function delTx(){
  const b=$('#del');
  if(armed!=='del'){armed='del';b.textContent=t('sure');b.classList.add('dng');return}
+ {let kd='exp',it=tx.find(r=>r.id===edId);if(it)kd=it.type==='inc'?'inc':'exp';else if(it=pl.find(r=>r.id===edId))kd='plan';else if(it=subs.find(r=>r.id===edId))kd='sub';if(it)logAdd('del',kd,{c:it.cat,m:it.amt,n:it.note})}
  tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId);save();closeSheet();render();
 }
 
@@ -666,7 +687,7 @@ document.addEventListener('click',e=>{
  const em=e.target.closest('[data-emo]');
  if(em){$('#c-emo').value=em.dataset.emo;return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='prv')closePrv();if(e.target.id==='log')closeLog();if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='csv')closeCsv();if(e.target.id==='jrn')closeJrn();if(e.target.id==='prv')closePrv();if(e.target.id==='log')closeLog();if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add'){if(tab==='bud')toggleFabm();else openSheet(null)}
@@ -697,6 +718,13 @@ document.addEventListener('click',e=>{
  else if(a==='copycode')copyCode();
  else if(a==='addinc'){closeFabm();openSheet(null,undefined,'inc')}
  else if(a==='addcat'){closeFabm();openCat(null)}
+ else if(a==='csvopen'){closeSet();openCsv()}
+ else if(a==='closecsv')closeCsv();
+ else if(a==='csvparse'){const v=$('#csv-text').value;if(v.trim())csvLoad(v)}
+ else if(a==='csvtog'){csvOpt[b.dataset.ct]=!csvOpt[b.dataset.ct];csvRender()}
+ else if(a==='csvgo')csvImport();
+ else if(a==='jrnopen'){closeSet();openJrn()}
+ else if(a==='closejrn')closeJrn();
  else if(a==='priv'){S.priv=!S.priv;saveLocal();render();prvRender()}
  else if(a==='prvopen')openPrv();
  else if(a==='closeprv')closePrv();
@@ -796,7 +824,7 @@ function apAdd(amt,mer){
  if(!cat||!cats.some(c=>c.name===cat))cat=cats.some(c=>c.name==='Altele')?'Altele':((cats[0]&&cats[0].name)||'Altele');
  const x={id:Date.now(),type:'exp',amt,cat,date:today(),note:note||apPretty(mer),ap:mer,...(chk?{chk:1}:{})};
  if(C.hid){x.own=(own==='shared'||C.mode==='common')?'shared':C.uid;if(x.own==='shared')x.by=C.uid}
- tx.push(x);save();return x;
+ tx.push(x);logAdd('add','exp',{c:cat,m:amt,n:x.note,v:'ap'});save();return x;
 }
 function apRun(){
  const q=apQ();if(!q.length)return;
@@ -850,9 +878,188 @@ window.addEventListener('hashchange',apParse);
 
 
 
+
+/* ===== Import CSV de la bancă ===== */
+const NOISE=new Set('plata plati card pos tranzactie cumparare achizitie terminal retail comerciant ref tid mid rrn'.split(' '));
+const cleanDesc=x=>{let w=String(x||'').replace(/[*_]+/g,' ').replace(/\s+/g,' ').trim().split(' ');while(w.length>1&&NOISE.has(nm(w[0])))w.shift();const r=w.filter(y=>!/\d{4,}/.test(y)).join(' ').slice(0,80);return r||String(x||'').slice(0,80)};
+let csvRows=[],csvHead=0,csvMap={},csvOpt={neg:true,dup:true,flag:true,dmy:true};
+function parseCSV(txt){
+ const sample=txt.split(/\r?\n/).slice(0,8).join('\n'),cnt=ch=>sample.split(ch).length-1;
+ let d=',';if(cnt(';')>cnt(d))d=';';if(cnt('\t')>cnt(d))d='\t';
+ const rows=[];let row=[],cur='',q=false;
+ for(let i=0;i<txt.length;i++){
+  const ch=txt[i];
+  if(q){if(ch==='"'){if(txt[i+1]==='"'){cur+='"';i++}else q=false}else cur+=ch}
+  else if(ch==='"')q=true;
+  else if(ch===d){row.push(cur);cur=''}
+  else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&txt[i+1]==='\n')i++;row.push(cur);cur='';if(row.some(v=>v.trim()!==''))rows.push(row);row=[]}
+  else cur+=ch;
+ }
+ if(cur!==''||row.length){row.push(cur);if(row.some(v=>v.trim()!==''))rows.push(row)}
+ return rows;
+}
+function findHead(rows){
+ const HK=/data|date|descri|detal|suma|amount|debit|credit|valoare|merchant|beneficiar|explica|moneda|currency|sold|balance|started|completed|payee|referin|reference/i;
+ for(let i=0;i<Math.min(rows.length,40);i++){const hits=rows[i].filter(c=>HK.test(c)&&!/\d{2}[.\/-]\d{2}/.test(c)).length;if(hits>=3)return i}
+ return 0;
+}
+function guessMap(h){
+ const ix=re=>h.findIndex(c=>re.test(c));
+ const m={date:-1,desc:-1,amt:-1,deb:-1,cre:-1,cur:-1,st:-1,descs:[]};
+ m.date=ix(/completed|data.*(tranzac|oper|proces)|transaction.*date|booking|posting/i);
+ if(m.date<0)m.date=ix(/^data$|^date$|started|data|date/i);
+ m.deb=ix(/^debit|retras|plati|withdraw|money out|paid out/i);
+ m.cre=ix(/^credit|incas|depuner|deposit|money in|paid in/i);
+ if(m.deb>=0&&m.cre>=0&&m.deb===m.cre)m.cre=-1;
+ m.amt=ix(/^suma$|^amount$|^valoare|suma tranzac|^sum$/i);
+ if(m.amt<0&&m.deb<0&&m.cre<0)m.amt=ix(/suma|amount|valoare/i);
+ m.cur=ix(/currency|moneda|valuta/i);m.st=ix(/^state$|^status$|stare/i);
+ h.forEach((c,i)=>{if(/descri|detal|explica|merchant|beneficiar|payee|narrati/i.test(c)&&m.descs.length<2)m.descs.push(i)});
+ if(!m.descs.length){const r=ix(/referin|reference|ordonator/i);if(r>=0)m.descs.push(r)}
+ m.desc=m.descs.length?m.descs[0]:-1;
+ return m;
+}
+function parseDateStr(x){
+ x=String(x||'').trim();let m=x.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/),y,mo,d;
+ if(m){y=+m[1];mo=+m[2];d=+m[3]}
+ else{m=x.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/);if(!m)return null;const a=+m[1],b=+m[2];y=+m[3];if(y<100)y+=2000;
+  if(a>12){d=a;mo=b}else if(b>12){mo=a;d=b}else if(csvOpt.dmy){d=a;mo=b}else{mo=a;d=b}}
+ if(y<2000||y>2100||mo<1||mo>12||d<1||d>31)return null;
+ return y+'-'+p2(mo)+'-'+p2(d);
+}
+function csvInterp(r){
+ const g=i=>(i>=0&&i<r.length)?String(r[i]).trim():'';
+ const date=parseDateStr(g(csvMap.date));
+ let amt=0,exp=true;
+ if(csvMap.deb>=0||csvMap.cre>=0){
+  const dv=parseAmt(g(csvMap.deb)),cv=parseAmt(g(csvMap.cre));
+  if(dv>0&&!(cv>0)){amt=dv;exp=true}else if(cv>0&&!(dv>0)){amt=cv;exp=false}else if(dv>0&&cv>0){amt=Math.abs(cv-dv);exp=dv>=cv}
+ }else if(csvMap.amt>=0){
+  const raw=g(csvMap.amt),neg=/^[-−(]/.test(raw)||/-\s*$/.test(raw);
+  amt=parseAmt(raw);exp=csvOpt.neg?neg:!neg;
+ }
+ const desc=(csvMap.descs||[]).map(g).filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+ return {date,amt,exp,desc,cur:g(csvMap.cur).toUpperCase(),st:g(csvMap.st)};
+}
+function csvBuild(){
+ const rows=csvRows.slice(csvHead+1,csvHead+3001),items=[];
+ let bad=0,other=0,stt=0,dup=0;
+ const pool=tx.map(x=>({x,used:false}));
+ const dd=(a,b)=>Math.abs((new Date(a+'T00:00:00')-new Date(b+'T00:00:00'))/864e5);
+ const base=Date.now();
+ rows.forEach(r=>{
+  const v=csvInterp(r);
+  if(!v.date||!(v.amt>0)){bad++;return}
+  if(v.cur&&v.cur!==S.cur){other++;return}
+  if(/revert|declin|fail|cancel|pending|respins|refuz|anulat|asteptare|așteptare/i.test(v.st)){stt++;return}
+  const type=v.exp?'exp':'inc';
+  if(csvOpt.dup){
+   const hit=pool.find(q=>!q.used&&q.x.type===type&&Math.abs(q.x.amt-v.amt)<.005&&dd(q.x.date,v.date)<=1);
+   if(hit){hit.used=true;dup++;return}
+  }
+  const cd=cleanDesc(v.desc)||(v.exp?'—':'Venit');
+  let cat,note,chk=0,own=null;
+  if(v.exp){
+   const n=nm(cd),rl=bestRule(n);
+   if(rl){cat=rl.cat;note=rl.note;own=rl.own}else{cat=defCat(n);if(!cat&&csvOpt.flag)chk=1}
+   if(!cat||!cats.some(c=>c.name===cat))cat=cats.some(c=>c.name==='Altele')?'Altele':((cats[0]&&cats[0].name)||'Altele');
+   note=note||apPretty(cd);
+  }else{cat=/salar|salary|wage/i.test(v.desc)?'Salariu':'Altele';note=cd==='Venit'?'':apPretty(cd)}
+  const x={id:base+items.length,type,amt:v.amt,cat,date:v.date,note:note||'',...(v.exp?{ap:cd}:{}),...(chk?{chk:1}:{})};
+  if(C.hid){x.own=(own==='shared'||C.mode==='common')?'shared':C.uid;if(x.own==='shared'&&v.exp)x.by=C.uid}
+  items.push(x);
+ });
+ return {items,bad,other,stt,dup};
+}
+function csvRender(){
+ const el=$('#csv-body'),go=$('#csv-go');if(!el)return;
+ if(!csvRows.length){
+  go.hidden=true;
+  el.innerHTML=`<p class="hint">${t('csvIntro')}</p><label class="filebtn">${t('csvPick')}<input type="file" id="csv-file" accept=".csv,.tsv,.txt,text/csv,text/plain,text/tab-separated-values"></label><p class="hint">${t('csvPaste')}</p><textarea id="csv-text" rows="4" spellcheck="false"></textarea><div class="btns"><button data-act="csvparse">${t('csvNext')}</button></div>`;
+  return;
+ }
+ const head=csvRows[csvHead]||[];
+ const opts=cur=>`<option value="-1">${t('cNone')}</option>`+head.map((hh,i)=>`<option value="${i}"${cur===i?' selected':''}>${esc((hh||('#'+(i+1))).slice(0,30))}</option>`).join('');
+ const sel=(k,l)=>`<label><span>${l}</span><select data-csvm="${k}">${opts(csvMap[k])}</select></label>`;
+ const tog=(k,l)=>`<button class="menu" data-act="csvtog" data-ct="${k}"><span>${l}</span><span>${csvOpt[k]?'✓':'○'}</span></button>`;
+ const B=csvBuild(),ne=B.items.filter(x=>x.type==='exp').length,ni=B.items.length-ne;
+ let h=`<p class="hint">${t('csvCols')}</p>`+sel('date',t('cDate'))+sel('desc',t('cDesc'))+sel('amt',t('cAmt'))+sel('deb',t('cDeb'))+sel('cre',t('cCre'));
+ h+=`<label><span>${t('csvFmt')}</span><select id="csv-dmy"><option value="1"${csvOpt.dmy?' selected':''}>${t('csvDmy')}</option><option value="0"${csvOpt.dmy?'':' selected'}>${t('csvMdy')}</option></select></label>`;
+ h+=tog('neg',t('csvNeg'))+tog('dup',t('csvDup'))+tog('flag',t('csvFlag'));
+ h+=`<h3 style="margin:14px 0 4px;font-size:16px">${t('csvPrev')}</h3><p class="note"><b>${t('csvSum').replace('{n}',B.items.length).replace('{e}',ne).replace('{i}',ni)}</b></p><p class="note">${t('csvSkip').replace('{d}',B.dup).replace('{b}',B.bad).replace('{o}',B.other).replace('{s}',B.stt)}</p>`;
+ if(!B.items.length)h+=`<p class="hint">${t('csvEmpty')}</p>`;
+ B.items.slice(0,6).forEach(x=>{h+=`<div class="cpv"><span>${fd(x.date)} · ${esc(catEm(x.cat))} ${esc(x.note||x.cat)}${x.chk?' ❓':''}</span><b class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</b></div>`});
+ el.innerHTML=h;go.hidden=!B.items.length;go.textContent=t('csvGo');
+}
+function openCsv(){csvRows=[];$('#csv-msg').textContent='';$('#csv').hidden=false;csvRender()}
+function closeCsv(){$('#csv').hidden=true;csvRows=[]}
+function csvLoad(txt){
+ const rows=parseCSV(String(txt||'').replace(/^\uFEFF/,''));
+ if(rows.length<2){$('#csv-msg').textContent=t('csvRead');return}
+ csvRows=rows;csvHead=findHead(rows);csvMap=guessMap(rows[csvHead]);
+ const sm=rows.slice(csvHead+1,csvHead+40).map(r=>String(r[csvMap.date]||'').trim()).find(x=>/^\d{1,2}[-\/.]\d{1,2}[-\/.]\d{2,4}/.test(x));
+ $('#csv-msg').textContent='';csvRender();
+}
+async function csvFile(f){
+ try{
+  const buf=await f.arrayBuffer();
+  let txt=new TextDecoder('utf-8').decode(buf);
+  if(txt.includes('\uFFFD')){try{txt=new TextDecoder('windows-1250').decode(buf)}catch(e){}}
+  csvLoad(txt);
+ }catch(e){console.error(e);$('#csv-msg').textContent=t('csvRead')}
+}
+function csvImport(){
+ const B=csvBuild();if(!B.items.length)return;
+ B.items.forEach(x=>tx.push(x));
+ logAdd('imp','csv',{n:B.items.length});
+ const last=B.items.map(x=>x.date).sort().pop();
+ save();closeCsv();closeSet();
+ view=new Date(last+'T00:00:00');view.setDate(1);
+ render();
+ const chk=B.items.filter(x=>x.chk).length;
+ toast(`<span style="font-size:24px">📥</span><span><b>${t('csvDone').replace('{n}',B.items.length)}</b>${chk?`<small>❓ ${chk}</small>`:''}</span>`,0);
+}
+document.addEventListener('change',e=>{
+ const el=e.target;
+ if(el.id==='csv-file'&&el.files&&el.files[0])csvFile(el.files[0]);
+ else if(el.dataset&&el.dataset.csvm){const k=el.dataset.csvm,v=+el.value;csvMap[k]=v;if(k==='desc')csvMap.descs=v>=0?[v]:[];csvRender()}
+ else if(el.id==='csv-dmy'){csvOpt.dmy=el.value==='1';csvRender()}
+});
+
+/* ===== Jurnal de activitate ===== */
+function logAdd(a,k,o){
+ const t0=Date.now();
+ logs.push({id:t0*1000+Math.floor(Math.random()*1000),t:t0,u:C.uid||'me',a,k,...o});
+ if(logs.length>100)logs=logs.sort((x,y)=>y.t-x.t).slice(0,100);
+}
+const actorName=u=>(!C.hid||u===C.uid||u==='me')?t('lgYou'):(C.names[u]||pname());
+function logText(e){
+ const who=`<b>${esc(actorName(e.u))}</b>`;
+ if(e.k==='csv')return `${who} ${t('lgImp').replace('{n}',e.n)}`;
+ if(e.k==='goal')return `${who} ${t('lgDep').replace('{g}',esc(e.g))} · ${fmt(e.m)}`;
+ const noun={exp:'lgExp',inc:'lgInc',plan:'lgPlan',sub:'lgSub'}[e.k]||'lgExp',verb={add:'lgAdd',edit:'lgEdit',del:'lgDel',paid:'lgPaid'}[e.a]||'lgAdd';
+ return `${who} ${t(verb)} ${t(noun)}: ${esc(catEm(e.c))} ${esc(cn(e.c))} · ${fmt(e.m)}${e.n&&e.n!==e.c?' · '+esc(e.n):''}${e.v==='ap'?' · Apple Pay':''}`;
+}
+function renderJrn(){
+ const el=$('#jrn-body');if(!el)return;
+ const q=[...logs].sort((a,b)=>b.t-a.t);
+ if(!q.length){el.innerHTML=`<p class="empty">${t('jrnNone')}</p>`;return}
+ let h='',dk='';
+ q.forEach(e=>{
+  const d=new Date(e.t),iso=mk(d)+'-'+p2(d.getDate());
+  if(iso!==dk){dk=iso;h+=`<div class="day">${dayLbl(iso)}</div>`}
+  const mine=!C.hid||e.u===C.uid||e.u==='me',nm0=actorName(e.u);
+  h+=`<div class="jrow"><i class="av" style="background:${mine?'var(--accent)':'#7c3aed'}">${esc(nm0.charAt(0).toUpperCase())}</i><span class="rt"><span>${logText(e)}</span><small>${d.toLocaleTimeString(loc(),{hour:'2-digit',minute:'2-digit'})}</small></span></div>`;
+ });
+ el.innerHTML=h;
+}
+function openJrn(){renderJrn();$('#jrn').hidden=false}
+function closeJrn(){$('#jrn').hidden=true}
+
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='1.5';
+const APP_VER='1.6';
 const CHANGELOG=[
+ {v:'1.6',d:'2026-10-12',ro:['Import din extras de cont (CSV) cu recunoașterea automată a coloanelor și a comercianților','Jurnal de activitate: cine a adăugat sau modificat ce, și când','Tranzacțiile importate învață din corecții, ca plățile Apple Pay'],en:['Import from a bank statement (CSV) with automatic column and merchant detection','Activity log: who added or changed what, and when','Imported transactions learn from corrections, like Apple Pay payments']},
  {v:'1.5',d:'2026-10-11',ro:['Mod confidențial: ascunzi sumele cu ochiul din colțul de sus','PIN opțional la deschiderea aplicației','Jurnal cu ultimele actualizări (această pagină)'],en:['Privacy mode: hide amounts with the eye at the top','Optional PIN when opening the app','Update log (this page)']},
  {v:'1.4',d:'2026-10-10',ro:['Obiective de economisire: alegi suma și numărul de luni, iar aplicația calculează cât aloci lunar','Regula 50/20/30 în Buget și sfatul lunii','Animație de pornire cu grafic care crește'],en:['Savings goals: pick an amount and months, and the app calculates the monthly amount','50/20/30 rule in Budget and a tip of the month','Startup animation with a growing chart']},
  {v:'1.3',d:'2026-10-10',ro:['Plăți Apple Pay adăugate automat, cu reguli care învață din corecții','Link rapid cu parametri pentru Comenzi rapide (iOS 17–27)','Ghid și buton de plată de test'],en:['Apple Pay payments added automatically, with rules that learn from corrections','Quick link with parameters for Shortcuts (iOS 17–27)','Guide and a test payment button']},
@@ -1020,7 +1227,7 @@ function saveDep(){
  if(!(amt>0))return $('#dep-err').textContent=t('eamt');
  const x={id:Date.now(),type:'exp',amt,cat:'Economii',date:d,note:g.name,sv:g.id};
  if(C.hid){x.own=C.mode==='common'?'shared':C.uid;if(x.own==='shared')x.by=C.uid}
- tx.push(x);save();closeDep();render();
+ tx.push(x);logAdd('dep','goal',{g:g.name,m:amt});save();closeDep();render();
 }
 const NEEDS=['Mâncare','Facturi','Casă','Sănătate','Combustibil','Transport'];
 const grpOf=c=>c.grp||(NEEDS.includes(c.name)?'n':'w');
@@ -1155,7 +1362,7 @@ document.addEventListener('change',e=>{if(e.target.id==='a-ratio')setHome({ratio
 /* ===== Cuplu: cont, cămin comun, sincronizare Firebase ===== */
 const FBC={apiKey:"AIzaSyBxH1RlK8cVajT7nb0f4t-szcoOzvfdddg",authDomain:"cheltuieli-f0c26.firebaseapp.com",projectId:"cheltuieli-f0c26",storageBucket:"cheltuieli-f0c26.firebasestorage.app",messagingSenderId:"590978376968",appId:"1:590978376968:web:5dc9d8a103adf841f038bd"};
 const FBV='https://www.gstatic.com/firebasejs/10.14.1/';
-const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,booted:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map()},unsubs:[]};
+const C={fb:null,err:'',uid:null,email:'',hid:null,partner:null,names:{},members:[],code:'',sync:false,syncErr:false,mode:'split',ratio:'equal',seeded:false,booted:false,known:{tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map(),logs:new Map()},unsubs:[]};
 let bootRes;const bootP=new Promise(r=>{bootRes=r});
 bootP.then(()=>{C.booted=true;apRun()});
 let ownSel='me',rq=0;
@@ -1201,12 +1408,12 @@ async function cloudInit(){
   Au.onAuthStateChanged(auth,u=>{onUser(u)});
  }catch(e){console.warn('cloud',e);C.err='load';renderAcc();bootRes()}
 }
-function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map()};C.sync=false;C.seeded=false}
+function detach(){C.unsubs.forEach(f=>{try{f()}catch(e){}});C.unsubs=[];C.known={tx:new Map(),planned:new Map(),subs:new Map(),cats:new Map(),rules:new Map(),goals:new Map(),logs:new Map()};C.sync=false;C.seeded=false}
 async function onUser(u){
  const had=!!C.hid;
  detach();
  if(!u){
-  if(had){tx=[];pl=[];subs=[];rules=[];goals=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
+  if(had){tx=[];pl=[];subs=[];rules=[];goals=[];logs=[];cats=defCats();wr();try{localStorage.removeItem(KEY3)}catch(e){}}
   C.uid=null;C.email='';C.hid=null;C.partner=null;C.names={};C.members=[];C.code='';
   renderAcc();render();bootRes();return;
  }
@@ -1223,17 +1430,17 @@ function attach(hid){
  const {F,db}=C.fb;
  detach();C.hid=hid;
  try{localStorage.setItem(KEY3,JSON.stringify({uid:C.uid,hid}))}catch(e){}
- const first={h:false,tx:false,planned:false,subs:false,cats:false,rules:false,goals:false};
- const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats&&first.rules&&first.goals){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush();apRun()}};
+ const first={h:false,tx:false,planned:false,subs:false,cats:false,rules:false,goals:false,logs:false};
+ const chk=()=>{if(first.h&&first.tx&&first.planned&&first.subs&&first.cats&&first.rules&&first.goals&&first.logs){C.sync=true;if(!C.seeded){C.seeded=true;if(!cats.length)cats=defCats()}bootRes();cloudPush();apRun()}};
  C.unsubs.push(F.onSnapshot(F.doc(db,'households',hid),s=>{
   if(s.exists()){const d=s.data();C.members=d.members||[];C.names=d.names||{};C.code=d.code||'';C.mode=d.mode||'split';C.ratio=d.ratio||'equal';C.partner=C.members.find(m=>m!==C.uid)||null}
   first.h=true;chk();schedRender();
  },e=>{console.error(e);first.h=true;chk()}));
- ['tx','planned','subs','cats','rules','goals'].forEach(k=>{
+ ['tx','planned','subs','cats','rules','goals','logs'].forEach(k=>{
   C.unsubs.push(F.onSnapshot(F.collection(db,'households',hid,k),s=>{
    const arr=s.docs.map(d=>d.data());
    C.known[k]=new Map(arr.map(x=>[String(x.id),JSON.stringify(x)]));
-   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else if(k==='rules')rules=arr;else if(k==='goals')goals=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
+   if(k==='tx')tx=arr;else if(k==='planned')pl=arr;else if(k==='subs')subs=arr;else if(k==='rules')rules=arr;else if(k==='goals')goals=arr;else if(k==='logs')logs=arr;else cats=arr.sort((a,b)=>(a.ord||0)-(b.ord||0)||a.id-b.id);
    first[k]=true;wr();chk();schedRender();
   },e=>{console.error(e);first[k]=true;chk()}));
  });
@@ -1241,10 +1448,10 @@ function attach(hid){
 function cloudPush(){
  if(!C.hid||!C.sync||!C.fb)return;
  const {F,db}=C.fb,ops=[];
- [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals]].forEach(([k,arr])=>{
+ [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals],['logs',logs]].forEach(([k,arr])=>{
   const km=C.known[k],seen=new Set();
   arr.forEach(x=>{
-   if(k!=='cats'&&k!=='rules'&&k!=='goals'&&!x.own)x.own=C.uid;
+   if(k!=='cats'&&k!=='rules'&&k!=='goals'&&k!=='logs'&&!x.own)x.own=C.uid;
    const id=String(x.id),c=clean(x),j=JSON.stringify(c);seen.add(id);
    if(km.get(id)!==j){ops.push([0,k,id,c]);km.set(id,j)}
   });
@@ -1269,10 +1476,10 @@ async function createHome(){
  b.set(F.doc(db,'invites',code),{hid,createdAt:now});
  b.set(F.doc(db,'users',C.uid),{hid,name:S.name||''},{merge:true});
  await b.commit();
- for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals]]){
+ for(const [k,arr] of [['tx',tx],['planned',pl],['subs',subs],['cats',cats],['rules',rules],['goals',goals],['logs',logs]]){
   for(let i=0;i<arr.length;i+=400){
    const bb=F.writeBatch(db);
-   arr.slice(i,i+400).forEach(x=>{if(k!=='cats'&&k!=='rules'&&k!=='goals')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
+   arr.slice(i,i+400).forEach(x=>{if(k!=='cats'&&k!=='rules'&&k!=='goals'&&k!=='logs')x.own=x.own||C.uid;bb.set(F.doc(db,'households',hid,k,String(x.id)),clean(x))});
    await bb.commit();
   }
  }
