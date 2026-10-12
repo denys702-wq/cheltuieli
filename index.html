@@ -227,6 +227,7 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <label><span data-i="lang"></span><select id="s-lang"><option value="ro">Română</option><option value="en">English</option></select></label>
   <label><span data-i="cur"></span><select id="s-cur"><option>RON</option><option>EUR</option><option>USD</option><option>GBP</option><option>MDL</option></select></label>
   <p class="hint" data-i="curh"></p>
+  <button class="menu" data-act="calopen"><span data-i="calT"></span><span>›</span></button>
   <button class="menu" data-act="csvopen"><span data-i="csvT"></span><span>›</span></button>
   <button class="menu" data-act="jrnopen"><span data-i="jrnT"></span><span>›</span></button>
   <button class="menu" data-act="prvopen"><span data-i="prvT"></span><span>›</span></button>
@@ -327,6 +328,13 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <div id="csv-msg" class="msg"></div>
  </div>
 </div>
+<div id="cal" class="ov" hidden>
+ <div class="sheet" role="dialog">
+  <div class="mh"><h2 data-i="calT"></h2><div class="mr"><button class="nb" data-act="closecal" aria-label="Back">‹</button><button id="cal-go" class="nb done" data-act="calgo" data-i="calAdd"></button></div></div>
+  <div id="cal-body"></div>
+  <div id="cal-msg" class="msg"></div>
+ </div>
+</div>
 <div id="jrn" class="ov" hidden>
  <div class="sheet" role="dialog">
   <div class="mh"><h2 data-i="jrnT"></h2><div class="mr"><button class="nb" data-act="closejrn" aria-label="Back">‹</button></div></div>
@@ -345,6 +353,8 @@ Object.assign(T.ro,{apAT:'Varianta 1 · Automat cu Apple Pay (iOS 17 sau mai nou
 Object.assign(T.ro,{gTitle:'Obiective de economisire',gNone:'Niciun obiectiv. Alege suma și în câte luni vrei s-o strângi, iar eu calculez cât să aloci lunar.',gAdd:'Obiectiv nou',gNew:'Obiectiv nou',gEdit:'Editează obiectivul',gName:'Nume (de ex. Vacanță)',gTarget:'Suma țintă',gSaved:'Deja economisit (opțional)',gMonths:'În câte luni vrei să ajungi la obiectiv',gDeposit:'Depune',gPlan:'Alocă lunar',gMonthsLeft:'{n} luni rămase',gDeadline:'termen',gDone:'Obiectiv atins 🎉',gThisMonth:'Depus luna asta',gPrev:'Trebuie să aloci {a} pe lună, timp de {n} luni, până în {d}.',gPrevDone:'Ai deja suma țintă.',gBad:'Verifică numele, suma țintă și numărul de luni (1–600).',gDel:'Șterge obiectivul',gDepTitle:'Depune în {g}',gDepHint:'Suma se scade din sold ca o cheltuială în categoria Economii și se adaugă la obiectiv.',gAlloc:'Alocat pentru economii',r532T:'Regula 50/20/30',r532Need:'Necesități (50%)',r532Sav:'Economii (20%)',r532Want:'Dorințe (30%)',r532NoInc:'Adaugă venitul lunii ca să calculez regula 50/20/30.',tipT:'Sfatul lunii',tipRule:'Cu venitul de {i}, regula 50/20/30 înseamnă: necesități {a}, economii {b}, dorințe {c}.',tipOpen:'Vezi în Buget',cGrp:'Tip cheltuială (pentru regula 50/20/30)',gNeed:'Necesitate',gWant:'Dorință'});Object.assign(T.en,{gTitle:'Savings goals',gNone:'No goals yet. Pick an amount and in how many months you want it, and I will calculate how much to set aside monthly.',gAdd:'New goal',gNew:'New goal',gEdit:'Edit goal',gName:'Name (e.g. Vacation)',gTarget:'Target amount',gSaved:'Already saved (optional)',gMonths:'In how many months do you want to reach it',gDeposit:'Deposit',gPlan:'Set aside monthly',gMonthsLeft:'{n} months left',gDeadline:'deadline',gDone:'Goal reached 🎉',gThisMonth:'Deposited this month',gPrev:'You need to set aside {a} per month, for {n} months, until {d}.',gPrevDone:'You already have the target amount.',gBad:'Check the name, target amount and number of months (1–600).',gDel:'Delete goal',gDepTitle:'Deposit into {g}',gDepHint:'The amount is deducted from your balance as an expense in the Savings category and added to the goal.',gAlloc:'Allocated to savings',r532T:'50/20/30 rule',r532Need:'Needs (50%)',r532Sav:'Savings (20%)',r532Want:'Wants (30%)',r532NoInc:'Add this month’s income so I can calculate the 50/20/30 rule.',tipT:'Tip of the month',tipRule:'With an income of {i}, the 50/20/30 rule means: needs {a}, savings {b}, wants {c}.',tipOpen:'See in Budget',cGrp:'Expense type (for the 50/20/30 rule)',gNeed:'Need',gWant:'Want'});
 Object.assign(T.ro,{prvT:'Mod confidențial',prvHideH:'Înlocuiește sumele cu •••• pe tot ecranul. Îl poți porni și cu ochiul din colțul de sus.',privOn:'Sume ascunse',privOff:'Sume vizibile',prvStart:'Ascunde sumele la deschidere',prvPin:'PIN de deschidere',prvPinOn:'Activ (4 cifre). Se cere la deschidere și după ce lași aplicația în fundal mai mult de 30 de secunde.',prvPinOff:'Dezactivat.',prvSetPin:'Setează PIN',prvChPin:'Schimbă PIN-ul',prvRmPin:'Oprește PIN-ul',prvNote:'Blocare simplă: împiedică privirile în treacăt. Nu înlocuiește blocarea telefonului și nu criptează datele.',prvNoCrypto:'PIN-ul nu e disponibil în acest browser.',lkEnter:'Introdu PIN-ul',lkNew:'Alege un PIN de 4 cifre',lkRep:'Repetă PIN-ul',lkOld:'Introdu PIN-ul curent',lkBad:'PIN greșit',lkMis:'PIN-urile nu se potrivesc. Încearcă din nou.',lkWait:'Prea multe încercări. Așteaptă {s} secunde.',lkForgot:'Ai uitat PIN-ul?',lkSure:'Apasă din nou: șterge PIN-ul și datele salvate doar pe acest telefon',lkCancel:'Anulează',logT:'Ce e nou',logNew:'Ce e nou în versiunea {v}',logSee:'Vezi detalii'});Object.assign(T.en,{prvT:'Privacy mode',prvHideH:'Replaces amounts with •••• across the screen. You can also toggle it with the eye at the top.',privOn:'Amounts hidden',privOff:'Amounts visible',prvStart:'Hide amounts on launch',prvPin:'Launch PIN',prvPinOn:'On (4 digits). Asked at launch and after the app has been in the background for over 30 seconds.',prvPinOff:'Off.',prvSetPin:'Set PIN',prvChPin:'Change PIN',prvRmPin:'Turn off PIN',prvNote:'A simple lock: it stops casual glances. It does not replace your phone lock and does not encrypt data.',prvNoCrypto:'PIN is not available in this browser.',lkEnter:'Enter your PIN',lkNew:'Choose a 4-digit PIN',lkRep:'Repeat the PIN',lkOld:'Enter your current PIN',lkBad:'Wrong PIN',lkMis:'PINs do not match. Try again.',lkWait:'Too many attempts. Wait {s} seconds.',lkForgot:'Forgot your PIN?',lkSure:'Tap again: removes the PIN and data saved only on this phone',lkCancel:'Cancel',logT:'What’s new',logNew:'What’s new in version {v}',logSee:'See details'});
 Object.assign(T.ro,{csvT:'Import din extras de cont (CSV)',csvIntro:'Alege fișierul CSV exportat din aplicația băncii sau lipește conținutul lui. Recunosc singur coloanele și comercianții; poți corecta înainte de import. Sumele în altă monedă se sar.',csvPick:'Alege fișier CSV',csvPaste:'sau lipește aici conținutul:',csvNext:'Continuă',csvCols:'Coloane',cDate:'Data',cDesc:'Descriere',cAmt:'Sumă (cu semn)',cDeb:'Debit (opțional)',cCre:'Credit (opțional)',cNone:'— nimic —',csvFmt:'Format dată',csvDmy:'zi / lună / an',csvMdy:'lună / zi / an',csvNeg:'Sumele negative sunt cheltuieli',csvDup:'Sari peste ce pare deja introdus (aceeași sumă, ±1 zi)',csvFlag:'Marchează cu ❓ ce nu recunosc',csvSum:'{n} tranzacții de importat: {e} cheltuieli, {i} venituri',csvSkip:'Sărite: {d} deja existente, {b} rânduri invalide, {o} în altă monedă, {s} respinse sau în așteptare',csvPrev:'Previzualizare',csvGo:'Importă',csvDone:'Importate: {n} tranzacții',csvEmpty:'Nu am găsit rânduri valide. Verifică coloanele și formatul datei.',csvRead:'Nu am putut citi fișierul.',jrnT:'Jurnal de activitate',jrnNone:'Încă nu există activitate.',lgYou:'Tu',lgAdd:'a adăugat',lgEdit:'a modificat',lgDel:'a șters',lgPaid:'a plătit',lgImp:'a importat {n} tranzacții din CSV',lgDep:'a depus în obiectivul {g}',lgExp:'cheltuiala',lgInc:'venitul',lgPlan:'plata de făcut',lgSub:'abonamentul'});Object.assign(T.en,{csvT:'Import from bank statement (CSV)',csvIntro:'Choose the CSV exported from your bank app or paste its contents. I detect columns and merchants automatically; you can correct before importing. Amounts in other currencies are skipped.',csvPick:'Choose CSV file',csvPaste:'or paste the contents here:',csvNext:'Continue',csvCols:'Columns',cDate:'Date',cDesc:'Description',cAmt:'Amount (signed)',cDeb:'Debit (optional)',cCre:'Credit (optional)',cNone:'— none —',csvFmt:'Date format',csvDmy:'day / month / year',csvMdy:'month / day / year',csvNeg:'Negative amounts are expenses',csvDup:'Skip what looks already entered (same amount, ±1 day)',csvFlag:'Mark unrecognised ones with ❓',csvSum:'{n} transactions to import: {e} expenses, {i} income',csvSkip:'Skipped: {d} already existing, {b} invalid rows, {o} other currency, {s} declined or pending',csvPrev:'Preview',csvGo:'Import',csvDone:'Imported: {n} transactions',csvEmpty:'No valid rows found. Check the columns and date format.',csvRead:'Could not read the file.',jrnT:'Activity log',jrnNone:'No activity yet.',lgYou:'You',lgAdd:'added',lgEdit:'edited',lgDel:'deleted',lgPaid:'paid',lgImp:'imported {n} transactions from CSV',lgDep:'deposited into goal {g}',lgExp:'expense',lgInc:'income',lgPlan:'upcoming payment',lgSub:'subscription'});
+Object.assign(T.ro,{calT:'Reminder în calendar',calAdd:'Adaugă',calIntro:'Creează evenimente în Calendarul iPhone-ului pentru plățile viitoare și abonamente, cu notificare înainte de scadență.',calWhen:'Când să te anunț',calD0:'În ziua plății',calD1:'Cu 1 zi înainte',calD3:'Cu 3 zile înainte',calD7:'Cu o săptămână înainte',calHour:'Ora notificării',calWhat:'Ce adaug în calendar',calNone:'Nu ai plăți viitoare sau abonamente de adăugat.',calMonthly:'în fiecare lună, ziua {d}',calHow:'Se deschide meniul de partajare: alege Calendar (sau salvează fișierul și deschide-l), apoi „Adaugă tot”. Abonamentele se repetă lunar.',calNoAl:'Alege cel puțin o notificare.',calNoSel:'Alege cel puțin o plată.',calPay:'Plată',calSub:'Abonament',calDone:'Fișierul de calendar a fost creat.'});
+Object.assign(T.en,{calT:'Calendar reminders',calAdd:'Add',calIntro:'Creates events in your iPhone Calendar for upcoming payments and subscriptions, with an alert before the due date.',calWhen:'When to alert me',calD0:'On the due day',calD1:'1 day before',calD3:'3 days before',calD7:'1 week before',calHour:'Alert time',calWhat:'What to add to the calendar',calNone:'No upcoming payments or subscriptions to add.',calMonthly:'every month, day {d}',calHow:'The share sheet opens: pick Calendar (or save the file and open it), then tap “Add All”. Subscriptions repeat monthly.',calNoAl:'Pick at least one alert.',calNoSel:'Pick at least one payment.',calPay:'Payment',calSub:'Subscription',calDone:'Calendar file created.'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
 let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
@@ -376,6 +386,7 @@ function load(){
   if(['all','me','partner','shared'].includes(q.scope))S.scope=q.scope;
   if(typeof q.tipDone==='string')S.tipDone=q.tipDone.slice(0,7);
   if(typeof q.seenVer==='string')S.seenVer=q.seenVer.slice(0,10);
+  if(q.cal&&typeof q.cal==='object'){const c=q.cal;S.cal={d0:c.d0!==0&&c.d0!==false,d1:c.d1!==0&&c.d1!==false,d3:c.d3===1||c.d3===true,d7:c.d7===1||c.d7===true,h:Math.min(22,Math.max(6,+c.h||9))}}
   if(q.priv===true)S.priv=true;if(q.privStart===true){S.privStart=true;S.priv=true}
  }catch(e){ok=false}
  if(!cats.length)cats=defCats();
@@ -687,7 +698,7 @@ document.addEventListener('click',e=>{
  const em=e.target.closest('[data-emo]');
  if(em){$('#c-emo').value=em.dataset.emo;return}
  const b=e.target.closest('[data-act]');
- if(!b){if(e.target.id==='csv')closeCsv();if(e.target.id==='jrn')closeJrn();if(e.target.id==='prv')closePrv();if(e.target.id==='log')closeLog();if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
+ if(!b){if(e.target.id==='cal')closeCal();if(e.target.id==='csv')closeCsv();if(e.target.id==='jrn')closeJrn();if(e.target.id==='prv')closePrv();if(e.target.id==='log')closeLog();if(e.target.id==='goal')closeGoal();if(e.target.id==='dep')closeDep();if(e.target.id==='rul')closeRul();if(e.target.id==='cat')closeCat();if(e.target.id==='acc')closeAcc();if(e.target.id==='ov')closeSheet();if(e.target.id==='st')closeSet();if(e.target.id==='bkp')closeBk();return}
  const a=b.dataset.act;
  if(a==='prev'||a==='next')goMonth(a==='next'?1:-1);
  else if(a==='add'){if(tab==='bud')toggleFabm();else openSheet(null)}
@@ -726,6 +737,11 @@ document.addEventListener('click',e=>{
  else if(a==='jrnopen'){closeSet();openJrn()}
  else if(a==='closejrn')closeJrn();
  else if(a==='priv'){S.priv=!S.priv;saveLocal();render();prvRender()}
+ else if(a==='calopen'){closeSet();openCal()}
+ else if(a==='closecal')closeCal();
+ else if(a==='caltog'){const k=b.dataset.ck,c=Object.assign({},calS());c[k]=!c[k];S.cal=c;saveSet();calRender()}
+ else if(a==='calpick'){const k=b.dataset.key;calSel.has(k)?calSel.delete(k):calSel.add(k);calRender()}
+ else if(a==='calgo')calGo();
  else if(a==='prvopen')openPrv();
  else if(a==='closeprv')closePrv();
  else if(a==='privset'){S.priv=b.dataset.v==='1';saveLocal();render();prvRender()}
@@ -1023,6 +1039,7 @@ document.addEventListener('change',e=>{
  const el=e.target;
  if(el.id==='csv-file'&&el.files&&el.files[0])csvFile(el.files[0]);
  else if(el.dataset&&el.dataset.csvm){const k=el.dataset.csvm,v=+el.value;csvMap[k]=v;if(k==='desc')csvMap.descs=v>=0?[v]:[];csvRender()}
+ else if(el.id==='cal-h'){S.cal=Object.assign({},calS(),{h:+el.value});saveSet()}
  else if(el.id==='csv-dmy'){csvOpt.dmy=el.value==='1';csvRender()}
 });
 
@@ -1056,9 +1073,69 @@ function renderJrn(){
 function openJrn(){renderJrn();$('#jrn').hidden=false}
 function closeJrn(){$('#jrn').hidden=true}
 
+/* ===== Reminder în calendar (.ics) ===== */
+let calSel=null;
+const calS=()=>Object.assign({d0:true,d1:true,d3:false,d7:false,h:9},S.cal||{});
+function calItems(){
+ const td=today(),ym=mk(new Date()),out=[];
+ pl.filter(x=>x.date>=td&&vis(x)).forEach(x=>out.push({key:'p'+x.id,kind:'plan',id:x.id,amt:x.amt,cat:x.cat,note:x.note,date:x.date}));
+ subs.filter(sb=>vis(sb)).forEach(sb=>{
+  let m=ym<sb.from?sb.from:ym,d=dueOf(sb,m);
+  if(d<td||(m===ym&&paidSub(sb,m))){const n=new Date(+m.slice(0,4),+m.slice(5,7),1);m=mk(n);d=dueOf(sb,m)}
+  out.push({key:'s'+sb.id,kind:'sub',id:sb.id,amt:sb.amt,cat:sb.cat,note:sb.note,date:d,day:sb.day});
+ });
+ return out.sort((a,b)=>a.date.localeCompare(b.date));
+}
+function openCal(){calSel=new Set(calItems().map(x=>x.key));calRender();$('#cal-msg').textContent='';$('#cal').hidden=false}
+function closeCal(){$('#cal').hidden=true}
+function calRender(){
+ const el=$('#cal-body');if(!el)return;
+ const c=calS(),it=calItems(),go=$('#cal-go');
+ if(go)go.hidden=!it.length;
+ const tog=(k,l)=>`<button class="menu" data-act="caltog" data-ck="${k}"><span>${l}</span><span>${c[k]?'✓':'○'}</span></button>`;
+ let h=`<p class="hint">${t('calIntro')}</p><p class="hint"><b>${t('calWhen')}</b></p>`+tog('d0',t('calD0'))+tog('d1',t('calD1'))+tog('d3',t('calD3'))+tog('d7',t('calD7'));
+ let ho='';for(let i=6;i<=22;i++)ho+=`<option value="${i}"${c.h===i?' selected':''}>${p2(i)}:00</option>`;
+ h+=`<label><span>${t('calHour')}</span><select id="cal-h">${ho}</select></label><p class="hint"><b>${t('calWhat')}</b></p>`;
+ if(!it.length)h+=`<p class="hint">${t('calNone')}</p>`;
+ else h+=it.map(x=>`<button class="menu" data-act="calpick" data-key="${x.key}"><span>${x.kind==='sub'?'🔁 ':''}${esc(cn(x.cat))}${x.note?' · '+esc(x.note):''} · ${fmtR(x.amt)}<br><small>${x.kind==='sub'?t('calMonthly').replace('{d}',x.day):fd(x.date)}</small></span><span>${calSel.has(x.key)?'✓':'○'}</span></button>`).join('')+`<p class="hint">${t('calHow')}</p>`;
+ el.innerHTML=h;
+}
+const icsEsc=v=>String(v).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\r?\n/g,'\\n');
+function icsFold(l){let o='';while(l.length>72){o+=l.slice(0,72)+'\r\n ';l=l.slice(72)}return o+l}
+function calIcs(){
+ const c=calS(),its=calItems().filter(x=>calSel.has(x.key));
+ const al=[];if(c.d0)al.push(0);if(c.d1)al.push(1);if(c.d3)al.push(3);if(c.d7)al.push(7);
+ if(!al.length){$('#cal-msg').textContent=t('calNoAl');return ''}
+ if(!its.length){$('#cal-msg').textContent=t('calNoSel');return ''}
+ const hh=p2(c.h),now=new Date(),stamp=now.getUTCFullYear()+p2(now.getUTCMonth()+1)+p2(now.getUTCDate())+'T'+p2(now.getUTCHours())+p2(now.getUTCMinutes())+p2(now.getUTCSeconds())+'Z';
+ const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Cheltuieli//RO','CALSCALE:GREGORIAN','METHOD:PUBLISH'];
+ its.forEach(x=>{
+  const d=x.date.replace(/-/g,''),title=(x.kind==='sub'?'🔁 ':'💳 ')+(x.kind==='sub'?t('calSub'):t('calPay'))+': '+cn(x.cat)+(x.note?' – '+x.note:'')+' · '+fmtR(x.amt);
+  L.push('BEGIN:VEVENT','UID:cheltuieli-'+x.key+'@cheltuieli.app','DTSTAMP:'+stamp,'DTSTART:'+d+'T'+hh+'0000','DTEND:'+d+'T'+hh+'3000','SUMMARY:'+icsEsc(title),'DESCRIPTION:'+icsEsc(fmtR(x.amt)+' · '+cn(x.cat)));
+  if(x.kind==='sub'){const n=Math.min(x.day,31);L.push('RRULE:FREQ=MONTHLY;BYMONTHDAY='+(n<=28?n:Array.from({length:n-27},(_,i)=>28+i).join(','))+(n>28?';BYSETPOS=-1':''))}
+  al.forEach(n=>L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(title),'TRIGGER:'+(n?'-P'+n+'D':'PT0S'),'END:VALARM'));
+  L.push('END:VEVENT');
+ });
+ L.push('END:VCALENDAR');
+ return L.map(icsFold).join('\r\n')+'\r\n';
+}
+async function calGo(){
+ const ics=calIcs();if(!ics)return;
+ $('#cal-msg').textContent='';
+ const name='plati-cheltuieli.ics';
+ try{
+  const f=new File([ics],name,{type:'text/calendar'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return}
+ }catch(e){if(e&&e.name==='AbortError')return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download=name;document.body.appendChild(a);a.click();
+ setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000);
+ $('#cal-msg').textContent=t('calDone');
+}
+
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='1.6';
+const APP_VER='1.7';
 const CHANGELOG=[
+ {v:'1.7',d:'2026-10-12',ro:['Reminder în calendar pentru plățile viitoare și abonamente, cu notificare în ziua plății sau cu zile înainte','Alegi ora notificării și ce plăți adaugi','Abonamentele se repetă lunar în Calendar'],en:['Calendar reminders for upcoming payments and subscriptions, alerting on the day or days before','Pick the alert time and which payments to add','Subscriptions repeat monthly in Calendar']},
  {v:'1.6',d:'2026-10-12',ro:['Import din extras de cont (CSV) cu recunoașterea automată a coloanelor și a comercianților','Jurnal de activitate: cine a adăugat sau modificat ce, și când','Tranzacțiile importate învață din corecții, ca plățile Apple Pay'],en:['Import from a bank statement (CSV) with automatic column and merchant detection','Activity log: who added or changed what, and when','Imported transactions learn from corrections, like Apple Pay payments']},
  {v:'1.5',d:'2026-10-11',ro:['Mod confidențial: ascunzi sumele cu ochiul din colțul de sus','PIN opțional la deschiderea aplicației','Jurnal cu ultimele actualizări (această pagină)'],en:['Privacy mode: hide amounts with the eye at the top','Optional PIN when opening the app','Update log (this page)']},
  {v:'1.4',d:'2026-10-10',ro:['Obiective de economisire: alegi suma și numărul de luni, iar aplicația calculează cât aloci lunar','Regula 50/20/30 în Buget și sfatul lunii','Animație de pornire cu grafic care crește'],en:['Savings goals: pick an amount and months, and the app calculates the monthly amount','50/20/30 rule in Budget and a tip of the month','Startup animation with a growing chart']},
