@@ -81,7 +81,7 @@ html[data-den] .swr>.row,html[data-den] .pr .row{margin-bottom:0}
 .cols button{width:36px;height:36px;min-height:36px;padding:0;border-radius:50%;border:2px solid transparent}
 .cols button.on{outline:3px solid var(--accent);outline-offset:2px}
 .cols label{display:flex;align-items:center;margin:0}.cols input[type=color]{width:36px;height:36px;padding:0;border:0;border-radius:50%;background:none}
-.bordb{margin-left:auto;min-height:32px;padding:0 10px;font-size:13px;border-radius:10px}
+.brow{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}.brow.mv{position:relative;z-index:6;box-shadow:0 12px 30px rgba(0,0,0,.3);background:var(--card);will-change:transform}.bordb{margin-left:auto;min-height:32px;padding:0 10px;font-size:13px;border-radius:10px}
 .utoast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:6;width:min(360px,calc(100% - 32px));display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-radius:16px;background:#1f2937;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:fadeup .25s ease-out both}
 .utoast[hidden]{display:none}.pay.apok{min-width:34px;width:34px;height:34px;min-height:34px;align-self:center;padding:0;border-radius:50%;font-size:14px;color:var(--muted)}.utoast span{flex:1;font-weight:600}
 .utoast button{min-height:38px;border:0;background:rgba(255,255,255,.14);color:#93c5fd;font-weight:700;border-radius:12px}
@@ -610,8 +610,8 @@ Object.assign(T.ro,{apA:'0) Setări iPhone → Aplicații → Wallet → porneș
 Object.assign(T.en,{apA:'0) iPhone Settings → Apps → Wallet → turn on Mobile Data.\n1) Shortcuts → Automation → + → Transaction. Under “When I tap” choose Any Card, then Run Immediately. The steps are the same on iOS 26 and iOS 27.\n2) First action: URL Encode, using the Amount property of Shortcut Input.\n3) Second action: URL Encode, using the Merchant property of Shortcut Input.\n4) Third action: Open URLs. Type the link above (it ends with ?amt=), then the result of the first URL Encode (amount), type &m= and the result of the second (merchant). When you insert “URL Encoded Text”, Shortcuts asks which action it should come from: after ?amt= pick the one with Amount, after &m= the one with Merchant.\n5) Optional: Wait 5 seconds and Go to Home Screen, to return to the home screen on its own.\n6) ⓘ → Privacy → turn on Allow Running When Locked.\n7) Make a test payment.\nEncode the amount and the merchant separately, not the whole link. If they still end up swapped, the app corrects it.',apCfg:'Apple Pay setup and guide',rchNewT:'New merchant',rchNewP:'Should I remember “{c}” for “{m}”, so future payments from it fill in automatically?',rchUpdT:'Update the rule?',rchUpdP:'You changed the details for “{m}”. Update the saved rule or change only this payment?',rchSave:'Remember for the future',rchUpd:'Update the rule',rchOnce:'Only this payment',rchBack:'Back'});
 Object.assign(T.ro,{swE:'Modifică',swD:'Șterge',unBtn:'Anulează',unAdd:'Tranzacție salvată',unEdit:'Modificare salvată',unDel:'Tranzacție ștearsă',unPaid:'Plată marcată',unRest:'Date importate',unChk:'Plata rămâne așa, fără verificare',apOk:'Lasă așa',apOkH:'Atinge plata ca s-o corectezi, sau ✕ ca s-o lași așa.',tdN:'{n} plăți azi',tdNone:'Nicio plată azi',tdLeft:'mai poți cheltui ~{a}',tdOver:'peste ritmul zilnic cu {a}',tdBoth:'Pentru amândoi: mai puteți cheltui ~{a} azi',tdEach:'~{a} fiecare',tdSplit:'tu ~{a} · {n} ~{b}',tdBothOver:'Împreună sunteți peste ritmul zilnic cu {a}',bkFile:'Salvează fișier backup',bkPick:'Alege fișier backup',bkSaved:'Fișierul de backup a fost creat. Salvează-l în Fișiere sau trimite-l unde vrei.',bkLoaded:'Fișier citit: {n} tranzacții. Apasă „Importă din text” și confirmă ca să înlocuiești datele.',bkTxtH:'Sau copiază și lipește textul:'});
 Object.assign(T.en,{swE:'Edit',swD:'Delete',unBtn:'Undo',unAdd:'Transaction saved',unEdit:'Change saved',unDel:'Transaction deleted',unPaid:'Payment marked',unRest:'Data imported',unChk:'Payment kept as is, no review',apOk:'Keep as is',apOkH:'Tap a payment to fix it, or ✕ to keep it as is.',tdN:'{n} payments today',tdNone:'No payments today',tdLeft:'you can spend ~{a}',tdOver:'over the daily pace by {a}',tdBoth:'For both of you: you can spend ~{a} today',tdEach:'~{a} each',tdSplit:'you ~{a} · {n} ~{b}',tdBothOver:'Together you are over the daily pace by {a}',bkFile:'Save backup file',bkPick:'Choose backup file',bkSaved:'The backup file was created. Save it in Files or send it wherever you like.',bkLoaded:'File read: {n} transactions. Tap “Import from text” and confirm to replace your data.',bkTxtH:'Or copy and paste the text:'});
-Object.assign(T.ro,{cusT:'Personalizare',cusFs:'Mărimea textului',cusDen:'Densitate',cusDc:'Compactă',cusDn:'Normală',cusDr:'Aerisită',cusCards:'Carduri pe prima pagină',cusCardsH:'Mută-le cu ▲ ▼ și ascunde ce nu folosești.',cusOn:'Vizibil',cusOff:'Ascuns',cusRst:'Ordinea implicită',cusCats:'Ordinea categoriilor',cusCatsH:'Aceeași ordine apare în Buget și la alegerea categoriei. Cu ✏️ schimbi numele, emoji-ul și culoarea.',cusOrd:'Ordine',cdToday:'Azi',cdAlert:'Alerte buget',cdChart:'Grafic și statistici',cCol:'Culoare',cColC:'Culoare personalizată'});
-Object.assign(T.en,{cusT:'Customization',cusFs:'Text size',cusDen:'Density',cusDc:'Compact',cusDn:'Normal',cusDr:'Roomy',cusCards:'Home page cards',cusCardsH:'Move them with ▲ ▼ and hide what you do not use.',cusOn:'Shown',cusOff:'Hidden',cusRst:'Default order',cusCats:'Category order',cusCatsH:'The same order is used in Budget and when picking a category. Use ✏️ to change the name, emoji and color.',cusOrd:'Order',cdToday:'Today',cdAlert:'Budget alerts',cdChart:'Chart and statistics',cCol:'Color',cColC:'Custom color'});
+Object.assign(T.ro,{cusT:'Personalizare',cusFs:'Mărimea textului',cusDen:'Densitate',cusDc:'Compactă',cusDn:'Normală',cusDr:'Aerisită',cusCards:'Carduri pe prima pagină',cusCardsH:'Mută-le cu ▲ ▼ și ascunde ce nu folosești.',cusOn:'Vizibil',cusOff:'Ascuns',cusRst:'Ordinea implicită',cusCats:'Ordinea categoriilor',cusOrd:'Ordine',cusHold:'Ține apăsat pe o categorie și trage-o sus sau jos ca să schimbi ordinea.',cdToday:'Azi',cdAlert:'Alerte buget',cdChart:'Grafic și statistici',cCol:'Culoare',cColC:'Culoare personalizată'});
+Object.assign(T.en,{cusT:'Customization',cusFs:'Text size',cusDen:'Density',cusDc:'Compact',cusDn:'Normal',cusDr:'Roomy',cusCards:'Home page cards',cusCardsH:'Move them with ▲ ▼ and hide what you do not use.',cusOn:'Shown',cusOff:'Hidden',cusRst:'Default order',cusCats:'Category order',cusOrd:'Order',cusHold:'Press and hold a category, then drag it up or down to change the order.',cdToday:'Today',cdAlert:'Budget alerts',cdChart:'Chart and statistics',cCol:'Color',cColC:'Custom color'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
 let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false,theme:'teal',look:'auto'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],per=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
@@ -1080,8 +1080,6 @@ document.addEventListener('click',e=>{
  else if(a==='cardtog'){const k=b.dataset.ck,h=new Set(S.hide||[]);h.has(k)?h.delete(k):h.add(k);S.hide=[...h];saveSet();render();renderCus()}
  else if(a==='cardmv'){const o=cardOrd(),i=o.indexOf(b.dataset.ck),j=i+(+b.dataset.d);if(i>=0&&j>=0&&j<o.length){[o[i],o[j]]=[o[j],o[i]];S.cards=o;saveSet();render();renderCus()}}
  else if(a==='cardrst'){S.cards=[];S.hide=[];saveSet();render();renderCus()}
- else if(a==='catmv'){const i=cats.findIndex(c=>c.id===+b.dataset.id),j=i+(+b.dataset.d);if(i>=0&&j>=0&&j<cats.length){[cats[i],cats[j]]=[cats[j],cats[i]];cats.forEach((c,k)=>c.ord=k);save();render();renderCus()}}
- else if(a==='catedit')openCat(+b.dataset.id)
  else if(a==='ccol'){catCol=b.dataset.v||'';colRender()}
  else if(a==='apok'){const x=tx.find(r=>r.id===+b.dataset.id);if(x){snapU();delete x.chk;save();render();undoShow('unChk')}}
  else if(a==='bkfile')bkFile()
@@ -1787,8 +1785,9 @@ async function calGo(){
 }
 
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='2.5.2';
+const APP_VER='2.5.3';
 const CHANGELOG=[
+ {v:'2.5.3',d:'2026-10-14',ro:['În Buget: ții apăsat pe o categorie și o tragi sus sau jos ca să schimbi ordinea; meniul de ordine a dispărut'],en:['In Budget: press and hold a category and drag it up or down to reorder; the order menu is gone']},
  {v:'2.5.2',d:'2026-10-13',ro:['Reminderele din calendar se deschid direct în Safari, unde iPhone-ul le adaugă în Calendar cu un singur tap'],en:['Calendar reminders open directly in Safari, where iPhone adds them to Calendar with one tap']},
  {v:'2.5.1',d:'2026-10-13',ro:['Reparat: „Arată toate” și „Restrânge” la De plătit','Ghidul Apple Pay explică cum alegi corect „URL Encoded Text” pentru sumă și comerciant'],en:['Fixed: “Show all” and “Collapse” in Upcoming','The Apple Pay guide explains how to pick the right “URL Encoded Text” for amount and merchant']},
  {v:'2.5',d:'2026-10-13',ro:['Setări → Personalizare: mărimea textului, densitatea listelor și cardurile de pe prima pagină (ordine și vizibilitate)','Ordinea categoriilor se schimbă din Buget sau din Personalizare și se păstrează la alegerea categoriei','Fiecare categorie are culoare aleasă de tine și mai multe emoji','Fundal de pornire mai animat'],en:['Settings → Customization: text size, list density and home page cards (order and visibility)','Category order can be changed from Budget or Customization and is kept when picking a category','Each category can have its own color and more emoji','Livelier launch background']},
@@ -2018,6 +2017,58 @@ const incomeIn=ym=>{let s=0;tx.forEach(x=>{if(x.type==='inc'&&x.date.startsWith(
 const spentIn=(n,ym)=>{let s=0;tx.forEach(x=>{if(x.type==='exp'&&!x.pk&&x.cat===n&&x.date.startsWith(ym))s+=share(x,ym)});return s};
 const nf=n=>S.priv?'••••':n.toLocaleString(loc(),{maximumFractionDigits:2});
 const stCol=(s,b)=>b>0?(s>b?'var(--r)':s>=b*.8?'#d97706':null):(s>0?'var(--r)':null);
+(function(){
+ let tm=0,st=null,px=0,py=0;
+ const rowsOf=()=>[...document.querySelectorAll('#p-bud .brow[data-act=editcat]')];
+ const cancel=()=>{clearTimeout(tm);tm=0};
+ function start(row,y){
+  const rows=rowsOf(),i=rows.indexOf(row);if(i<0||rows.length<2)return;
+  const rc=rows.map(r=>{const b=r.getBoundingClientRect();return {t:b.top+scrollY,h:b.height}});
+  const gap=rc.length>1?Math.max(0,rc[1].t-(rc[0].t+rc[0].h)):6;
+  st={rows,i,j:i,rc,y0:y,sy0:scrollY,gap,last:y};
+  rows.forEach(r=>{if(r!==row)r.style.transition='transform .18s ease'});
+  row.classList.add('mv');
+  try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}
+  swBlock=Date.now()+1e7;
+  loop();
+ }
+ function place(){
+  if(!st)return;
+  const {rows,i,rc,gap}=st,dy=st.last+(scrollY-st.sy0)-st.y0,me=rc[i],cy=me.t+me.h/2+dy;
+  const j=rows.filter((_,k)=>k!==i&&rc[k].t+rc[k].h/2<cy).length;st.j=j;
+  rows.forEach((r,k)=>{
+   if(k===i){r.style.transform=`translateY(${dy}px) scale(1.02)`;return}
+   let sh=0;if(i<j&&k>i&&k<=j)sh=-(me.h+gap);else if(j<i&&k>=j&&k<i)sh=me.h+gap;
+   r.style.transform=sh?`translateY(${sh}px)`:'';
+  });
+ }
+ function loop(){
+  if(!st)return;
+  if(st.last<110)scrollBy(0,-9);else if(st.last>innerHeight-170)scrollBy(0,9);
+  place();requestAnimationFrame(loop);
+ }
+ function end(){
+  if(!st)return;
+  const o=st;st=null;
+  o.rows.forEach(r=>{r.style.transform='';r.style.transition='';r.classList.remove('mv')});
+  swBlock=Date.now()+350;
+  if(o.j!==o.i){const [c]=cats.splice(o.i,1);cats.splice(o.j,0,c);cats.forEach((k,n)=>{k.ord=n});save();render()}
+ }
+ document.addEventListener('touchstart',e=>{
+  cancel();
+  const row=e.target.closest&&e.target.closest('#p-bud .brow[data-act=editcat]');
+  if(!row||e.touches.length!==1)return;
+  px=e.touches[0].clientX;py=e.touches[0].clientY;
+  tm=setTimeout(()=>{tm=0;start(row,py)},380);
+ },{passive:true});
+ document.addEventListener('touchmove',e=>{
+  const y=e.touches[0].clientY;
+  if(st){e.preventDefault();st.last=y;return}
+  if(tm&&(Math.abs(e.touches[0].clientX-px)>8||Math.abs(y-py)>8))cancel();
+ },{passive:false});
+ document.addEventListener('touchend',()=>{cancel();end()});
+ document.addEventListener('touchcancel',()=>{cancel();end()});
+})();
 function budgetPane(){
  const ym=mk(view),w=wal(),inc=incomeIn(ym);
  const rows=cats.map(c=>({c,b:bud(c,ym,w),s:spentIn(c.name,ym)}));
@@ -2032,7 +2083,7 @@ function budgetPane(){
  ins.forEach(x=>{h+=`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}</b><small>${fd(x.date)}${(x.own==='shared'&&C.hid&&C.mode!=='common')?' · '+t('sShared'):''}${x.note?' · '+esc(x.note):''}</small></span><em class="g">+${fmt(share(x,ym))}</em></button>`});
  h+=`<button class="plt" data-act="addinc">+ ${t('addInc')}</button></div>`;
  h+=ruleCard(ym,inc);
- h+=`<div class="card bcard"><h3><span>🧮 ${t('bAlloc')}</span><b>${fmt(alloc)}</b></h3><div style="display:flex;margin:-4px 0 6px"><button class="bordb" data-act="cusopen" data-v="cats">↕ ${t('cusOrd')}</button></div>`;
+ h+=`<div class="card bcard"><h3><span>🧮 ${t('bAlloc')}</span><b>${fmt(alloc)}</b></h3><p class="hint" style="margin:-2px 0 8px">${t('cusHold')}</p>`;
  h+=`<p class="note${free<0?' over':''}">${free<0?t('bOver'):t('bFree')}: <b>${fmt(Math.abs(free))}</b></p>`;
  if(sa>0)h+=`<p class="note">🏦 ${t('gAlloc')}: <b>${fmt(sa)}</b></p>`;
  const sp=rows.reduce((a,r)=>a+r.s,0);
@@ -2071,9 +2122,6 @@ function renderCus(){
  h+=`<div class="cusg">${t('cusCards')}</div><p class="hint">${t('cusCardsH')}</p><div class="cusl">`;
  o.forEach((k,i)=>{const [em,lb]=CARDN[k],on=!hd.has(k);h+=`<div class="cusr${on?'':' off'}"><span class="nm"><span>${em}</span><span>${esc(t(lb))}</span></span><button data-act="cardmv" data-ck="${k}" data-d="-1" ${i===0?'disabled':''} aria-label="Sus">▲</button><button data-act="cardmv" data-ck="${k}" data-d="1" ${i===o.length-1?'disabled':''} aria-label="Jos">▼</button><button class="tg${on?' on':''}" data-act="cardtog" data-ck="${k}">${on?t('cusOn'):t('cusOff')}</button></div>`});
  h+=`</div><div class="btns"><button data-act="cardrst">${t('cusRst')}</button></div>`;
- h+=`<div class="cusg" id="cus-cats">${t('cusCats')}</div><p class="hint">${t('cusCatsH')}</p><div class="cusl">`;
- cats.forEach((c,i)=>{h+=`<div class="cusr"><span class="nm"><i class="ic" style="background:${cc(c.name)}2e;width:32px;height:32px;font-size:16px">${esc(c.emoji||'✨')}</i><span>${esc(cn(c.name))}</span></span><button data-act="catmv" data-id="${c.id}" data-d="-1" ${i===0?'disabled':''} aria-label="Sus">▲</button><button data-act="catmv" data-id="${c.id}" data-d="1" ${i===cats.length-1?'disabled':''} aria-label="Jos">▼</button><button data-act="catedit" data-id="${c.id}" aria-label="${t('cEdit')}">✏️</button></div>`});
- h+='</div>';
  el.innerHTML=h;
 }
 const EMOS=['🍽️','🛒','🚌','⛽','🚗','🏠','🧾','💡','💧','🔥','📶','💊','🏥','🏋️','🎮','🎬','🎵','📚','🛍️','👕','👟','💄','💇','🎁','📱','💻','🔄','✈️','🏖️','🐶','🐱','👶','🧸','🎓','🍺','🍷','☕','🍕','🍔','🥗','🚬','⚽','🎨','🔧','🧹','💸','🏦','💳','❤️','✨'];
