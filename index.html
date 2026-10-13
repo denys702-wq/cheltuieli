@@ -56,6 +56,17 @@ textarea{width:100%;border:1px solid var(--bd);border-radius:12px;background:var
 .fab{position:fixed;right:18px;bottom:calc(114px + env(safe-area-inset-bottom,0px));z-index:4;width:60px;height:60px;border-radius:30px;padding:0;font-size:32px;background:var(--accent);color:var(--on);border:0;box-shadow:0 6px 18px rgba(0,0,0,.28)}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:5}
 .ov[hidden]{display:none}
+.utoast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(98px + env(safe-area-inset-bottom,0px));z-index:6;width:min(360px,calc(100% - 32px));display:flex;align-items:center;gap:10px;padding:8px 8px 8px 16px;border-radius:16px;background:#1f2937;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);animation:fadeup .25s ease-out both}
+.utoast[hidden]{display:none}.utoast span{flex:1;font-weight:600}
+.utoast button{min-height:38px;border:0;background:rgba(255,255,255,.14);color:#93c5fd;font-weight:700;border-radius:12px}
+.swr{position:relative;overflow:hidden;border-radius:16px;margin-bottom:6px}
+.swr>.row{position:relative;margin-bottom:0;background:var(--card);transition:transform .22s ease}
+.swr.drag>.row{transition:none}
+.swr.open>.row{transform:translateX(-150px)}
+.swa{position:absolute;right:0;top:0;bottom:0;width:150px;display:flex;opacity:0;transition:opacity .15s}.swr.open .swa,.swr.drag .swa{opacity:1}
+.swa button{flex:1;border:0;border-radius:0;min-height:0;color:#fff;font-weight:700;padding:0 4px}
+.swa .e{background:#0284c7}.swa .d{background:#dc2626}
+.tdc{display:flex;align-items:center;gap:12px}.tdc .tn{flex:1;min-width:0}.tdc small{display:block;color:var(--muted)}.tdc b{font-size:18px}
 .btns.col{flex-direction:column}
 .rcomp{background:var(--bg);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin:8px 0}
 .rcomp>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:46px;padding:0 12px;font-weight:600}
@@ -255,6 +266,7 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
 <div class="wrap"><div id="app"></div></div>
 <nav class="dock"><i class="ind"></i><button data-tab="home"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/></svg><span data-i="hom"></span></button><button data-tab="hist"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span data-i="his"></span></button><button data-tab="bud"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1"/></svg><span data-i="budT"></span></button></nav>
 <button id="toast" class="toast" data-act="toast" hidden></button>
+<div id="utoast" class="utoast" hidden><span></span><button data-act="undo"></button></div>
 <button class="fab" data-act="add">+</button>
 <div id="fabb" class="fabb" data-act="closefabm" hidden></div>
 <div id="fabm" class="fabm" hidden><button data-act="addinc"><span>💰</span><span data-i="addInc"></span></button><button data-act="addcat"><span>🏷️</span><span data-i="cAdd"></span></button></div>
@@ -313,6 +325,9 @@ details.det{margin:8px 0;border:1px solid var(--bd);border-radius:14px;padding:0
   <p class="hint" data-i="bkh"></p>
   <textarea id="bk" rows="8" spellcheck="false"></textarea>
   <div id="msg" class="msg"></div>
+  <div class="btns"><button class="pri" data-act="bkfile" data-i="bkFile"></button><button data-act="bkpick" data-i="bkPick"></button></div>
+  <input type="file" id="bk-file" accept=".json,application/json,text/plain" hidden>
+  <p class="hint" data-i="bkTxtH"></p>
   <div class="btns"><button data-act="copy" data-i="copy"></button><button id="imp" data-act="imp"></button></div>
   
  </div>
@@ -542,6 +557,8 @@ Object.assign(T.ro,{lkAuto:'Auto',stGA:'Automatizări',stGD:'Date',stGP:'Confide
 Object.assign(T.en,{lkAuto:'Auto',stGA:'Automation',stGD:'Data',stGP:'Privacy and account',stGS:'Activity and support',bsOk:'On budget',bsNear:'Near the limit',bsOver:'Over budget',perDoneN:'Ended periods ({n}) ›'});
 Object.assign(T.ro,{apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) Comenzi rapide → Automatizare → + → Tranzacție (Transaction). La „When I tap” alege Any Card, apoi Run Immediately. Pașii sunt aceiași pe iOS 26 și iOS 27.\n2) Prima acțiune: URL Encode, cu proprietatea Amount din Shortcut Input.\n3) A doua acțiune: URL Encode, cu proprietatea Merchant din Shortcut Input.\n4) A treia acțiune: Open URLs. Scrie linkul de sus (se termină cu ?amt=), pune după el rezultatul primului URL Encode (suma), scrie &m= și pune rezultatul celui de-al doilea (comerciantul). Ca să verifici, apasă pe fiecare „URL Encoded Text” și vezi din ce acțiune vine.\n5) Opțional: Wait 5 seconds și Go to Home Screen, ca să te întorci singur la ecranul principal.\n6) ⓘ → Privacy → pornește Allow Running When Locked.\n7) Fă o plată de test.\nCodifică separat suma și comerciantul, nu tot linkul. Dacă le inversezi din greșeală, aplicația recunoaște și le corectează singură.',apCfg:'Configurare Apple Pay și ghid',rchNewT:'Comerciant nou',rchNewP:'Vrei să țin minte „{c}” pentru „{m}”, ca plățile viitoare de la el să se completeze singure?',rchUpdT:'Actualizez regula?',rchUpdP:'Ai schimbat datele pentru „{m}”. Actualizez regula salvată sau modific doar plata aceasta?',rchSave:'Memorează pentru viitor',rchUpd:'Actualizează regula',rchOnce:'Doar această plată',rchBack:'Înapoi'});
 Object.assign(T.en,{apA:'0) iPhone Settings → Apps → Wallet → turn on Mobile Data.\n1) Shortcuts → Automation → + → Transaction. Under “When I tap” choose Any Card, then Run Immediately. The steps are the same on iOS 26 and iOS 27.\n2) First action: URL Encode, using the Amount property of Shortcut Input.\n3) Second action: URL Encode, using the Merchant property of Shortcut Input.\n4) Third action: Open URLs. Type the link above (it ends with ?amt=), then the result of the first URL Encode (amount), type &m= and the result of the second (merchant). To check, tap each “URL Encoded Text” and see which action it comes from.\n5) Optional: Wait 5 seconds and Go to Home Screen, to return to the home screen on its own.\n6) ⓘ → Privacy → turn on Allow Running When Locked.\n7) Make a test payment.\nEncode the amount and the merchant separately, not the whole link. If you swap them by mistake, the app notices and corrects it.',apCfg:'Apple Pay setup and guide',rchNewT:'New merchant',rchNewP:'Should I remember “{c}” for “{m}”, so future payments from it fill in automatically?',rchUpdT:'Update the rule?',rchUpdP:'You changed the details for “{m}”. Update the saved rule or change only this payment?',rchSave:'Remember for the future',rchUpd:'Update the rule',rchOnce:'Only this payment',rchBack:'Back'});
+Object.assign(T.ro,{swE:'Modifică',swD:'Șterge',unBtn:'Anulează',unAdd:'Tranzacție salvată',unEdit:'Modificare salvată',unDel:'Tranzacție ștearsă',unPaid:'Plată marcată',unRest:'Date importate',tdN:'{n} plăți azi',tdNone:'Nicio plată azi',tdLeft:'mai poți cheltui ~{a}',tdOver:'peste ritmul zilnic cu {a}',bkFile:'Salvează fișier backup',bkPick:'Alege fișier backup',bkSaved:'Fișierul de backup a fost creat. Salvează-l în Fișiere sau trimite-l unde vrei.',bkLoaded:'Fișier citit: {n} tranzacții. Apasă „Importă din text” și confirmă ca să înlocuiești datele.',bkTxtH:'Sau copiază și lipește textul:'});
+Object.assign(T.en,{swE:'Edit',swD:'Delete',unBtn:'Undo',unAdd:'Transaction saved',unEdit:'Change saved',unDel:'Transaction deleted',unPaid:'Payment marked',unRest:'Data imported',tdN:'{n} payments today',tdNone:'No payments today',tdLeft:'you can spend ~{a}',tdOver:'over the daily pace by {a}',bkFile:'Save backup file',bkPick:'Choose backup file',bkSaved:'The backup file was created. Save it in Files or send it wherever you like.',bkLoaded:'File read: {n} transactions. Tap “Import from text” and confirm to replace your data.',bkTxtH:'Or copy and paste the text:'});
 const CN={'Mâncare':'Food','Subscripții':'Subscriptions','Combustibil':'Fuel','Facturi':'Bills','Casă':'Home','Sănătate':'Health','Distracție':'Fun','Cumpărături':'Shopping','Altele':'Other','Economii':'Savings','Salariu':'Salary'};
 const CATS={exp:['Mâncare','Subscripții','Combustibil','Facturi','Casă','Sănătate','Distracție','Cumpărături','Altele'],inc:['Salariu','Bonus','Altele']};
 let S={lang:'ro',cur:'RON',name:'',scope:'all',tipDone:'',seenVer:'',priv:false,privStart:false,theme:'teal',look:'auto'},tx=[],pl=[],pa='',edKind='tx',subs=[],cats=[],rules=[],goals=[],logs=[],per=[],plExp=false,ok=true,view=new Date(),tab='home',edId=null,type='exp',armed='';
@@ -610,7 +627,7 @@ function render(){
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big" data-cuk="bal" data-cu="${bal}">${fmt(bal)}</div>${budChip()}<div class="two"><div><span>↑ ${t('inc')}</span><b data-cuk="inc" data-cu="${inc}">${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b data-cuk="exp" data-cu="${exp}">${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${whatsNewCard()+tipCard()+perCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${todayCard()+whatsNewCard()+tipCard()+perCard()+planCard()+apCard()+budAlert()+settleCard(mk(view))+charts(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);animNums();barsIn();
@@ -636,9 +653,11 @@ function switchTab(k){
  place(true);
  if(ch)barsIn($('#p-'+tab));
 }
-let sx=0,sy=0,dx=0,lk='',zn='';
+let sx=0,sy=0,dx=0,lk='',zn='',rw=null,swBlock=0;const SWW=150;
 document.addEventListener('touchstart',e=>{
  zn=e.target.closest('.pager')?'p':e.target.closest('#top')?'t':'';
+ rw=zn==='p'?e.target.closest('.swr'):null;
+ document.querySelectorAll('.swr.open').forEach(w=>{if(w!==rw)w.classList.remove('open')});
  if(!zn||e.touches.length!==1||busy){lk='x';return}
  sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;lk='';
 },{passive:true});
@@ -648,10 +667,15 @@ document.addEventListener('touchmove',e=>{
  if(!lk){
   if(Math.abs(x)<8&&Math.abs(y)<8)return;
   lk=Math.abs(x)>Math.abs(y)?'h':'v';
+  if(lk==='h'&&rw&&(x<0||rw.classList.contains('open'))){lk='r';rw.classList.add('drag')}
   if(lk==='h'){
    if(zn==='p'){offAll(false);$('#trk').style.transition='none'}
    else $('#top').style.transition='none';
   }
+ }
+ if(lk==='r'){
+  const base=rw.classList.contains('open')?-SWW:0,v=Math.max(-SWW-30,Math.min(0,base+x));
+  rw.querySelector('.row').style.transform=`translateX(${v}px)`;swBlock=Date.now()+400;return
  }
  if(lk!=='h')return;
  if(zn==='p'){
@@ -662,6 +686,11 @@ document.addEventListener('touchmove',e=>{
  }else{dx=x;$('#top').style.transform=`translateX(${dx}px)`}
 },{passive:true});
 function endTouch(){
+ if(lk==='r'&&rw){
+  const r=rw.querySelector('.row'),m=(r.style.transform||'').match(/-?[\d.]+/),v=m?+m[0]:0;
+  rw.classList.remove('drag');r.style.transform='';rw.classList.toggle('open',v<-SWW/2);
+  swBlock=Date.now()+400;lk='';rw=null;dx=0;return;
+ }
  if(lk==='h'){const w=window.innerWidth;
   if(zn==='p'){
    if(dx<-w*.18&&TI()<TABS.length-1)switchTab(TABS[TI()+1]);
@@ -712,7 +741,7 @@ function togglePlan(){
 }
 function payPlan(key){
  if(pa!==key){pa=key;clearTimeout(paT);paT=setTimeout(()=>{pa='';render()},4000);render();return}
- pa='';clearTimeout(paT);
+ pa='';clearTimeout(paT);snapU();
  const id=+key.slice(1),ym=mk(view),cur=ym<=mk(new Date());
  if(key[0]==='p'){
   const x=pl.find(r=>r.id===id);
@@ -721,7 +750,7 @@ function payPlan(key){
   const sb=subs.find(r=>r.id===id);
   if(sb&&!paidSub(sb,ym)){tx.push({id:Date.now(),type:'exp',amt:sb.amt,cat:sb.cat,date:ym<mk(new Date())?dueOf(sb,ym):today(),note:sb.note,sid:sb.id,sm:ym,...(sb.own?{own:sb.own}:{}),...(sb.own==='shared'?{by:C.uid}:{})});logAdd('paid','sub',{c:sb.cat,m:sb.amt,n:sb.note});save()}
  }
- render();
+ render();undoShow('unPaid');
 }
 
 function dl(){$('#l-date').textContent=t(type==='plan'?'due':type==='sub'?'due1':'date')}
@@ -739,7 +768,7 @@ function list(m){
  let h='',d='';
  for(const x of s){
   if(x.date!==d){d=x.date;h+=`<div class="day">${dayLbl(d)}</div>`}
-  h+=`<button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}${x.chk?' ❓':''}${x.pk?' '+esc(perEm(x.pk)):''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button>`;
+  h+=`<div class="swr"><div class="swa"><button class="e" data-act="swedit" data-id="${x.id}">✏️ ${t('swE')}</button><button class="d" data-act="swdel" data-id="${x.id}">🗑 ${t('swD')}</button></div><button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}${x.chk?' ❓':''}${x.pk?' '+esc(perEm(x.pk)):''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button></div>`;
  }
  return h;
 }
@@ -801,6 +830,7 @@ function imp(){
  try{
   const o=JSON.parse($('#bk').value),a=Array.isArray(o)?o:o.tx;
   if(!Array.isArray(a))throw 0;
+  snapU();
   tx=a.filter(x=>x&&(x.type==='exp'||x.type==='inc')&&Number.isFinite(+x.amt)&&+x.amt>0&&/^\d{4}-\d{2}-\d{2}$/.test(x.date))
    .map((x,i)=>({id:+x.id||Date.now()+i,type:x.type,amt:+x.amt,cat:String(x.cat||'Altele').slice(0,40),date:x.date,note:String(x.note||'').slice(0,80),...(x.sid?{sid:+x.sid,sm:String(x.sm||'')}:{}),...(x.ap?{ap:String(x.ap).slice(0,80)}:{}),...(x.chk?{chk:1}:{}),...(+x.sv?{sv:+x.sv}:{}),...(+x.pk?{pk:+x.pk}:{}),...(x.ik?{ik:String(x.ik).slice(0,90)}:{})}));
   pl=Array.isArray(o.planned)?o.planned.filter(x=>x&&Number.isFinite(+x.amt)&&+x.amt>0&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)).map((x,i)=>({id:+x.id||Date.now()+i,amt:+x.amt,cat:String(x.cat||'Altele').slice(0,40),date:x.date,note:String(x.note||'').slice(0,80)})):[];
@@ -812,7 +842,7 @@ function imp(){
   save();render();armed='';
   b.textContent=t('imp');b.classList.remove('dng');
   $('#bk').value=JSON.stringify({tx,planned:pl,subs,cats,rules,goals,periods:per},null,1);
-  $('#msg').textContent=t('impok').replace('{n}',tx.length);
+  $('#msg').textContent=t('impok').replace('{n}',tx.length);undoShow('unRest');
  }catch(e){armed='';b.textContent=t('imp');b.classList.remove('dng');$('#msg').textContent=t('impbad')}
 }
 
@@ -867,6 +897,7 @@ function saveTx(choice){
    const changed=old.cat!==o.cat||(o.note||'')!==(old.note||'')||(own||'')!==(old.own||'');
    if(old.chk||changed){askRule(old,o);return}
   }
+  const wasEdit=!!edId;snapU();
   if(edId){tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId)}
   if(type==='plan')pl.push({id,...o});
   else if(type==='sub')subs.push({id,amt:o.amt,cat:o.cat,note:o.note,day:+d.slice(8,10),from:d.slice(0,7),...(own?{own}:{})});
@@ -875,17 +906,75 @@ function saveTx(choice){
   logAdd(edId?'edit':'add',type==='inc'?'inc':type==='plan'?'plan':type==='sub'?'sub':'exp',{c:o.cat,m:o.amt,n:o.note});
   view=new Date(d+'T00:00:00');view.setDate(1);
   try{save()}catch(e){console.error(e)}
-  closeSheet();render();
+  closeSheet();render();undoShow(wasEdit?'unEdit':'unAdd');
  }catch(e){ERR.report('catch',e&&e.message||e,e&&e.stack,'saveTx');err('Eroare: '+(e&&e.message||e))}
 }
+let UN=null,unT=0;
+function snapU(){UN=JSON.stringify({tx,pl,subs,cats,rules,goals,per})}
+function undoShow(k){
+ if(!UN)return;const el=$('#utoast');
+ el.querySelector('span').textContent=t(k);el.querySelector('button').textContent=t('unBtn');
+ el.hidden=false;clearTimeout(unT);unT=setTimeout(()=>{el.hidden=true;UN=null},7000);
+}
+function undoDo(){
+ if(!UN)return;
+ try{const o=JSON.parse(UN);tx=o.tx;pl=o.pl;subs=o.subs;cats=o.cats;rules=o.rules;goals=o.goals;per=o.per;}catch(e){}
+ UN=null;clearTimeout(unT);$('#utoast').hidden=true;save();render();
+}
+function swDel(id){
+ const it=tx.find(r=>r.id===id);if(!it)return;
+ snapU();logAdd('del',it.type==='inc'?'inc':'exp',{c:it.cat,m:it.amt,n:it.note});
+ tx=tx.filter(r=>r.id!==id);save();render();undoShow('unDel');
+}
+function todayCard(){
+ try{
+  const td=today(),ym=mk(new Date());
+  if(mk(view)!==ym)return '';
+  const day=tx.filter(x=>x.type==='exp'&&x.date===td&&vis(x)),sp=day.reduce((a,x)=>a+share(x,ym),0);
+  const alloc=cats.reduce((a,c)=>a+bud(c,ym,wal()),0);
+  let sub=day.length?t('tdN').replace('{n}',day.length):t('tdNone');
+  if(alloc>0){
+   const spM=cats.reduce((a,c)=>a+spentIn(c.name,ym),0),spBud=day.filter(x=>!x.pk).reduce((a,x)=>a+share(x,ym),0);
+   const d=new Date(),left=dim(ym)-d.getDate()+1,allow=Math.max(0,alloc-(spM-spBud))/left,rest=allow-spBud;
+   sub+=' · '+(rest>=0?t('tdLeft').replace('{a}',fmt(rest)):t('tdOver').replace('{a}',fmt(-rest)));
+  }
+  return `<div class="plan tdc"><i class="ic" style="background:var(--bg)">📅</i><div class="tn"><b>${t('today')}</b><small>${sub}</small></div><b class="r">${sp?'−'+fmt(sp):fmt(0)}</b></div>`;
+ }catch(e){return ''}
+}
+async function bkFile(){
+ const json=JSON.stringify({v:APP_VER,tx,planned:pl,subs,cats,rules,goals,periods:per},null,1),name='cheltuieli-backup-'+today()+'.json',m=$('#msg');
+ try{
+  const f=new File([json],name,{type:'application/json'});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});m.textContent=t('bkSaved');return}
+ }catch(e){if(e&&e.name==='AbortError')return}
+ try{
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);m.textContent=t('bkSaved');
+ }catch(e){m.textContent=t('manual')}
+}
+document.addEventListener('change',e=>{
+ if(e.target.id!=='bk-file')return;
+ const f=e.target.files&&e.target.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=()=>{
+  try{
+   const txt=String(rd.result||''),o=JSON.parse(txt),a=Array.isArray(o)?o:o.tx;if(!Array.isArray(a))throw 0;
+   $('#bk').value=txt;armed='';const b=$('#imp');b.textContent=t('imp');b.classList.remove('dng');
+   $('#msg').textContent=t('bkLoaded').replace('{n}',a.length);
+  }catch(x){$('#msg').textContent=t('impbad')}
+ };
+ rd.onerror=()=>{$('#msg').textContent=t('csvRead')};
+ rd.readAsText(f);e.target.value='';
+});
 function delTx(){
  const b=$('#del');
  if(armed!=='del'){armed='del';b.textContent=t('sure');b.classList.add('dng');return}
  {let kd='exp',it=tx.find(r=>r.id===edId);if(it)kd=it.type==='inc'?'inc':'exp';else if(it=pl.find(r=>r.id===edId))kd='plan';else if(it=subs.find(r=>r.id===edId))kd='sub';if(it)logAdd('del',kd,{c:it.cat,m:it.amt,n:it.note})}
- tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId);save();closeSheet();render();
+ snapU();tx=tx.filter(r=>r.id!==edId);pl=pl.filter(r=>r.id!==edId);subs=subs.filter(r=>r.id!==edId);save();closeSheet();render();undoShow('unDel');
 }
 
 document.addEventListener('click',e=>{
+ if(Date.now()<swBlock){e.preventDefault();return}
  const tb=e.target.closest('[data-tab]');
  if(tb){ERR.crumb('tab:'+tb.dataset.tab);switchTab(tb.dataset.tab);return}
  const ty=e.target.closest('[data-type]');
@@ -919,7 +1008,12 @@ document.addEventListener('click',e=>{
  else if(a==='rchonce'){closeRch();saveTx('once')}
  else if(a==='rchback')closeRch()
  else if(a==='gobud')switchTab('bud');
- else if(a==='edit')openSheet(+b.dataset.id,b.dataset.kind);
+ else if(a==='edit'){const w=b.closest('.swr.open');if(w){w.classList.remove('open');return}openSheet(+b.dataset.id,b.dataset.kind)}
+ else if(a==='swedit')openSheet(+b.dataset.id,'tx')
+ else if(a==='swdel')swDel(+b.dataset.id)
+ else if(a==='undo')undoDo()
+ else if(a==='bkfile')bkFile()
+ else if(a==='bkpick')$('#bk-file').click()
  else if(a==='pay')payPlan(b.dataset.key);
  else if(a==='close')closeSheet();
  else if(a==='save')saveTx();
@@ -1278,7 +1372,7 @@ async function csvFile(f){
 }
 function csvImport(){
  const B=csvBuild();if(!B.items.length){if((B.stamps||[]).length){B.stamps.forEach(([x,ik])=>{x.ik=ik});save()}return}
- B.items.forEach(x=>tx.push(x));
+ snapU();B.items.forEach(x=>tx.push(x));
  (B.stamps||[]).forEach(([x,ik])=>{x.ik=ik});
  logAdd('imp','csv',{n:B.items.length});
  const last=B.items.map(x=>x.date).sort().pop();
@@ -1612,8 +1706,9 @@ async function calGo(){
 }
 
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='2.1';
+const APP_VER='2.2';
 const CHANGELOG=[
+ {v:'2.2',d:'2026-10-13',ro:['Anulează: după salvare, ștergere, import sau plată ai câteva secunde să revii','Cardul „Azi” pe prima pagină: cât ai cheltuit și cât mai poți cheltui azi','Glisează un rând din Istoric spre stânga ca să-l modifici sau să-l ștergi','Backup ca fișier, pe care îl salvezi din telefon și îl poți alege la restaurare'],en:['Undo: after saving, deleting, importing or paying you have a few seconds to go back','“Today” card on the home page: what you spent and what you can still spend today','Swipe a History row left to edit or delete it','Backup as a file you can save from your phone and pick when restoring']},
  {v:'2.1',d:'2026-10-13',ro:['Comerciant necunoscut: alegi dacă memorezi regula sau modifici doar plata curentă','Apple Pay și reguli într-un ecran compact: ghidul și regulile se deschid doar când ai nevoie, iar regulile se pot edita','Ghid Apple Pay actualizat pentru iOS 26 și 27; aplicația corectează singură suma și comerciantul dacă sunt inversate în link','Import CSV fără dubluri chiar dacă încarci același extras de mai multe ori, inclusiv pentru venituri'],en:['Unknown merchant: choose whether to remember a rule or change only the current payment','Apple Pay and rules in one compact screen: the guide and rules open only when needed, and rules are editable','Apple Pay guide updated for iOS 26 and 27; the app fixes swapped amount and merchant in the link','CSV import without duplicates even if you load the same statement several times, including income']},
  {v:'2.0',d:'2026-10-13',ro:['Bară de jos în stil Liquid Glass: o tragi cu degetul și pagina o urmează, cu efect de sticlă','Setări compacte, grupate pe categorii, cu teme de culoare și aspect luminos sau întunecat','Vacanța și sezoanele sunt acum în tabul Buget','Sumele se numără animat, barele se umplu lin, confetti la un obiectiv atins și stare a bugetului pe cardul de sold'],en:['Liquid Glass style bottom bar: drag it with your finger and the page follows, with a glass effect','Compact settings grouped by category, with color themes and light or dark look','Vacation and seasons now live in the Budget tab','Animated number count-up, smooth progress bars, confetti when a goal is reached and a budget status on the balance card']},
  {v:'1.9',d:'2026-10-13',ro:['Raport automat de erori: dacă apare un bug, aplicația îl salvează și îl trimite în baza de date, ca să poată fi reparat','Ecran „Raport erori” în Setări, cu copiere și trimitere manuală','Rapoartele nu conțin sume, note sau nume'],en:['Automatic error report: if a bug appears, the app saves it and sends it to the database so it can be fixed','“Error report” screen in Settings with copy and manual send','Reports contain no amounts, notes or names']},
