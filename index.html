@@ -62,10 +62,10 @@ textarea{width:100%;border:1px solid var(--bd);border-radius:12px;background:var
 .swr{position:relative;overflow:hidden;border-radius:16px;margin-bottom:6px}
 .swr>.row{position:relative;margin-bottom:0;background:var(--card);transition:transform .22s ease}
 .swr.drag>.row{transition:none}
-.swr.open>.row{transform:translateX(-150px)}
-.swa{position:absolute;right:0;top:0;bottom:0;width:150px;display:flex;opacity:0;transition:opacity .15s}.swr.open .swa,.swr.drag .swa{opacity:1}
+.swr.open[data-dir=l]>.row{transform:translateX(-90px)}.swr.open[data-dir=r]>.row{transform:translateX(90px)}
+.swa{position:absolute;top:0;bottom:0;width:90px;display:flex;opacity:0;transition:opacity .15s}.swa.l{left:0}.swa.r{right:0}.swr[data-dir=r] .swa.l,.swr[data-dir=l] .swa.r{opacity:1}
 .swa button{flex:1;border:0;border-radius:0;min-height:0;color:#fff;font-weight:700;padding:0 4px}
-.swa .e{background:#0284c7}.swa .d{background:#dc2626}
+.swa .e{background:#0284c7}.swa .d{background:#dc2626}.swa button{width:100%}
 .tdc{display:flex;align-items:center;gap:12px}.tdc .tn{flex:1;min-width:0}.tdc small{display:block;color:var(--muted)}.tdc b{font-size:18px}
 .btns.col{flex-direction:column}
 .rcomp{background:var(--bg);border:1px solid var(--bd);border-radius:14px;overflow:hidden;margin:8px 0}
@@ -653,10 +653,10 @@ function switchTab(k){
  place(true);
  if(ch)barsIn($('#p-'+tab));
 }
-let sx=0,sy=0,dx=0,lk='',zn='',rw=null,swBlock=0;const SWW=150;
+let sx=0,sy=0,dx=0,lk='',zn='',rw=null,swBlock=0;const SWW=90;
 document.addEventListener('touchstart',e=>{
- zn=e.target.closest('.pager')?'p':e.target.closest('#top')?'t':'';
- rw=zn==='p'?e.target.closest('.swr'):null;
+ rw=e.target.closest('.swr');
+ zn=rw?'p':e.target.closest('#top')?'t':'';
  document.querySelectorAll('.swr.open').forEach(w=>{if(w!==rw)w.classList.remove('open')});
  if(!zn||e.touches.length!==1||busy){lk='x';return}
  sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;lk='';
@@ -667,15 +667,15 @@ document.addEventListener('touchmove',e=>{
  if(!lk){
   if(Math.abs(x)<8&&Math.abs(y)<8)return;
   lk=Math.abs(x)>Math.abs(y)?'h':'v';
-  if(lk==='h'&&rw&&(x<0||rw.classList.contains('open'))){lk='r';rw.classList.add('drag')}
+  if(lk==='h'&&rw){lk='r';rw.classList.add('drag')}
   if(lk==='h'){
    if(zn==='p'){offAll(false);$('#trk').style.transition='none'}
    else $('#top').style.transition='none';
   }
  }
  if(lk==='r'){
-  const base=rw.classList.contains('open')?-SWW:0,v=Math.max(-SWW-30,Math.min(0,base+x));
-  rw.querySelector('.row').style.transform=`translateX(${v}px)`;swBlock=Date.now()+400;return
+  const base=rw.classList.contains('open')?(rw.dataset.dir==='r'?SWW:-SWW):0,v=Math.max(-SWW-30,Math.min(SWW+30,base+x));
+  rw.dataset.dir=v>0?'r':'l';rw.querySelector('.row').style.transform=`translateX(${v}px)`;swBlock=Date.now()+400;return
  }
  if(lk!=='h')return;
  if(zn==='p'){
@@ -688,7 +688,7 @@ document.addEventListener('touchmove',e=>{
 function endTouch(){
  if(lk==='r'&&rw){
   const r=rw.querySelector('.row'),m=(r.style.transform||'').match(/-?[\d.]+/),v=m?+m[0]:0;
-  rw.classList.remove('drag');r.style.transform='';rw.classList.toggle('open',v<-SWW/2);
+  rw.classList.remove('drag');r.style.transform='';rw.dataset.dir=v>0?'r':'l';rw.classList.toggle('open',Math.abs(v)>SWW/2);
   swBlock=Date.now()+400;lk='';rw=null;dx=0;return;
  }
  if(lk==='h'){const w=window.innerWidth;
@@ -768,7 +768,7 @@ function list(m){
  let h='',d='';
  for(const x of s){
   if(x.date!==d){d=x.date;h+=`<div class="day">${dayLbl(d)}</div>`}
-  h+=`<div class="swr"><div class="swa"><button class="e" data-act="swedit" data-id="${x.id}">✏️ ${t('swE')}</button><button class="d" data-act="swdel" data-id="${x.id}">🗑 ${t('swD')}</button></div><button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}${x.chk?' ❓':''}${x.pk?' '+esc(perEm(x.pk)):''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button></div>`;
+  h+=`<div class="swr"><div class="swa l"><button class="e" data-act="swedit" data-id="${x.id}">✏️ ${t('swE')}</button></div><div class="swa r"><button class="d" data-act="swdel" data-id="${x.id}">🗑 ${t('swD')}</button></div><button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(cn(x.cat))}${x.sid?' 🔁':''}${x.chk?' ❓':''}${x.pk?' '+esc(perEm(x.pk)):''}</b>${x.note?`<small>${esc(x.note)}</small>`:''}</span><em class="${x.type==='inc'?'g':'r'}">${x.type==='inc'?'+':'−'}${fmt(x.amt)}</em></button></div>`;
  }
  return h;
 }
@@ -1706,8 +1706,9 @@ async function calGo(){
 }
 
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='2.2';
+const APP_VER='2.2.2';
 const CHANGELOG=[
+ {v:'2.2.2',d:'2026-10-13',ro:['În Istoric: glisezi spre dreapta ca să modifici și spre stânga ca să ștergi','Schimbarea tab-urilor prin glisare pe ecran a fost oprită; folosești bara de jos'],en:['In History: swipe right to edit and left to delete','Switching tabs by swiping the screen is turned off; use the bottom bar']},
  {v:'2.2',d:'2026-10-13',ro:['Anulează: după salvare, ștergere, import sau plată ai câteva secunde să revii','Cardul „Azi” pe prima pagină: cât ai cheltuit și cât mai poți cheltui azi','Glisează un rând din Istoric spre stânga ca să-l modifici sau să-l ștergi','Backup ca fișier, pe care îl salvezi din telefon și îl poți alege la restaurare'],en:['Undo: after saving, deleting, importing or paying you have a few seconds to go back','“Today” card on the home page: what you spent and what you can still spend today','Swipe a History row left to edit or delete it','Backup as a file you can save from your phone and pick when restoring']},
  {v:'2.1',d:'2026-10-13',ro:['Comerciant necunoscut: alegi dacă memorezi regula sau modifici doar plata curentă','Apple Pay și reguli într-un ecran compact: ghidul și regulile se deschid doar când ai nevoie, iar regulile se pot edita','Ghid Apple Pay actualizat pentru iOS 26 și 27; aplicația corectează singură suma și comerciantul dacă sunt inversate în link','Import CSV fără dubluri chiar dacă încarci același extras de mai multe ori, inclusiv pentru venituri'],en:['Unknown merchant: choose whether to remember a rule or change only the current payment','Apple Pay and rules in one compact screen: the guide and rules open only when needed, and rules are editable','Apple Pay guide updated for iOS 26 and 27; the app fixes swapped amount and merchant in the link','CSV import without duplicates even if you load the same statement several times, including income']},
  {v:'2.0',d:'2026-10-13',ro:['Bară de jos în stil Liquid Glass: o tragi cu degetul și pagina o urmează, cu efect de sticlă','Setări compacte, grupate pe categorii, cu teme de culoare și aspect luminos sau întunecat','Vacanța și sezoanele sunt acum în tabul Buget','Sumele se numără animat, barele se umplu lin, confetti la un obiectiv atins și stare a bugetului pe cardul de sold'],en:['Liquid Glass style bottom bar: drag it with your finger and the page follows, with a glass effect','Compact settings grouped by category, with color themes and light or dark look','Vacation and seasons now live in the Budget tab','Animated number count-up, smooth progress bars, confetti when a goal is reached and a budget status on the balance card']},
