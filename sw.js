@@ -1,5 +1,5 @@
-const C='cheltuieli-v3';
-self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','icon-180.png','icon-512.png','manifest.webmanifest'])).catch(()=>{}));self.skipWaiting()});
+const C='cheltuieli-v4';
+self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','app.js','app.css','icon-180.png','icon-512.png','manifest.webmanifest'])).catch(()=>{}));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{
  const r=e.request;
