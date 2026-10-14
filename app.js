@@ -100,6 +100,7 @@ Object.assign(T.en,{apA:'0) iPhone Settings → Apps → Wallet → turn on Mobi
 Object.assign(T.ro,{swE:'Modifică',swD:'Șterge',unBtn:'Anulează',unAdd:'Tranzacție salvată',unEdit:'Modificare salvată',unDel:'Tranzacție ștearsă',unPaid:'Plată marcată',unRest:'Date importate',unChk:'Plata rămâne așa, fără verificare',apOk:'Lasă așa',apOkH:'Atinge plata ca s-o corectezi, sau ✕ ca s-o lași așa.',tdN:'{n} plăți azi',tdNone:'Nicio plată azi',tdLeft:'mai poți cheltui ~{a}',tdOver:'peste ritmul zilnic cu {a}',tdBoth:'Pentru amândoi: mai puteți cheltui ~{a} azi',tdEach:'~{a} fiecare',tdSplit:'tu ~{a} · {n} ~{b}',tdBothOver:'Împreună sunteți peste ritmul zilnic cu {a}',bkFile:'Salvează fișier backup',bkPick:'Alege fișier backup',bkSaved:'Fișierul de backup a fost creat. Salvează-l în Fișiere sau trimite-l unde vrei.',bkLoaded:'Fișier citit: {n} tranzacții. Apasă „Importă din text” și confirmă ca să înlocuiești datele.',bkTxtH:'Sau copiază și lipește textul:'});
 Object.assign(T.en,{swE:'Edit',swD:'Delete',unBtn:'Undo',unAdd:'Transaction saved',unEdit:'Change saved',unDel:'Transaction deleted',unPaid:'Payment marked',unRest:'Data imported',unChk:'Payment kept as is, no review',apOk:'Keep as is',apOkH:'Tap a payment to fix it, or ✕ to keep it as is.',tdN:'{n} payments today',tdNone:'No payments today',tdLeft:'you can spend ~{a}',tdOver:'over the daily pace by {a}',tdBoth:'For both of you: you can spend ~{a} today',tdEach:'~{a} each',tdSplit:'you ~{a} · {n} ~{b}',tdBothOver:'Together you are over the daily pace by {a}',bkFile:'Save backup file',bkPick:'Choose backup file',bkSaved:'The backup file was created. Save it in Files or send it wherever you like.',bkLoaded:'File read: {n} transactions. Tap “Import from text” and confirm to replace your data.',bkTxtH:'Or copy and paste the text:'});
 Object.assign(T.ro,{cusT:'Personalizare',cusFs:'Mărimea textului',cusDen:'Densitate',cusDc:'Compactă',cusDn:'Normală',cusDr:'Aerisită',cusCards:'Carduri pe prima pagină',cusCardsH:'Mută-le cu ▲ ▼ și ascunde ce nu folosești.',cusOn:'Vizibil',cusOff:'Ascuns',cusRst:'Ordinea implicită',cusCats:'Ordinea categoriilor',cusOrd:'Ordine',cusHold:'Ține apăsat pe o categorie și trage-o sus sau jos ca să schimbi ordinea.',cdToday:'Azi',cdAlert:'Alerte buget',cdChart:'Grafic și statistici',cCol:'Culoare',cColC:'Culoare personalizată'});
+Object.assign(T.ro,{srPh:'Caută în tranzacții',srX:'Anulează',srNone:'Nimic găsit.',srN:'{n} rezultate'});Object.assign(T.en,{srPh:'Search transactions',srX:'Cancel',srNone:'No results.',srN:'{n} results'});
 Object.assign(T.en,{cusT:'Customization',cusFs:'Text size',cusDen:'Density',cusDc:'Compact',cusDn:'Normal',cusDr:'Roomy',cusCards:'Home page cards',cusCardsH:'Move them with ▲ ▼ and hide what you do not use.',cusOn:'Shown',cusOff:'Hidden',cusRst:'Default order',cusCats:'Category order',cusOrd:'Order',cusHold:'Press and hold a category, then drag it up or down to change the order.',cdToday:'Today',cdAlert:'Budget alerts',cdChart:'Chart and statistics',cCol:'Color',cColC:'Custom color'});
 Object.assign(T.ro,{apIntroA:'Pe Android, plățile se pot adăuga singure din notificările telefonului (Google Wallet sau aplicația băncii) sau din SMS-uri, cu o aplicație de automatizare gratuită. Aplicația citește suma și comerciantul din textul notificării. Dacă nu recunoaște comerciantul, plata apare cu ❓ și o corectezi o dată.',apNT:'Automat cu MacroDroid (Android)',apN:'Ghidul nu a fost încă încercat pe un telefon Android. Dacă ceva diferă, trimite-mi un exemplu de notificare și îl ajustez.\n\n1) Instalează aplicația Cheltuieli din Chrome: ⋮ → Instalează aplicația.\n2) Instalează MacroDroid din Google Play (varianta gratuită permite 5 macro-uri).\n3) În MacroDroid: Add Macro → Trigger → Notifications → Notification Received → alege aplicația care trimite notificarea de plată (Google Wallet sau aplicația băncii). Acordă accesul la notificări când ți se cere. Dacă banca îți trimite SMS la fiecare plată, poți folosi în schimb Trigger → Messaging → SMS Received.\n4) Action → Applications → Open Website/URL. Lipește linkul de mai sus (se termină cu ?n=) și adaugă imediat după el variabila cu textul notificării (Magic Text → Notification Text; la SMS: textul mesajului).\n5) Salvează macro-ul și fă o plată de test.\n\nNotificările de încasare (primit, rambursare) sunt ignorate. Sumele în altă monedă nu sunt convertite.',apNIgn:'Notificare ignorată: pare o încasare',apNBad:'Nu am găsit suma în notificare',apTag:'automat',apCfgA:'Configurare plăți automate și ghid'});
 Object.assign(T.en,{apIntroA:'On Android, payments can be added automatically from phone notifications (Google Wallet or your bank app) or from SMS messages, using a free automation app. The app reads the amount and merchant from the notification text. If it does not recognise the merchant, the payment shows ❓ and you fix it once.',apNT:'Automatic with MacroDroid (Android)',apN:'This guide has not been tried on an Android phone yet. If something differs, send me an example notification and I will adjust it.\n\n1) Install the Expenses app from Chrome: ⋮ → Install app.\n2) Install MacroDroid from Google Play (the free version allows 5 macros).\n3) In MacroDroid: Add Macro → Trigger → Notifications → Notification Received → pick the app that sends the payment notification (Google Wallet or your bank app). Grant notification access when asked. If your bank sends an SMS for every payment, use Trigger → Messaging → SMS Received instead.\n4) Action → Applications → Open Website/URL. Paste the link above (it ends with ?n=) and add right after it the variable with the notification text (Magic Text → Notification Text; for SMS: the message text).\n5) Save the macro and make a test payment.\n\nIncoming-money notifications (received, refund) are ignored. Amounts in other currencies are not converted.',apNIgn:'Notification ignored: looks like incoming money',apNBad:'Could not find the amount in the notification',apTag:'auto',apCfgA:'Automatic payments setup and guide'});
@@ -162,6 +163,7 @@ function applyStatic(){
  $('#s-name').value=S.name;$('#s-name').placeholder=t('nmp');$('#s-lang').value=S.lang;$('#s-cur').value=S.cur;armed='';dl();
 }
 
+let hq='',hOpen=false;
 function render(){
  const m=tx.filter(x=>x.date.startsWith(mk(view))&&vis(x));
  const inc=sum(m,'inc'),exp=sum(m,'exp'),bal=inc-exp,hr=new Date().getHours();
@@ -173,7 +175,7 @@ function render(){
  const an=mAnim?(mAnim>0?' mir':' mil'):'';
  h+=`<div id="top" class="top${an}"><div class="nav"><button data-act="prev" aria-label="${t('prev')}">‹</button><h1>${mt(view)}</h1><button data-act="next" aria-label="${t('next')}">›</button></div>`;
  h+=`<div class="sum"><span>${t('bal')}</span><div class="big" data-cuk="bal" data-cu="${bal}">${fmt(bal)}</div>${budChip()}<div class="two"><div><span>↑ ${t('inc')}</span><b data-cuk="inc" data-cu="${inc}">${fmt(inc)}</b></div><div><span>↓ ${t('exp')}</span><b data-cuk="exp" data-cu="${exp}">${fmt(exp)}</b></div></div></div></div>`;
- h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${whatsNewCard()+homeCards(m,inc,exp)}</section><section class="pane" id="p-hist">${list(m)}</section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
+ h+=`<div class="pager${an}${mAnim?' noanim':''}" id="pgr"><div class="track" id="trk"><section class="pane" id="p-home">${whatsNewCard()+homeCards(m,inc,exp)}</section><section class="pane" id="p-hist">${searchBar()}<div id="hs-res">${histBody(m)}</div></section><section class="pane" id="p-bud">${budgetPane()}</section></div></div>`;
  $('#app').innerHTML=h;
  document.querySelectorAll('.dock button').forEach(b=>b.classList.toggle('on',b.dataset.tab===tab));
  place(false);animNums();barsIn();
@@ -308,8 +310,8 @@ function dayLbl(d){
  const w=new Date(d+'T00:00:00').toLocaleDateString(loc(),{weekday:'long'});
  return w.charAt(0).toUpperCase()+w.slice(1)+' · '+fd(d);
 }
-function list(m){
- if(!m.length)return `<p class="empty"><span class="pig">🐷</span>${t('none')}</p>`;
+function list(m,q){
+ if(!m.length)return `<p class="empty"><span class="pig">${q?'🔍':'🐷'}</span>${t(q?'srNone':'none')}</p>`;
  const s=[...m].sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
  let h='',d='';
  for(const x of s){
@@ -318,6 +320,63 @@ function list(m){
  }
  return h;
 }
+
+/* ===== Căutare în Istoric (tragi de sus în jos, ca pe iPhone) ===== */
+const fold=x=>String(x==null?'':x).normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function searchTx(q){
+ const w=fold(q).split(/\s+/).filter(Boolean);if(!w.length)return [];
+ return tx.filter(x=>{
+  if(!vis(x))return false;
+  const a=(+x.amt||0),h=fold([x.note,x.cat,cn(x.cat),a,String(a).replace('.',','),a.toFixed(2),a.toFixed(2).replace('.',','),x.date,fd(x.date)].join(' '));
+  return w.every(k=>h.includes(k));
+ }).sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,300);
+}
+function histBody(m){
+ if(hq.trim()){const r=searchTx(hq);return (r.length?`<p class="hint srn">${t('srN').replace('{n}',r.length)}</p>`:'')+list(r,1)}
+ return list(m||tx.filter(x=>x.date.startsWith(mk(view))&&vis(x)));
+}
+function searchBar(){
+ return `<div class="hs${hOpen?' open':''}" id="hs"><div class="hsi"><input id="hs-q" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="${t('srPh')}" aria-label="${t('srPh')}" value="${esc(hq)}"><button id="hs-x" type="button">${t('srX')}</button></div></div>`;
+}
+function hsUpdate(){const r=$('#hs-res');if(r)r.innerHTML=histBody()}
+function hsOpen(){
+ hOpen=true;const b=$('#hs'),i=$('#hs-q');if(b){b.classList.remove('pull');b.style.height='';b.classList.add('open')}
+ if(i)i.focus();
+}
+function hsClose(){
+ hq='';hOpen=false;const b=$('#hs'),i=$('#hs-q');if(i){i.value='';i.blur()}
+ if(b){b.classList.remove('pull');b.style.height='';b.classList.remove('open')}
+ hsUpdate();
+}
+(function(){
+ let y0=0,x0=0,on=0,pull=0;
+ const bar=()=>$('#hs');
+ document.addEventListener('touchstart',e=>{
+  on=0;pull=0;
+  if(tab!=='hist'||hOpen||e.touches.length!==1||window.scrollY>0||!e.target.closest('#app'))return;
+  y0=e.touches[0].clientY;x0=e.touches[0].clientX;on=1;
+ },{passive:true});
+ document.addEventListener('touchmove',e=>{
+  if(!on)return;
+  const b=bar(),dy=e.touches[0].clientY-y0,dx=e.touches[0].clientX-x0;
+  if(!b||window.scrollY>0){on=0;if(pull){b&&(b.classList.remove('pull'),b.style.height='');pull=0}return}
+  if(!pull){
+   if(Math.abs(dy)<8&&Math.abs(dx)<8)return;
+   if(dy>0&&Math.abs(dy)>Math.abs(dx))pull=1;else{on=0;return}
+  }
+  b.classList.add('pull');b.style.height=Math.min(52,Math.max(0,(dy-8)*.6))+'px';
+  if(e.cancelable)e.preventDefault();
+ },{passive:false});
+ const end=()=>{
+  if(on&&pull){const b=bar(),h=b?parseFloat(b.style.height)||0:0;if(b){b.classList.remove('pull');b.style.height=''}if(h>=34){swBlock=Date.now()+400;hsOpen()}}
+  on=0;pull=0;
+ };
+ document.addEventListener('touchend',end);
+ document.addEventListener('touchcancel',end);
+ document.addEventListener('input',e=>{if(e.target.id==='hs-q'){hq=e.target.value;hsUpdate()}});
+ document.addEventListener('click',e=>{if(e.target.closest('#hs-x'))hsClose()});
+ document.addEventListener('keydown',e=>{if(e.target.id==='hs-q'&&e.key==='Enter'&&!e.isComposing){e.preventDefault();e.target.blur()}});
+})();
 
 const EM={'Mâncare':'🍽️','Subscripții':'🔄','Combustibil':'⛽','Facturi':'🧾','Casă':'🏠','Sănătate':'💊','Distracție':'🎮','Cumpărături':'🛍️','Altele':'✨','Economii':'🏦','Salariu':'💼','Bonus':'🎁'};
 const catEm=c=>{const k=cats.find(k=>k.name===c);return (k&&k.emoji)||EM[c]||'✨'};
