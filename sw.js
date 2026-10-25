@@ -1,4 +1,4 @@
-const C='cheltuieli-v4';
+const C='cheltuieli-v5';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(['./','index.html','app.js','app.css','icon-180.png','icon-512.png','manifest.webmanifest'])).catch(()=>{}));self.skipWaiting()});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{
@@ -9,5 +9,5 @@ self.addEventListener('fetch',e=>{
  if(u.origin!==location.origin&&u.hostname!=='www.gstatic.com')return;
  // pentru fișierele aplicației ignorăm parametrii din link (?amt=...&m=...), ca să nu umplem memoria cache
  const key=u.origin===location.origin?new Request(u.origin+u.pathname):r;
- e.respondWith(fetch(r).then(res=>{if(res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(key,cp))}return res}).catch(()=>caches.match(key).then(m=>m||caches.match('index.html'))));
+ e.respondWith(fetch(r,u.origin===location.origin?{cache:'no-store'}:undefined).then(res=>{if(res.ok){const cp=res.clone();caches.open(C).then(c=>c.put(key,cp))}return res}).catch(()=>caches.match(key).then(m=>m||caches.match('index.html'))));
 });
