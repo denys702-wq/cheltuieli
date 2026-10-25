@@ -93,8 +93,8 @@ Object.assign(T.ro,{perT:'Vacanță și sezoane',perSel:'Perioadă specială',pe
 Object.assign(T.en,{perT:'Vacation & seasons',perSel:'Special period',perNone:'— none —',perPre:'Pick a theme',perFrom:'From',perTo:'To',perBud:'Budget for the period (optional)',perHow:'Expenses in the period get its tag automatically and stop counting toward the monthly category budgets. The period closes itself on the end date.',perNew:'New period',perEdit:'Edit period',perAdd:'+ Add vacation or season',perAct:'In progress',perUp:'Upcoming',perDone:'Ended',perNoneYet:'No periods yet. Add a vacation or a seasonal theme (Christmas, Black Friday, back to school) with its own budget.',perOut:'From special periods (outside the budget)',perDay:'Day {d} of {n}',perStarts:'Starts in {n} days',perStartsT:'Starts tomorrow',perLeft:'You can spend ~{a} per day',perOver:'Over budget by {a}',perSpent:'Spent',perEndNow:'End now',perDel:'Delete period',perBad:'Enter a name and valid dates (from ≤ to).',perNoBud:'no budget',perEnded:'Ended',perVac:'Vacation',perCust:'Other theme',perXmas:'Christmas',perNY:'New Year',perBF:'Black Friday',perSch:'Back to school'});
 Object.assign(T.ro,{erT:'Raport erori',erIntro:'Dacă aplicația întâlnește o eroare, o salvează aici, iar când ești conectat o trimite în baza de date, ca să poată fi reparată.',erPriv:'Raportul conține doar: versiunea aplicației, mesajul și locul erorii, numele ultimelor butoane apăsate, numere de elemente și tipul telefonului. Nu conține sume, note sau nume.',erAuto:'Trimite automat rapoartele',erNone:'Nicio eroare înregistrată. Dacă apare ceva, o vei vedea aici.',erCopy:'Copiază raportul',erSend:'Trimite acum',erTest:'Generează o eroare de test',erClear:'Șterge istoricul',erSent:'trimis',erNot:'netrimis',erNoCloud:'Nu ești conectat la un cont, deci rapoartele rămân pe telefon. Le poți copia și trimite.',erCopied:'Copiat. Lipește-l în conversație.',erToastT:'A apărut o eroare',erToastS:'Raportul s-a salvat în Setări → Raport erori.',erSentN:'Trimit {n} rapoarte…',erNoneToSend:'Nimic de trimis.',erTestDone:'Eroare de test creată.',erCopyFail:'Nu am putut copia automat. Selectează textul de mai jos.'});
 Object.assign(T.en,{erT:'Error report',erIntro:'If the app runs into an error, it saves it here and, when you are signed in, sends it to the database so it can be fixed.',erPriv:'A report contains only: the app version, the error message and place, the names of the last buttons pressed, item counts and the phone type. No amounts, notes or names.',erAuto:'Send reports automatically',erNone:'No errors recorded. If something happens you will see it here.',erCopy:'Copy report',erSend:'Send now',erTest:'Generate a test error',erClear:'Clear history',erSent:'sent',erNot:'not sent',erNoCloud:'You are not signed in, so reports stay on the phone. You can copy and send them.',erCopied:'Copied. Paste it into the conversation.',erToastT:'An error occurred',erToastS:'The report was saved in Settings → Error report.',erSentN:'Sending {n} reports…',erNoneToSend:'Nothing to send.',erTestDone:'Test error created.',erCopyFail:'Could not copy automatically. Select the text below.'});
-Object.assign(T.ro,{hcT:'Verificare automată',hcLast:'Ultima verificare',hcOk:'totul în regulă',hcRun:'Verifică acum',hcDone:'Verificare făcută.',admSetH:'Prima dată: alege o parolă de admin (minim 6 caractere). Rămâne doar pe acest telefon, salvată criptat, iar fără ea nu se văd erorile.',admEnterH:'Introdu parola de admin ca să vezi erorile și verificările.',admRep:'Repetă parola',admSet:'Setează parola',admOpen:'Deschide',admShort:'Parola trebuie să aibă minim 6 caractere.',admMis:'Parolele nu se potrivesc.',admBad:'Parolă greșită.',admNoSave:'Nu pot salva parola pe acest telefon.',admNoCrypto:'Acest browser nu permite protecția cu parolă.'});
-Object.assign(T.en,{hcT:'Automatic check',hcLast:'Last check',hcOk:'all good',hcRun:'Check now',hcDone:'Check done.',admSetH:'First time: choose an admin password (at least 6 characters). It stays on this phone, stored hashed, and the error report stays hidden without it.',admEnterH:'Enter the admin password to see errors and checks.',admRep:'Repeat password',admSet:'Set password',admOpen:'Open',admShort:'The password needs at least 6 characters.',admMis:'Passwords do not match.',admBad:'Wrong password.',admNoSave:'Cannot save the password on this phone.',admNoCrypto:'This browser does not support password protection.'});
+Object.assign(T.ro,{admAll:'Bug-uri de pe toate dispozitivele',admNeedCloud:'Conectează-te la cont ca să vezi bug-urile din cloud.',admLoaded:'{n} bug-uri încărcate.',admDenied:'Contul acesta nu are voie să citească bug-urile. UID:',hcT:'Verificare automată',hcLast:'Ultima verificare',hcOk:'totul în regulă',hcRun:'Verifică acum',hcDone:'Verificare făcută.',admSetH:'Prima dată: alege o parolă de admin (minim 6 caractere). Rămâne doar pe acest telefon, salvată criptat, iar fără ea nu se văd erorile.',admEnterH:'Introdu parola de admin ca să vezi erorile și verificările.',admRep:'Repetă parola',admSet:'Setează parola',admOpen:'Deschide',admShort:'Parola trebuie să aibă minim 6 caractere.',admMis:'Parolele nu se potrivesc.',admBad:'Parolă greșită.',admNoSave:'Nu pot salva parola pe acest telefon.',admNoCrypto:'Acest browser nu permite protecția cu parolă.'});
+Object.assign(T.en,{admAll:'Bugs from all devices',admNeedCloud:'Sign in to see the cloud bugs.',admLoaded:'{n} bugs loaded.',admDenied:'This account may not read the bugs. UID:',hcT:'Automatic check',hcLast:'Last check',hcOk:'all good',hcRun:'Check now',hcDone:'Check done.',admSetH:'First time: choose an admin password (at least 6 characters). It stays on this phone, stored hashed, and the error report stays hidden without it.',admEnterH:'Enter the admin password to see errors and checks.',admRep:'Repeat password',admSet:'Set password',admOpen:'Open',admShort:'The password needs at least 6 characters.',admMis:'Passwords do not match.',admBad:'Wrong password.',admNoSave:'Cannot save the password on this phone.',admNoCrypto:'This browser does not support password protection.'});
 Object.assign(T.ro,{lkAuto:'Auto',stGA:'Automatizări',stGD:'Date',stGP:'Confidențialitate și cont',stGS:'Activitate și suport',bsOk:'În buget',bsNear:'Aproape de limită',bsOver:'Buget depășit',perDoneN:'Perioade încheiate ({n}) ›'});
 Object.assign(T.en,{lkAuto:'Auto',stGA:'Automation',stGD:'Data',stGP:'Privacy and account',stGS:'Activity and support',bsOk:'On budget',bsNear:'Near the limit',bsOver:'Over budget',perDoneN:'Ended periods ({n}) ›'});
 Object.assign(T.ro,{apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) Comenzi rapide → Automatizare → + → Tranzacție (Transaction). La „When I tap” alege Any Card, apoi Run Immediately. Pașii sunt aceiași pe iOS 26 și iOS 27.\n2) Prima acțiune: URL Encode, cu proprietatea Amount din Shortcut Input.\n3) A doua acțiune: URL Encode, cu proprietatea Merchant din Shortcut Input.\n4) A treia acțiune: Open URLs. Scrie linkul de sus (se termină cu ?amt=), pune după el rezultatul primului URL Encode (suma), scrie &m= și pune rezultatul celui de-al doilea (comerciantul). Când inserezi „URL Encoded Text”, Comenzi rapide te întreabă din care acțiune: după ?amt= alege cea cu Amount, iar după &m= cea cu Merchant.\n5) Opțional: Wait 5 seconds și Go to Home Screen, ca să te întorci singur la ecranul principal.\n6) ⓘ → Privacy → pornește Allow Running When Locked.\n7) Fă o plată de test.\nCodifică separat suma și comerciantul, nu tot linkul. Dacă totuși ajung inversate, aplicația le corectează singură.',apCfg:'Configurare Apple Pay și ghid',rchNewT:'Comerciant nou',rchNewP:'Vrei să țin minte „{c}” pentru „{m}”, ca plățile viitoare de la el să se completeze singure?',rchUpdT:'Actualizez regula?',rchUpdP:'Ai schimbat datele pentru „{m}”. Actualizez regula salvată sau modific doar plata aceasta?',rchSave:'Memorează pentru viitor',rchUpd:'Actualizează regula',rchOnce:'Doar această plată',rchBack:'Înapoi'});
@@ -670,6 +670,7 @@ document.addEventListener('click',e=>{
  else if(a==='errcopy')errCopy();
  else if(a==='errsend'){const n=ERR.flush(true);$('#err-msg').textContent=n?t('erSentN').replace('{n}',n):t('erNoneToSend');setTimeout(errRender,1500)}
  else if(a==='admgo')admGo();
+ else if(a==='admall')admLoadAll();
  else if(a==='hcrun'){hcCheck();errRender();$('#err-msg').textContent=t('hcDone')}
  else if(a==='errtest'){ERR.test();errRender();$('#err-msg').textContent=t('erTestDone')}
  else if(a==='errclear'){ERR.clear();errRender();$('#err-msg').textContent=''}
@@ -1158,13 +1159,13 @@ function budChip(){
 })();
 
 /* ===== Raport erori (ecran) ===== */
-function openErr(){admOk=false;admMsg='';errRender();$('#err-msg').textContent='';$('#erp').hidden=false}
+function openErr(){admOk=false;admAll=null;admMsg='';errRender();$('#err-msg').textContent='';$('#erp').hidden=false}
 function closeErr(){admOk=false;$('#erp').hidden=true}
 function errRender(){
  const el=$('#err-body');if(!el)return;
  if(!admOk){admLockRender(el);return}
  const q=ERR.list().slice().reverse(),un=q.filter(x=>!x.sent).length,cloud=!!(C&&C.fb&&C.uid);
- let h=hcCard()+`<p class="hint">${t('erIntro')}</p><p class="hint">${t('erPriv')}</p><button class="menu" data-act="errauto"><span>${t('erAuto')}</span><span>${S.errAuto===false?'○':'✓'}</span></button>`;
+ let h=hcCard()+admAllCard()+`<p class="hint">${t('erIntro')}</p><p class="hint">${t('erPriv')}</p><button class="menu" data-act="errauto"><span>${t('erAuto')}</span><span>${S.errAuto===false?'○':'✓'}</span></button>`;
  if(!cloud)h+=`<p class="hint">${t('erNoCloud')}</p>`;
  if(!q.length)h+=`<p class="hint">${t('erNone')}</p>`;
  else{
@@ -1184,7 +1185,7 @@ async function errCopy(){
 
 /* ===== Admin: parolă + verificări automate ===== */
 const KEYA='cheltuieli_adm',KEYH='cheltuieli_hc',HC_EVERY=6*3600*1000;
-let admOk=false,admMsg='',admFail=0,admUntil=0;
+let admOk=false,admMsg='',admFail=0,admUntil=0,admAll=null;
 function admLoad(){try{return JSON.parse(localStorage.getItem(KEYA)||'null')}catch(e){return null}}
 async function admHash(p,salt){
  const enc=new TextEncoder(),k=await crypto.subtle.importKey('raw',enc.encode(p),'PBKDF2',false,['deriveBits']);
@@ -1213,6 +1214,21 @@ async function admGo(){
   admFail++;if(admFail>=5){admUntil=Date.now()+30000;admFail=0}
   admMsg=t('admBad');errRender();
  }catch(e){admMsg='Eroare';errRender()}
+}
+async function admLoadAll(){
+ const m=$('#err-msg');
+ try{
+  if(!C||!C.fb||!C.uid){m.textContent=t('admNeedCloud');return}
+  const F=C.fb.F,r=await F.getDocs(F.query(F.collection(C.fb.db,'errors'),F.orderBy('t','desc'),F.limit(50)));
+  admAll=[];r.forEach(d=>admAll.push(d.data()));m.textContent=t('admLoaded').replace('{n}',admAll.length);
+ }catch(e){admAll=null;m.textContent=t('admDenied')+' '+(C&&C.uid||'')}
+ errRender();
+}
+function admAllCard(){
+ if(!C||!C.fb||!C.uid)return '';
+ let h=`<div class="btns"><button data-act="admall">${t('admAll')}</button></div>`;
+ if(admAll)h+=(admAll.length?admAll.map(x=>`<div class="erit"><b>${esc(x.m)}</b><small>${new Date(x.t).toLocaleString(loc())} · v${esc(x.v)} · ${esc(x.k)}${x.n>1?' ×'+x.n:''} · ${esc(String(x.u||'').slice(0,6))}</small><small>${esc(String(x.ua||'').slice(0,80))}</small></div>`).join(''):`<p class="hint">${t('erNone')}</p>`);
+ return h;
 }
 function hcRun(d){
  const out=[],ids={},dt=/^\d{4}-\d\d-\d\d$/;

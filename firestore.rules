@@ -42,10 +42,14 @@ service cloud.firestore {
       }
     }
 
-    // raport de erori: doar scriere, doar cu uid-ul propriu, fără citire
+    // adminul (doar contul lui Denis): înlocuiește valoarea cu UID-ul din Firebase → Authentication → Users
+    function isAdmin() { return signedIn() && request.auth.uid == 'PUNE_UID_ADMIN_AICI'; }
+
+    // raport de erori: oricine conectat scrie (doar cu uid-ul propriu); citește doar adminul
     match /errors/{id} {
       allow create, update: if signedIn() && request.resource.data.u == request.auth.uid;
-      allow read, delete: if false;
+      allow read: if isAdmin();
+      allow delete: if false;
     }
 
     // orice altceva e închis
