@@ -1961,3 +1961,56 @@ const T0=performance.now();
 try{if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){})}catch(e){}
 pinLoad();load();applyStatic();render();if(pinH)lockShow('unlock');cloudInit();apParse();
 Promise.race([Promise.all([initDb(),bootP]),new Promise(r=>setTimeout(r,2600))]).then(()=>setTimeout(reveal,Math.max(0,1000-(performance.now()-T0))));
+
+/* Ferestre de jos (bottom sheet): blocare scroll în spate + închidere prin swipe în jos */
+(function(){
+ const B=document.body,H=document.documentElement;let sy=0,locked=false;
+ function sync(){
+  const any=!!document.querySelector('.ov:not([hidden])');
+  if(any&&!locked){locked=true;sy=window.scrollY;B.style.top=-sy+'px';H.classList.add('sheet-open');B.classList.add('sheet-open')}
+  else if(!any&&locked){locked=false;H.classList.remove('sheet-open');B.classList.remove('sheet-open');B.style.top='';window.scrollTo(0,sy)}
+ }
+ const mo=new MutationObserver(sync);
+ document.querySelectorAll('.ov').forEach(o=>mo.observe(o,{attributes:true,attributeFilter:['hidden']}));
+ sync();
+ function dismiss(ov){
+  const b=ov.querySelector('.mh .nb:not(.done)')||ov.querySelector('[data-act^="close"],[data-act$="back"]');
+  if(b)b.click();else ov.hidden=true;
+ }
+ let ov=null,sh=null,y0=0,x0=0,dy=0,t0=0,mode=0;
+ document.addEventListener('touchstart',e=>{
+  ov=e.target.closest&&e.target.closest('.ov:not([hidden])');
+  if(!ov||e.touches.length!==1){ov=null;return}
+  sh=ov.querySelector('.sheet');y0=e.touches[0].clientY;x0=e.touches[0].clientX;dy=0;t0=e.timeStamp;mode=0;
+  if(!e.target.closest('.sheet'))mode=2; // pe fundal: nu derulăm nimic
+ },{passive:true});
+ document.addEventListener('touchmove',e=>{
+  if(!ov||!sh)return;
+  const t=e.touches[0],d=t.clientY-y0;
+  if(mode===2){e.preventDefault();return}
+  if(mode===0){
+   if(Math.abs(t.clientX-x0)>Math.abs(d)&&Math.abs(t.clientX-x0)>8){mode=3;return}
+   if(Math.abs(d)<6)return;
+   // tragem foaia doar dacă conținutul e la început și gestul merge în jos
+   mode=(d>0&&sh.scrollTop<=0&&!e.target.closest('.pager,.emos,.cols,textarea'))?1:3;
+   if(mode===1){sh.classList.add('drag');y0=t.clientY}
+  }
+  if(mode===1){dy=Math.max(0,t.clientY-y0);sh.style.transform='translateY('+dy+'px)';e.preventDefault()}
+ },{passive:false});
+ function end(e){
+  if(!ov||!sh){return}
+  const o=ov,s=sh;ov=sh=null;
+  if(mode!==1)return;
+  s.classList.remove('drag');
+  const v=dy/Math.max(1,e.timeStamp-t0);
+  if(dy>110||(dy>40&&v>.5)){
+   s.classList.add('snap');s.style.transform='translateY(100%)';
+   setTimeout(()=>{dismiss(o);s.classList.remove('snap');s.style.transform=''},230);
+  }else{
+   s.classList.add('snap');s.style.transform='';
+   setTimeout(()=>s.classList.remove('snap'),260);
+  }
+ }
+ document.addEventListener('touchend',end,{passive:true});
+ document.addEventListener('touchcancel',end,{passive:true});
+})();

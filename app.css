@@ -120,12 +120,18 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 .tr{height:12px;border-radius:6px}.tr i{border-radius:6px;animation:grow .8s cubic-bezier(.3,.7,.2,1) both}
 @keyframes grow{from{width:0}}
 button:active{transform:scale(.97)}
-#ov .sheet::before{content:"";display:none;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:0 auto 10px}
 .mh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}.mh h2{margin:0}.mr{display:flex;gap:6px}
 .nb{min-height:40px;padding:0 14px;border-radius:20px;font-weight:650}.nb.done{background:var(--accent);color:var(--on);border-color:var(--accent)}
-#ov,#st,#bkp,#acc,#cat,#rul,#goal,#dep,#prv,#log,#csv,#jrn{align-items:center;padding:16px}
-#ov .sheet,#st .sheet,#bkp .sheet,#acc .sheet,#cat .sheet,#rul .sheet,#goal .sheet,#dep .sheet,#prv .sheet,#log .sheet,#csv .sheet,#jrn .sheet{border-radius:24px;max-width:440px;max-height:86%;animation:pop .22s ease-out both}
-@keyframes pop{from{opacity:0;transform:scale(.94)}}
+.ov{align-items:flex-end;padding:0;overscroll-behavior:contain;touch-action:none;animation:fade .25s ease-out both}
+.ov .sheet{border-radius:24px 24px 0 0;max-height:92%;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;touch-action:pan-y;animation:rise .32s cubic-bezier(.2,.8,.2,1) both;will-change:transform}
+.ov .sheet::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--bd);margin:-6px auto 10px}
+.ov .sheet.drag{animation:none;transition:none}.ov .sheet.snap{animation:none;transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.ov.closing{animation:fadeout .22s ease-in both}
+html.sheet-open{overflow:hidden}
+body.sheet-open{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+@keyframes rise{from{transform:translateY(100%)}}
+@keyframes fade{from{opacity:0}}
+@keyframes fadeout{to{opacity:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .top{touch-action:pan-y}html,body{overflow-x:hidden}
 .mir{animation:inr .28s cubic-bezier(.22,.8,.3,1) both}.mil{animation:inl .28s cubic-bezier(.22,.8,.3,1) both}
