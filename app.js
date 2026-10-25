@@ -841,7 +841,7 @@ function learnRule(mer,cat,note,own){
  if(r)Object.assign(r,o);else rules.push({id:Date.now(),...o});
 }
 function apCard(){
- const q=tx.filter(x=>x.chk).slice(-3).reverse();
+ const ym=mk(view),q=tx.filter(x=>x.chk&&x.date.startsWith(ym)).slice(-3).reverse();
  if(!q.length)return '';
  return `<div class="card wchk"><h3>❓ ${t('apChkCard')}</h3>`+q.map(x=>`<div class="pr"><button class="row" data-act="edit" data-id="${x.id}">${ic(x)}<span class="rt"><b>${esc(x.note||x.ap)}</b><small>${t('apUnk')} · ${fd(x.date)}</small></span><em class="r">−${fmt(x.amt)}</em></button><button class="pay apok" data-act="apok" data-id="${x.id}" aria-label="${t('apOk')}" title="${t('apOk')}">✕</button></div>`).join('')+`<p class="hint" style="margin:8px 2px 0">${t('apOkH')}</p>`+'</div>';
 }
