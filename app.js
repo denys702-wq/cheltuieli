@@ -93,6 +93,8 @@ Object.assign(T.ro,{perT:'Vacanță și sezoane',perSel:'Perioadă specială',pe
 Object.assign(T.en,{perT:'Vacation & seasons',perSel:'Special period',perNone:'— none —',perPre:'Pick a theme',perFrom:'From',perTo:'To',perBud:'Budget for the period (optional)',perHow:'Expenses in the period get its tag automatically and stop counting toward the monthly category budgets. The period closes itself on the end date.',perNew:'New period',perEdit:'Edit period',perAdd:'+ Add vacation or season',perAct:'In progress',perUp:'Upcoming',perDone:'Ended',perNoneYet:'No periods yet. Add a vacation or a seasonal theme (Christmas, Black Friday, back to school) with its own budget.',perOut:'From special periods (outside the budget)',perDay:'Day {d} of {n}',perStarts:'Starts in {n} days',perStartsT:'Starts tomorrow',perLeft:'You can spend ~{a} per day',perOver:'Over budget by {a}',perSpent:'Spent',perEndNow:'End now',perDel:'Delete period',perBad:'Enter a name and valid dates (from ≤ to).',perNoBud:'no budget',perEnded:'Ended',perVac:'Vacation',perCust:'Other theme',perXmas:'Christmas',perNY:'New Year',perBF:'Black Friday',perSch:'Back to school'});
 Object.assign(T.ro,{erT:'Raport erori',erIntro:'Dacă aplicația întâlnește o eroare, o salvează aici, iar când ești conectat o trimite în baza de date, ca să poată fi reparată.',erPriv:'Raportul conține doar: versiunea aplicației, mesajul și locul erorii, numele ultimelor butoane apăsate, numere de elemente și tipul telefonului. Nu conține sume, note sau nume.',erAuto:'Trimite automat rapoartele',erNone:'Nicio eroare înregistrată. Dacă apare ceva, o vei vedea aici.',erCopy:'Copiază raportul',erSend:'Trimite acum',erTest:'Generează o eroare de test',erClear:'Șterge istoricul',erSent:'trimis',erNot:'netrimis',erNoCloud:'Nu ești conectat la un cont, deci rapoartele rămân pe telefon. Le poți copia și trimite.',erCopied:'Copiat. Lipește-l în conversație.',erToastT:'A apărut o eroare',erToastS:'Raportul s-a salvat în Setări → Raport erori.',erSentN:'Trimit {n} rapoarte…',erNoneToSend:'Nimic de trimis.',erTestDone:'Eroare de test creată.',erCopyFail:'Nu am putut copia automat. Selectează textul de mai jos.'});
 Object.assign(T.en,{erT:'Error report',erIntro:'If the app runs into an error, it saves it here and, when you are signed in, sends it to the database so it can be fixed.',erPriv:'A report contains only: the app version, the error message and place, the names of the last buttons pressed, item counts and the phone type. No amounts, notes or names.',erAuto:'Send reports automatically',erNone:'No errors recorded. If something happens you will see it here.',erCopy:'Copy report',erSend:'Send now',erTest:'Generate a test error',erClear:'Clear history',erSent:'sent',erNot:'not sent',erNoCloud:'You are not signed in, so reports stay on the phone. You can copy and send them.',erCopied:'Copied. Paste it into the conversation.',erToastT:'An error occurred',erToastS:'The report was saved in Settings → Error report.',erSentN:'Sending {n} reports…',erNoneToSend:'Nothing to send.',erTestDone:'Test error created.',erCopyFail:'Could not copy automatically. Select the text below.'});
+Object.assign(T.ro,{hcT:'Verificare automată',hcLast:'Ultima verificare',hcOk:'totul în regulă',hcRun:'Verifică acum',hcDone:'Verificare făcută.',admSetH:'Prima dată: alege o parolă de admin (minim 6 caractere). Rămâne doar pe acest telefon, salvată criptat, iar fără ea nu se văd erorile.',admEnterH:'Introdu parola de admin ca să vezi erorile și verificările.',admRep:'Repetă parola',admSet:'Setează parola',admOpen:'Deschide',admShort:'Parola trebuie să aibă minim 6 caractere.',admMis:'Parolele nu se potrivesc.',admBad:'Parolă greșită.',admNoSave:'Nu pot salva parola pe acest telefon.',admNoCrypto:'Acest browser nu permite protecția cu parolă.'});
+Object.assign(T.en,{hcT:'Automatic check',hcLast:'Last check',hcOk:'all good',hcRun:'Check now',hcDone:'Check done.',admSetH:'First time: choose an admin password (at least 6 characters). It stays on this phone, stored hashed, and the error report stays hidden without it.',admEnterH:'Enter the admin password to see errors and checks.',admRep:'Repeat password',admSet:'Set password',admOpen:'Open',admShort:'The password needs at least 6 characters.',admMis:'Passwords do not match.',admBad:'Wrong password.',admNoSave:'Cannot save the password on this phone.',admNoCrypto:'This browser does not support password protection.'});
 Object.assign(T.ro,{lkAuto:'Auto',stGA:'Automatizări',stGD:'Date',stGP:'Confidențialitate și cont',stGS:'Activitate și suport',bsOk:'În buget',bsNear:'Aproape de limită',bsOver:'Buget depășit',perDoneN:'Perioade încheiate ({n}) ›'});
 Object.assign(T.en,{lkAuto:'Auto',stGA:'Automation',stGD:'Data',stGP:'Privacy and account',stGS:'Activity and support',bsOk:'On budget',bsNear:'Near the limit',bsOver:'Over budget',perDoneN:'Ended periods ({n}) ›'});
 Object.assign(T.ro,{apA:'0) Setări iPhone → Aplicații → Wallet → pornește Date mobile.\n1) Comenzi rapide → Automatizare → + → Tranzacție (Transaction). La „When I tap” alege Any Card, apoi Run Immediately. Pașii sunt aceiași pe iOS 26 și iOS 27.\n2) Prima acțiune: URL Encode, cu proprietatea Amount din Shortcut Input.\n3) A doua acțiune: URL Encode, cu proprietatea Merchant din Shortcut Input.\n4) A treia acțiune: Open URLs. Scrie linkul de sus (se termină cu ?amt=), pune după el rezultatul primului URL Encode (suma), scrie &m= și pune rezultatul celui de-al doilea (comerciantul). Când inserezi „URL Encoded Text”, Comenzi rapide te întreabă din care acțiune: după ?amt= alege cea cu Amount, iar după &m= cea cu Merchant.\n5) Opțional: Wait 5 seconds și Go to Home Screen, ca să te întorci singur la ecranul principal.\n6) ⓘ → Privacy → pornește Allow Running When Locked.\n7) Fă o plată de test.\nCodifică separat suma și comerciantul, nu tot linkul. Dacă totuși ajung inversate, aplicația le corectează singură.',apCfg:'Configurare Apple Pay și ghid',rchNewT:'Comerciant nou',rchNewP:'Vrei să țin minte „{c}” pentru „{m}”, ca plățile viitoare de la el să se completeze singure?',rchUpdT:'Actualizez regula?',rchUpdP:'Ai schimbat datele pentru „{m}”. Actualizez regula salvată sau modific doar plata aceasta?',rchSave:'Memorează pentru viitor',rchUpd:'Actualizează regula',rchOnce:'Doar această plată',rchBack:'Înapoi'});
@@ -667,6 +669,8 @@ document.addEventListener('click',e=>{
  else if(a==='errauto'){S.errAuto=S.errAuto===false;saveSet();errRender();if(S.errAuto!==false)ERR.flush(false)}
  else if(a==='errcopy')errCopy();
  else if(a==='errsend'){const n=ERR.flush(true);$('#err-msg').textContent=n?t('erSentN').replace('{n}',n):t('erNoneToSend');setTimeout(errRender,1500)}
+ else if(a==='admgo')admGo();
+ else if(a==='hcrun'){hcCheck();errRender();$('#err-msg').textContent=t('hcDone')}
  else if(a==='errtest'){ERR.test();errRender();$('#err-msg').textContent=t('erTestDone')}
  else if(a==='errclear'){ERR.clear();errRender();$('#err-msg').textContent=''}
  else if(a==='peropen'){closeSet();openPer()}
@@ -1154,12 +1158,13 @@ function budChip(){
 })();
 
 /* ===== Raport erori (ecran) ===== */
-function openErr(){errRender();$('#err-msg').textContent='';$('#erp').hidden=false}
-function closeErr(){$('#erp').hidden=true}
+function openErr(){admOk=false;admMsg='';errRender();$('#err-msg').textContent='';$('#erp').hidden=false}
+function closeErr(){admOk=false;$('#erp').hidden=true}
 function errRender(){
  const el=$('#err-body');if(!el)return;
+ if(!admOk){admLockRender(el);return}
  const q=ERR.list().slice().reverse(),un=q.filter(x=>!x.sent).length,cloud=!!(C&&C.fb&&C.uid);
- let h=`<p class="hint">${t('erIntro')}</p><p class="hint">${t('erPriv')}</p><button class="menu" data-act="errauto"><span>${t('erAuto')}</span><span>${S.errAuto===false?'○':'✓'}</span></button>`;
+ let h=hcCard()+`<p class="hint">${t('erIntro')}</p><p class="hint">${t('erPriv')}</p><button class="menu" data-act="errauto"><span>${t('erAuto')}</span><span>${S.errAuto===false?'○':'✓'}</span></button>`;
  if(!cloud)h+=`<p class="hint">${t('erNoCloud')}</p>`;
  if(!q.length)h+=`<p class="hint">${t('erNone')}</p>`;
  else{
@@ -1176,6 +1181,78 @@ async function errCopy(){
  try{const a=$('#err-txt');a.focus();a.select();if(document.execCommand('copy')){m.textContent=t('erCopied');return}}catch(e){}
  m.textContent=t('erCopyFail');
 }
+
+/* ===== Admin: parolă + verificări automate ===== */
+const KEYA='cheltuieli_adm',KEYH='cheltuieli_hc',HC_EVERY=6*3600*1000;
+let admOk=false,admMsg='',admFail=0,admUntil=0;
+function admLoad(){try{return JSON.parse(localStorage.getItem(KEYA)||'null')}catch(e){return null}}
+async function admHash(p,salt){
+ const enc=new TextEncoder(),k=await crypto.subtle.importKey('raw',enc.encode(p),'PBKDF2',false,['deriveBits']);
+ const b=await crypto.subtle.deriveBits({name:'PBKDF2',salt:enc.encode(salt),iterations:150000,hash:'SHA-256'},k,256);
+ return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function admLockRender(el){
+ if(!canPin()){el.innerHTML=`<p class="hint">${t('admNoCrypto')}</p>`;return}
+ const set=!admLoad();
+ el.innerHTML=`<p class="hint">${t(set?'admSetH':'admEnterH')}</p><label><span>${t('pass')}</span><input id="adm-p" type="password" autocomplete="off" enterkeyhint="go"></label>`+
+  (set?`<label><span>${t('admRep')}</span><input id="adm-p2" type="password" autocomplete="off" enterkeyhint="go"></label>`:'')+
+  `<div class="btns"><button data-act="admgo">${t(set?'admSet':'admOpen')}</button></div><p class="hint">${esc(admMsg)}</p>`;
+}
+async function admGo(){
+ try{
+  const p=($('#adm-p')||{}).value||'',cur=admLoad();
+  if(!cur){
+   if(p.length<6){admMsg=t('admShort');errRender();return}
+   if(p!==($('#adm-p2')||{}).value){admMsg=t('admMis');errRender();return}
+   const salt=crypto.getRandomValues(new Uint32Array(2)).join('-');
+   try{localStorage.setItem(KEYA,JSON.stringify({s:salt,h:await admHash(p,salt)}))}catch(e){admMsg=t('admNoSave');errRender();return}
+   admOk=true;admMsg='';errRender();return;
+  }
+  if(Date.now()<admUntil){admMsg=t('lkWait').replace('{s}',Math.ceil((admUntil-Date.now())/1000));errRender();return}
+  if((await admHash(p,cur.s))===cur.h){admOk=true;admFail=0;admMsg='';errRender();return}
+  admFail++;if(admFail>=5){admUntil=Date.now()+30000;admFail=0}
+  admMsg=t('admBad');errRender();
+ }catch(e){admMsg='Eroare';errRender()}
+}
+function hcRun(d){
+ const out=[],ids={},dt=/^\d{4}-\d\d-\d\d$/;
+ let bad=0,dup=0,bdt=0,bty=0;
+ (d.tx||[]).forEach(x=>{
+  if(!x||!isFinite(x.amt)||!(x.amt>0))bad++;
+  if(!x||!dt.test(x.date||'')||isNaN(Date.parse(x.date)))bdt++;
+  if(!x||(x.type!=='exp'&&x.type!=='inc'))bty++;
+  if(x&&x.id!=null){if(ids[x.id])dup++;ids[x.id]=1}
+ });
+ if(bad)out.push('Verificare: tranzacții cu sumă invalidă');
+ if(bdt)out.push('Verificare: tranzacții cu dată invalidă');
+ if(bty)out.push('Verificare: tranzacții cu tip necunoscut');
+ if(dup)out.push('Verificare: tranzacții cu id duplicat');
+ const lists={'plăți planificate':d.pl,'abonamente':d.subs};
+ Object.keys(lists).forEach(k=>{if((lists[k]||[]).some(x=>!x||!isFinite(x.amt)||!(x.amt>0)))out.push('Verificare: '+k+' cu sumă invalidă')});
+ if((d.goals||[]).some(g=>!g||!isFinite(g.target)||!(g.target>0)))out.push('Verificare: obiective cu țintă invalidă');
+ if(!(d.cats||[]).length)out.push('Verificare: lista de categorii e goală');
+ if(d.storeOk===false)out.push('Verificare: datele nu se pot salva pe telefon');
+ return out;
+}
+function hcLast(){try{return JSON.parse(localStorage.getItem(KEYH)||'null')}catch(e){return null}}
+function hcCheck(){
+ let r=[];
+ try{r=hcRun({tx,pl,subs,goals,cats,storeOk:ok})}catch(e){r=['Verificare: verificarea însăși a eșuat']}
+ try{localStorage.setItem(KEYH,JSON.stringify({t:Date.now(),v:APP_VER,i:r}))}catch(e){}
+ r.forEach(m=>ERR.report('check',m,'','hc'));
+ try{if(window.errRender&&!$('#erp').hidden)errRender()}catch(e){}
+ return r;
+}
+function hcDue(){const l=hcLast();return !l||Date.now()-l.t>HC_EVERY}
+function hcCard(){
+ const l=hcLast(),when=l?new Date(l.t).toLocaleString(loc()):'—';
+ let h=`<div class="erit"><b>${t('hcT')}</b><small>${t('hcLast')}: ${when}${l?' · '+(l.i.length?'⚠️ '+l.i.length:'✓ '+t('hcOk')):''}</small>`;
+ if(l&&l.i.length)h+=l.i.map(m=>`<small>• ${esc(m)}</small>`).join('');
+ return h+`</div><div class="btns"><button data-act="hcrun">${t('hcRun')}</button></div>`;
+}
+setInterval(()=>{if(!document.hidden&&hcDue())hcCheck()},30*60*1000);
+setTimeout(()=>{if(hcDue())hcCheck()},9000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&hcDue())setTimeout(hcCheck,3000)});
 
 /* ===== Vacanță și sezoane ===== */
 function perBudCard(){
@@ -1359,7 +1436,7 @@ async function calGo(){
 }
 
 /* ===== Jurnal actualizări + mod confidențial ===== */
-const APP_VER='2.6';
+const APP_VER='2.7';
 const CHANGELOG=[
  {v:'2.6',d:'2026-10-14',ro:['Android: plăți automate din notificări sau SMS, cu MacroDroid; aplicația citește singură suma și comerciantul din text','Ghidul și meniul de plăți automate se adaptează la telefon (iPhone sau Android)'],en:['Android: automatic payments from notifications or SMS, with MacroDroid; the app reads the amount and merchant from the text','The automatic payments guide and menu adapt to the phone (iPhone or Android)']},
  {v:'2.5.3',d:'2026-10-14',ro:['În Buget: ții apăsat pe o categorie și o tragi sus sau jos ca să schimbi ordinea; meniul de ordine a dispărut'],en:['In Budget: press and hold a category and drag it up or down to reorder; the order menu is gone']},

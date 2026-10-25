@@ -52,3 +52,15 @@ test('nm și cleanDesc: normalizează diacriticele și zgomotul', () => {
   assert.equal(A.nm('  Cumpărături  ÎN  Mâncare! '), 'cumparaturi in mancare');
   assert.equal(A.cleanDesc('PLATA POS Kaufland 12345678'), 'Kaufland');
 });
+
+const H = load(['hcRun']);
+test('hcRun: date curate nu dau probleme', () => {
+  const d = { tx: [{ id: 1, type: 'exp', amt: 10, date: '2026-03-07' }], pl: [], subs: [], goals: [], cats: [{ id: 1 }] };
+  assert.deepEqual(J(H.hcRun(d)), []);
+});
+
+test('hcRun: prinde sume, date, tipuri și id-uri greșite', () => {
+  const d = { tx: [{ id: 1, type: 'exp', amt: -5, date: '2026-13-45' }, { id: 1, type: 'x', amt: 3, date: '2026-01-01' }], pl: [{ amt: 'a' }], subs: [], goals: [], cats: [] };
+  const r = J(H.hcRun(d)).join('|');
+  for (const k of ['sumă invalidă', 'dată invalidă', 'tip necunoscut', 'id duplicat', 'planificate', 'categorii']) assert.match(r, new RegExp(k));
+});
